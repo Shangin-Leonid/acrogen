@@ -1,9 +1,14 @@
 package main
 
 import (
-	"acrgen/tfp"
+	"errors"
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
+	"unicode"
+
+	"acrgen/tfp"
 )
 
 func main() {
@@ -23,7 +28,7 @@ func main() {
 }
 
 // #
-// Describes one source file entry (line), that represents a variant for acronym letter, its estimation and decoding (description).
+// Describes one source file entry (line), that represents a variant of acronym letter, its estimation and decoding (description).
 // #
 type SrcEntry struct {
 	letter     rune
@@ -38,6 +43,26 @@ type Src []SrcEntry
 func importSrcFromFile(srcFilename string) (src Src, err error) {
 
 	var parseSrcFileLine tfp.LineParserFunc = func(line string) error {
+		const Separator = " -- "
+		splittedLine := strings.Split(line, Separator)
+		if len(splittedLine) != 3 {
+			return errors.New("incorrect format of input file. unexpected data format error during reading the file")
+		}
+
+		letterToken := []rune(splittedLine[0])
+		if len(letterToken) != 1 || !unicode.IsLetter(letterToken[0]) {
+			return errors.New("incorrect format of input file. first token is not a letter")
+		}
+		letter := letterToken[0]
+
+		estimation, err := strconv.Atoi(splittedLine[1])
+		if err != nil {
+			return errors.New("incorrect format of input file. second token is not a number or incorrect number")
+		}
+
+		decoding := []rune(splittedLine[2])
+
+		src = append(src, SrcEntry{letter, estimation, decoding})
 		return nil
 	}
 
