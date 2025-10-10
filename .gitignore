@@ -1,0 +1,18 @@
+# IGNORE:
+
+# executable files
+*.exe
+*.out
+
+# files with logs
+_log_*
+
+# files for debugging
+_debug_*
+
+# swp files
+*.swp
+
+# project data files
+src.txt
+acrs.txt
