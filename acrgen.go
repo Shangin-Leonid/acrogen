@@ -39,7 +39,7 @@ type LetterOpts []LetterOpt
 type Src []LetterOpts
 
 // #
-// Parse source data file and import its content.
+// Parses source data file and import its content.
 // #
 func importSrcFromFile(srcFilename string) (Src, error) {
 	src := make(Src, 0, 10)
