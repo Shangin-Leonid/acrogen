@@ -30,23 +30,36 @@ func main() {
 // #
 // Describes one source file entry (line), that represents a variant of acronym letter, its estimation and decoding (description).
 // #
-type SrcEntry struct {
+type LetterOpt struct {
 	letter     rune
 	estimation int
-	decoding   []rune
+	decoding   string
 }
-type Src []SrcEntry
+type LetterOpts []LetterOpt
+type Src []LetterOpts
 
 // #
 // Parse source data file and import its content.
 // #
-func importSrcFromFile(srcFilename string) (src Src, err error) {
+func importSrcFromFile(srcFilename string) (Src, error) {
+	src := make(Src, 0, 10)
+	src = append(src, make(LetterOpts, 0, 10))
 
 	var parseSrcFileLine tfp.LineParserFunc = func(line string) error {
-		const Separator = " -- "
-		splittedLine := strings.Split(line, Separator)
+		const LetterOptsSeparator = ""
+		const LetterOptSeparator = " -- "
+
+		if line == LetterOptsSeparator {
+			if len(src[len(src)-1]) == 0 {
+				return errors.New("incorrect format of input file: first (initial) or multiple consecutive blank lines are prohibited")
+			}
+			src = append(src, make(LetterOpts, 0, 10))
+			return nil
+		}
+
+		splittedLine := strings.Split(line, LetterOptSeparator)
 		if len(splittedLine) != 3 {
-			return errors.New("incorrect format of input file. unexpected data format error during reading the file")
+			return errors.New("incorrect format of input file: unexpected data format error during reading the file")
 		}
 
 		letterToken := []rune(splittedLine[0])
@@ -60,16 +73,20 @@ func importSrcFromFile(srcFilename string) (src Src, err error) {
 			return errors.New("incorrect format of input file. second token is not a number or incorrect number")
 		}
 
-		decoding := []rune(splittedLine[2])
+		decoding := splittedLine[2]
 
-		src = append(src, SrcEntry{letter, estimation, decoding})
+		src[len(src)-1] = append(src[len(src)-1], LetterOpt{letter, estimation, decoding})
 		return nil
 	}
 
-	_, err = tfp.ParseFileLineByLine(srcFilename, parseSrcFileLine)
+	_, err := tfp.ParseFileLineByLine(srcFilename, parseSrcFileLine)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if len(src[len(src)-1]) == 0 {
+		src = src[:len(src)-1]
 	}
 
 	return src, nil
