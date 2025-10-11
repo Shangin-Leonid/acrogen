@@ -18,9 +18,16 @@ func main() {
 		fmt.Println("Запустите программу заново, указав названия трёх  \".txt\" файлов: входного, с существующими словами-кандидатами и выходного")
 		return
 	}
-	srcFilename := argsWithoutProgName[0]
+	srcFilename, dictFilename := argsWithoutProgName[0], argsWithoutProgName[1]
 
 	_, err := importSrcFromFile(srcFilename)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	const ExpectedWordsAmount = 1532570 // 1'532'568 = amount of russian words in my collection
+	_, err = importDictionaryFromFile(dictFilename, ExpectedWordsAmount)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -90,4 +97,29 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 	}
 
 	return src, nil
+}
+
+// #
+// Describes a set of existing and valid words, candidates for acronyms.
+// #
+type Dict map[string]struct{}
+
+// #
+// Parses dictionary file (list of valid words) and import its content.
+// #
+func importDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (Dict, error) {
+	dict := make(Dict, expectedWordsAmount)
+
+	var parseWordFromFileLine tfp.LineParserFunc = func(line string) error {
+		dict[line] = struct{}{}
+		return nil
+	}
+
+	_, err := tfp.ParseFileLineByLine(dictFilename, parseWordFromFileLine)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return dict, nil
 }
