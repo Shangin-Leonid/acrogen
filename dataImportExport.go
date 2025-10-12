@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode"
 
-	"acrgen/tfp"
+	"acrgen/fio"
 )
 
 // #
@@ -16,7 +16,7 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 	src := make(Src, 0, 10)
 	src = append(src, make(LetterOpts, 0, 10))
 
-	var parseSrcFileLine tfp.LineParserFunc = func(line string) error {
+	var parseSrcFileLine fio.LineParserFunc = func(line string) error {
 		const LetterOptsSeparator = ""
 		const LetterOptSeparator = " -- "
 
@@ -50,7 +50,7 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 		return nil
 	}
 
-	_, err := tfp.ParseFileLineByLine(srcFilename, parseSrcFileLine)
+	_, err := fio.ParseFileLineByLine(srcFilename, parseSrcFileLine)
 
 	if err != nil {
 		return nil, err
@@ -69,12 +69,12 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 func importDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (Dict, error) {
 	dict := make(Dict, expectedWordsAmount)
 
-	var parseWordFromFileLine tfp.LineParserFunc = func(line string) error {
+	var parseWordFromFileLine fio.LineParserFunc = func(line string) error {
 		dict[line] = struct{}{}
 		return nil
 	}
 
-	_, err := tfp.ParseFileLineByLine(dictFilename, parseWordFromFileLine)
+	_, err := fio.ParseFileLineByLine(dictFilename, parseWordFromFileLine)
 
 	if err != nil {
 		return nil, err

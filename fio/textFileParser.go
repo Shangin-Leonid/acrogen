@@ -1,4 +1,4 @@
-package tfp /*Text File Parser */
+package fio /* File Input Output */
 
 import (
 	"bufio"
