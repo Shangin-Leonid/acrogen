@@ -16,4 +16,8 @@ debug:
 	dlv debug -- $(INPUT_PARAMS)
 
 clean:
-	rm ./acrgen.out
+	rm -f ./acrgen.out
+
+clean_all:
+	rm -f ./acrgen.out
+	rm -f $(OUTP_FILENAME)
