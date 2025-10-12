@@ -7,7 +7,7 @@ INPUT_PARAMS = $(SRC_FILENAME) $(DICT_FILENAME) $(OUTP_FILENAME)
 all: build run
 
 build:
-	go build -o acrgen.out acrgen.go
+	go build -o acrgen.out *.go
 
 run:
 	./acrgen.out $(INPUT_PARAMS)
