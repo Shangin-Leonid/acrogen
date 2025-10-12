@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"errors"
 	"os"
-	"path"
 )
 
 type LineParserFunc = func(string) error // TODO without '='
@@ -40,16 +39,4 @@ func ParseFileLineByLine(filename string, parserFunc LineParserFunc) (nSuccessfu
 	}
 
 	return nSuccessfullyParsed, nil
-}
-
-// #
-// Checks validness of name of plain text file.
-// #
-func isTextFileNameValid(filename string) bool {
-	ext := path.Ext(filename)
-	if ext != ".txt" {
-		return false
-	}
-
-	return true
 }
