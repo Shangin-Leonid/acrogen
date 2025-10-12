@@ -37,7 +37,7 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 		if len(letterToken) != 1 || !unicode.IsLetter(letterToken[0]) {
 			return errors.New("incorrect format of input file. first token is not a letter")
 		}
-		letter := letterToken[0]
+		letter := unicode.ToLower(letterToken[0])
 
 		estimation, err := strconv.Atoi(splittedLine[1])
 		if err != nil {
