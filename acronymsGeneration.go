@@ -1,6 +1,8 @@
 package main
 
 import (
+	"sort"
+
 	"acrgen/algo"
 )
 
@@ -63,4 +65,11 @@ func generateAcronyms(src Src, dict Dict) (acrs Acronyms, err error) {
 	}
 
 	return acrs, nil
+}
+
+func SortAcronymsBySumEstimation(acrs Acronyms) {
+	isMoreSumEstimationFunc := func(i, j int) bool {
+		return acrs[i].sumEstimation > acrs[j].sumEstimation
+	}
+	sort.Slice(acrs, isMoreSumEstimationFunc)
 }
