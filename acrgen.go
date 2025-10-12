@@ -8,7 +8,6 @@ import (
 	"strings"
 	"unicode"
 
-	"acrgen/algo"
 	"acrgen/tfp"
 )
 
@@ -28,29 +27,18 @@ func main() {
 	}
 
 	const ExpectedWordsAmount = 1532570 // 1'532'568 = amount of russian words in my collection
-	_, err = importDictionaryFromFile(dictFilename, ExpectedWordsAmount)
+	dict, err := importDictionaryFromFile(dictFilename, ExpectedWordsAmount)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	_, err = algo.CalcOrderedCartesianProduct(src)
+	_, err = generateAcronyms(src, dict)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 }
-
-// #
-// Describes one source file entry (line), that represents a variant of acronym letter, its estimation and decoding (description).
-// #
-type LetterOpt struct {
-	letter     rune
-	estimation int
-	decoding   string
-}
-type LetterOpts = []LetterOpt
-type Src = []LetterOpts
 
 // #
 // Parses source data file and import its content.
@@ -105,11 +93,6 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 
 	return src, nil
 }
-
-// #
-// Describes a set of existing and valid words, candidates for acronyms.
-// #
-type Dict map[string]struct{}
 
 // #
 // Parses dictionary file (list of valid words) and import its content.
