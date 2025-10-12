@@ -82,3 +82,16 @@ func importDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (
 
 	return dict, nil
 }
+
+// #
+// Export acronyms to output file in short format (without letters decoding, but each acronym is on new line).
+// #
+func exportAcronymsToFile(acrs Acronyms, outputFilename string) error {
+	formatFunc := func(acr Acronym) string {
+		return acr.word + "\n"
+	}
+
+	_, err := fio.WriteSliceToFile(acrs, outputFilename, formatFunc)
+
+	return err
+}
