@@ -8,6 +8,7 @@ import (
 	"strings"
 	"unicode"
 
+	"acrgen/algo"
 	"acrgen/tfp"
 )
 
@@ -20,7 +21,7 @@ func main() {
 	}
 	srcFilename, dictFilename := argsWithoutProgName[0], argsWithoutProgName[1]
 
-	_, err := importSrcFromFile(srcFilename)
+	src, err := importSrcFromFile(srcFilename)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -28,6 +29,12 @@ func main() {
 
 	const ExpectedWordsAmount = 1532570 // 1'532'568 = amount of russian words in my collection
 	_, err = importDictionaryFromFile(dictFilename, ExpectedWordsAmount)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	_, err = algo.CalcOrderedCartesianProduct(src)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -42,8 +49,8 @@ type LetterOpt struct {
 	estimation int
 	decoding   string
 }
-type LetterOpts []LetterOpt
-type Src []LetterOpts
+type LetterOpts = []LetterOpt
+type Src = []LetterOpts
 
 // #
 // Parses source data file and import its content.
