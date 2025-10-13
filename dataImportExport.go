@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 	"unicode"
@@ -94,4 +95,15 @@ func exportAcronymsToFile(acrs Acronyms, outputFilename string) error {
 	_, err := fio.WriteSliceToFile(acrs, outputFilename, formatFunc)
 
 	return err
+}
+
+// #
+// Prints acronyms in console in poor format (acroonym only, without any decoding info).
+// #
+func printAcronyms(acrs Acronyms) {
+	fmt.Printf("\nList of acronyms:\n")
+	for i := range acrs {
+		fmt.Println(acrs[i].word)
+	}
+	fmt.Printf("\n")
 }
