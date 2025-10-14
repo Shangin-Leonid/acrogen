@@ -29,6 +29,10 @@ type Acronyms = []Acronym
 // #
 type Dict map[string]struct{}
 
+// #
+// Generates acronyms from 'src': check all possible letter sequences and take some that are in dictionary.
+// Returns Acronyms collection and error.
+// #
 func generateAcronyms(src Src, dict Dict) (acrs Acronyms, err error) {
 	letterCombs, err := algo.CalcOrderedCartesianProduct(src)
 	if err != nil {
@@ -67,6 +71,10 @@ func generateAcronyms(src Src, dict Dict) (acrs Acronyms, err error) {
 	return acrs, nil
 }
 
+// #
+// A wrapper for sorting Acronyms collection by summary estimations of its elements.
+// Returns nothing, just sorts in place.
+// #
 func SortAcronymsBySumEstimation(acrs Acronyms) {
 	isMoreSumEstimationFunc := func(i, j int) bool {
 		return acrs[i].sumEstimation > acrs[j].sumEstimation
