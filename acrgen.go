@@ -5,7 +5,6 @@ import (
 	"os"
 )
 
-// TODO format errors before console printing
 // TODO switch the language of messages for user
 func main() {
 	argsWithoutProgName := os.Args[1:]
@@ -18,26 +17,26 @@ func main() {
 
 	src, err := importSrcFromFile(srcFilename)
 	if err != nil {
-		fmt.Println(err)
+		formatAndPrintError(err)
 		return
 	}
 
 	const ExpectedWordsAmount = 1532570 // 1'532'568 = amount of russian words in my collection
 	dict, err := importDictionaryFromFile(dictFilename, ExpectedWordsAmount)
 	if err != nil {
-		fmt.Println(err)
+		formatAndPrintError(err)
 		return
 	}
 
 	acrs, err := generateAcronyms(src, dict)
 	if err != nil {
-		fmt.Println(err)
+		formatAndPrintError(err)
 		return
 	}
 
 	err = exportAcronymsToFile(acrs, outputFilename)
 	if err != nil {
-		fmt.Println(err)
+		formatAndPrintError(err)
 		return
 	}
 
@@ -47,7 +46,7 @@ func main() {
 	const UserInputFormatErrMessage = "Incorrect choice (incorrect input format)."
 	yesOrNo, err := giveUserAChoiceYesOrNo(DecodeChoiceMessage, UserInputFormatErrMessage)
 	if err != nil {
-		fmt.Println(err)
+		formatAndPrintError(err)
 		return
 	}
 
@@ -68,11 +67,15 @@ func main() {
 			containsAcronymWrap,
 			takeAndPrintAcronym)
 		if err != nil {
-			fmt.Println(err)
+			formatAndPrintError(err)
 			return
 		}
 	}
 
 	fmt.Println("\n\"Acrgen\" finished with success.")
 	return
+}
+
+func formatAndPrintError(err error) {
+	fmt.Errorf("Error: %w", err)
 }
