@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+// TODO format errors before console printing
+// TODO switch the language of messages for user
 func main() {
 	argsWithoutProgName := os.Args[1:]
 	if len(argsWithoutProgName) != 3 {
@@ -40,4 +42,37 @@ func main() {
 	}
 
 	printAcronyms(acrs)
+
+	const DecodeChoiceMessage = "Would you like to decode any generated acronym?"
+	const UserInputFormatErrMessage = "Incorrect choice (incorrect input format)."
+	yesOrNo, err := giveUserAChoiceYesOrNo(DecodeChoiceMessage, UserInputFormatErrMessage)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if yesOrNo == Yes {
+		containsAcronymWrap := func(userInp string) (bool, error) {
+			return containsAcronym(userInp, acrs), nil
+		}
+		takeAndPrintAcronym := func(userInp string) error {
+			acr, _ := takeAcronym(userInp, acrs) // No error can be, we've just checked that the acronym is in the collection
+			printAcronymInDetail(acr)
+			return nil
+		}
+
+		err, _ := processUserInputUntilExitCommand(
+			"",
+			"\nPlease, enter an acronym:",
+			"No such acronym was found.",
+			containsAcronymWrap,
+			takeAndPrintAcronym)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
+
+	fmt.Println("\n\"Acrgen\" finished with success.")
+	return
 }
