@@ -5,12 +5,11 @@ import (
 	"os"
 )
 
-// TODO switch the language of messages for user
 func main() {
 	argsWithoutProgName := os.Args[1:]
 	if len(argsWithoutProgName) != 3 {
-		fmt.Println("Неверное количество входных аргументов!")
-		fmt.Println("Запустите программу заново, указав названия трёх  \".txt\" файлов: входного, с существующими словами-кандидатами и выходного")
+		fmt.Println("Incorrect number of program input arguments!")
+		fmt.Println("Restart the program with passing 3 names of \".txt\" files: for input, with real existing words (dictionary) and for output.")
 		return
 	}
 	srcFilename, dictFilename, outputFilename := argsWithoutProgName[0], argsWithoutProgName[1], argsWithoutProgName[2]
