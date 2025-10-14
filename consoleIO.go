@@ -65,6 +65,8 @@ func processUserInputUntilExitCommand(
 	returnIfExitCommand := func(s string) bool { return s == ExitCommand }
 	returnNoNeedBreak := func(s string) bool { return false }
 
+	fmt.Printf("To exit (to stop) enter \"%s\"\n", ExitCommand)
+
 	return processUserInputUntil(
 		invitingMes,
 		userGuideMes,
