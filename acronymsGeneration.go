@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"slices"
 	"sort"
 
 	"acrgen/algo"
@@ -23,6 +25,34 @@ type Acronym struct {
 	letterDecodings []string
 }
 type Acronyms = []Acronym
+
+// #
+// Searches for acronym 'word' in Acronyms collection.
+// Returns true if have found, false else.
+// #
+func containsAcronym(word string, acrs Acronyms) bool {
+	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
+		return word == acr.word
+	})
+
+	return (0 <= ind) && (ind < len(acrs))
+}
+
+// #
+// Searches for acronym 'word' in Acronyms collection.
+// Returns (acronym, nil) if have found, (Acronym{}, some error) else.
+// #
+func takeAcronym(word string, acrs Acronyms) (Acronym, error) {
+	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
+		return word == acr.word
+	})
+
+	if 0 <= ind && ind < len(acrs) {
+		return acrs[ind], nil
+	} else {
+		return Acronym{}, errors.New("acronym have not been found")
+	}
+}
 
 // #
 // Describes a set of existing and valid words, candidates for acronyms.
