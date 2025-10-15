@@ -100,7 +100,7 @@ func exportAcronymsToFile(acrs Acronyms, outputFilename string, mode ExportModeT
 
 	if mode == FullFormat {
 		formatFunc = func(acr Acronym) string {
-			var outp string
+			outp := acr.word + LetterOptSeparator + strconv.Itoa(acr.sumEstimation) + "\n"
 			// TODO optimize by switching from string to []rune
 			for i, letter := range []rune(acr.word) {
 				outp += string(letter) + LetterOptSeparator + acr.letterDecodings[i] + "\n"
