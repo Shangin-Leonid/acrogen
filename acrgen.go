@@ -43,11 +43,19 @@ func main() {
 		return
 	}
 
-	printAcronyms(acrs)
+	const AcrConsolePrintingChoiceMes = "Would you like to print all generated acronyms in console?"
+	const UserChoiceInputFormatErrMes = "Incorrect choice (incorrect input format)."
+	yesOrNo, err := giveUserAChoiceYesOrNo(AcrConsolePrintingChoiceMes, UserChoiceInputFormatErrMes)
+	if err != nil {
+		formatAndPrintError(err)
+		return
+	}
+	if yesOrNo == Yes {
+		printAcronyms(acrs)
+	}
 
-	const DecodeChoiceMessage = "Would you like to decode any generated acronym?"
-	const UserInputFormatErrMessage = "Incorrect choice (incorrect input format)."
-	yesOrNo, err := giveUserAChoiceYesOrNo(DecodeChoiceMessage, UserInputFormatErrMessage)
+	const DecodeChoiceMes = "Would you like to decode any generated acronym?"
+	yesOrNo, err = giveUserAChoiceYesOrNo(DecodeChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
 		return
