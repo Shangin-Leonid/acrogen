@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"acrgen/fio"
 )
 
 func main() {
@@ -33,7 +35,9 @@ func main() {
 		return
 	}
 
-	err = exportAcronymsToFile(acrs, outputFilename)
+	const dumpFilenameSuffix = "_dump"
+	dumpOutputFilename := fio.GetWithoutExt(outputFilename) + dumpFilenameSuffix + ".txt"
+	err = exportAcronymsToFile(acrs, dumpOutputFilename, FullFormat)
 	if err != nil {
 		formatAndPrintError(err)
 		return

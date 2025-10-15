@@ -10,6 +10,9 @@ import (
 	"acrgen/fio"
 )
 
+const LetterOptsSeparator = ""
+const LetterOptSeparator = " -- "
+
 // #
 // Parses source data file and import its content.
 // #
@@ -18,9 +21,6 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 	src = append(src, make(LetterOpts, 0, 10))
 
 	var parseSrcFileLine fio.LineParserFunc = func(line string) error {
-		const LetterOptsSeparator = ""
-		const LetterOptSeparator = " -- "
-
 		if line == LetterOptsSeparator {
 			if len(src[len(src)-1]) == 0 {
 				return errors.New("incorrect format of input file: first (initial) or multiple consecutive blank lines are prohibited")
@@ -84,16 +84,37 @@ func importDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (
 	return dict, nil
 }
 
+// Enumeration represents mode of acronyms file export.
+type ExportModeT int
+
+const (
+	FullFormat ExportModeT = iota + 1
+	OnelineFormat
+)
+
 // #
 // Export acronyms to output file in short format (without letters decoding, but each acronym is on new line).
 // #
-func exportAcronymsToFile(acrs Acronyms, outputFilename string) error {
-	formatFunc := func(acr Acronym) string {
-		return acr.word + "\n"
+func exportAcronymsToFile(acrs Acronyms, outputFilename string, mode ExportModeT) error {
+	var formatFunc func(acr Acronym) string
+
+	if mode == FullFormat {
+		formatFunc = func(acr Acronym) string {
+			var outp string
+			// TODO optimize by switching from string to []rune
+			for i, letter := range []rune(acr.word) {
+				outp += string(letter) + LetterOptSeparator + acr.letterDecodings[i] + "\n"
+			}
+			outp += LetterOptsSeparator + "\n"
+			return outp
+		}
+	} else if mode == OnelineFormat {
+		formatFunc = func(acr Acronym) string {
+			return acr.word + "\n"
+		}
 	}
 
 	_, err := fio.WriteSliceToFile(acrs, outputFilename, formatFunc)
-
 	return err
 }
 
