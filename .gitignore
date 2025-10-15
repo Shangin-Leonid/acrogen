@@ -16,3 +16,4 @@ _debug_*
 # project data files
 # src.txt
 acrs.txt
+*_dump.*
