@@ -53,6 +53,8 @@ func main() {
 	}
 	if yesOrNo == Yes {
 		printAcronyms(acrs)
+	} else if yesOrNo == No {
+		return
 	}
 
 	const DecodeChoiceMes = "Would you like to decode any generated acronym?"
