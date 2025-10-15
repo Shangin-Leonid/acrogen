@@ -21,3 +21,4 @@ clean:
 clean_all:
 	rm -f ./acrgen.out
 	rm -f $(OUTP_FILENAME)
+	rm -f $(basename $(OUTP_FILENAME))_*.txt
