@@ -34,7 +34,8 @@ func main() {
 		formatAndPrintError(err)
 		return
 	}
-	fmt.Printf("\n%d acronyms were successfully generated.\n", len(acrs))
+	SortAcronymsBySumEstimation(acrs)
+	fmt.Printf("\n%d acronyms were successfully generated and sorted by their estimation.\n", len(acrs))
 
 	const dumpFilenameSuffix = "_dump"
 	dumpOutputFilename := fio.GetWithoutExt(outputFilename) + dumpFilenameSuffix + ".txt"
