@@ -10,7 +10,7 @@ import (
 // Writes slice elements in file in format of 'formatFunc'.
 // Returns amount of successful written elements and error.
 // #
-func WriteSliceToFile[T any](slice []T, filename string, formatFunc func(T) string) (nSuccessfulWrites int, err error) {
+func WriteSliceToTextFile[T any](slice []T, filename string, formatFunc func(T) string) (nSuccessfulWrites int, err error) {
 	if !IsTextFileNameValid(filename) {
 		return 0, errors.New("incorrect name of output file")
 	}

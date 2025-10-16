@@ -6,16 +6,13 @@ import (
 	"os"
 )
 
-type LineParserFunc = func(string) error // TODO without '='
+type StringParserFunc = func(string) error // TODO without '='
 
 // #
 // Opens file, goes through it and parses each line by 'parserFunc'.
-// Returns:
-//   - amount of lines that have been parsed successfully
-//   - error
-//
+// Returns error and amount of lines that have been parsed successfully.
 // #
-func ParseFileLineByLine(filename string, parserFunc LineParserFunc) (nSuccessfullyParsed int, err error) {
+func ParseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc StringParserFunc) (nSuccessfullyParsed int, err error) {
 	if !IsTextFileNameValid(filename) {
 		return 0, errors.New("некорректное название файла")
 	}
@@ -27,7 +24,11 @@ func ParseFileLineByLine(filename string, parserFunc LineParserFunc) (nSuccessfu
 	defer file.Close()
 
 	fs := bufio.NewScanner(file)
-	for fsSuccess := fs.Scan(); fsSuccess && (err == nil); fsSuccess = fs.Scan() {
+	if firstStringParserFunc != nil && fs.Scan() {
+		err = firstLineParserFunc(fs.Text())
+		nSuccessfullyParsed++
+	}
+	for fsSuccess := fs.Scan(); (err == nil) && fsSuccess; fsSuccess = fs.Scan() {
 		err = parserFunc(fs.Text())
 		nSuccessfullyParsed++
 	}

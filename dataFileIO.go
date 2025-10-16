@@ -20,7 +20,7 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 	src := make(Src, 0, 10)
 	src = append(src, make(LetterOpts, 0, 10))
 
-	var parseSrcFileLine fio.LineParserFunc = func(line string) error {
+	var parseSrcFileLine fio.StringParserFunc = func(line string) error {
 		if line == LetterOptsSeparator {
 			if len(src[len(src)-1]) == 0 {
 				return errors.New("incorrect format of input file: first (initial) or multiple consecutive blank lines are prohibited")
@@ -51,7 +51,7 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 		return nil
 	}
 
-	_, err := fio.ParseFileLineByLine(srcFilename, parseSrcFileLine)
+	_, err := fio.ParseTextFileLineByLine(srcFilename, nil, parseSrcFileLine)
 
 	if err != nil {
 		return nil, err
@@ -70,12 +70,12 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 func importDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (Dict, error) {
 	dict := make(Dict, expectedWordsAmount)
 
-	var parseWordFromFileLine fio.LineParserFunc = func(line string) error {
+	var parseWordFromFileLine fio.StringParserFunc = func(line string) error {
 		dict[line] = struct{}{}
 		return nil
 	}
 
-	_, err := fio.ParseFileLineByLine(dictFilename, parseWordFromFileLine)
+	_, err := fio.ParseTextFileLineByLine(dictFilename, nil, parseWordFromFileLine)
 
 	if err != nil {
 		return nil, err
@@ -114,7 +114,7 @@ func exportAcronymsToFile(acrs Acronyms, outputFilename string, mode ExportModeT
 		}
 	}
 
-	_, err := fio.WriteSliceToFile(acrs, outputFilename, formatFunc)
+	_, err := fio.WriteSliceToTextFile(acrs, outputFilename, formatFunc)
 	return err
 }
 
