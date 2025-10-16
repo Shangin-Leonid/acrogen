@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"os"
+	"strconv"
 )
 
 type StringParserFunc = func(string) error // TODO without '='
@@ -24,7 +25,7 @@ func ParseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc St
 	defer file.Close()
 
 	fs := bufio.NewScanner(file)
-	if firstStringParserFunc != nil && fs.Scan() {
+	if firstLineParserFunc != nil && fs.Scan() {
 		err = firstLineParserFunc(fs.Text())
 		nSuccessfullyParsed++
 	}
@@ -47,7 +48,7 @@ func ParseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc St
 // Writes slice elements in file in format of 'formatFunc'.
 // Returns amount of successful written elements and error.
 // #
-func WriteSliceToTextFile[T any](slice []T, filename string, formatFunc func(T) string) (nSuccessfulWrites int, err error) {
+func WriteSliceToTextFile[T any](slice []T, filename string, needWriteLen bool, formatFunc func(T) string) (nSuccessfulWrites int, err error) {
 	if !IsTextFileNameValid(filename) {
 		return 0, errors.New("incorrect name of output file")
 	}
@@ -58,6 +59,11 @@ func WriteSliceToTextFile[T any](slice []T, filename string, formatFunc func(T) 
 	}
 	defer outputFile.Close()
 
+	_, err = outputFile.WriteString(strconv.Itoa(len(slice)) + "\n\n")
+	if err != nil {
+		return 0, err
+	}
+	nSuccessfulWrites++
 	for i := range slice {
 		_, err = outputFile.WriteString(formatFunc(slice[i]))
 		if err != nil {
