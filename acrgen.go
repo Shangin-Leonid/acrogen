@@ -35,14 +35,14 @@ func main() {
 
 		fmt.Printf("\n%d acronyms were successfully loaded from '%s'.\n", len(acrs), dumpFilename)
 	} else if yesOrNo == No {
-		src, err := importSrcFromFile(srcFilename)
+		src, err := loadSrcFromFile(srcFilename)
 		if err != nil {
 			formatAndPrintError(err)
 			return
 		}
 
 		const ExpectedWordsAmount = 1532570 // 1'532'568 = amount of russian words in my collection
-		dict, err := importDictionaryFromFile(dictFilename, ExpectedWordsAmount)
+		dict, err := loadDictionaryFromFile(dictFilename, ExpectedWordsAmount)
 		if err != nil {
 			formatAndPrintError(err)
 			return

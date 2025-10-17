@@ -14,9 +14,10 @@ const TokenSeparator = " -- "
 const LineSeparator = ""
 
 // #
-// Parses source data file and import its content.
+// Parses source data file and load its content.
+// Returns 'Src' collection and error.
 // #
-func importSrcFromFile(srcFilename string) (Src, error) {
+func loadSrcFromFile(srcFilename string) (Src, error) {
 	src := make(Src, 0, 10)
 	src = append(src, make(LetterOpts, 0, 10))
 
@@ -65,9 +66,10 @@ func importSrcFromFile(srcFilename string) (Src, error) {
 }
 
 // #
-// Parses dictionary file (list of valid words) and import its content.
+// Parses dictionary file (list of valid words) and load its content.
+// Returns dictionary and error.
 // #
-func importDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (Dict, error) {
+func loadDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (Dict, error) {
 	dict := make(Dict, expectedWordsAmount)
 
 	var parseWordFromFileLine fio.StringParserFunc = func(line string) error {
