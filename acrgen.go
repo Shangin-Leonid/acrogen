@@ -92,13 +92,14 @@ func main() {
 		takeAndPrintAcronym := func(userInp string) error {
 			acr, _ := takeAcronym(userInp, acrs) // No error can be, we've just checked that the acronym is in the collection
 			printAcronymInDetail(acr)
+			fmt.Printf("\n")
 			return nil
 		}
 
 		err, _ := processUserInputUntilExitCommand(
 			"",
 			"\nPlease, enter an acronym:",
-			"No such acronym was found.",
+			"No such acronym was found.\n",
 			containsAcronymWrap,
 			takeAndPrintAcronym)
 		if err != nil {

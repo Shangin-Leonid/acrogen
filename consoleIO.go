@@ -8,6 +8,7 @@ import (
 // Prints acronym in console in detailed format (decodes each letter).
 // #
 func printAcronymInDetail(acr Acronym) {
+	fmt.Printf("%s%s%d\n", acr.word, TokenSeparator, acr.sumEstimation)
 	for i, letter := range []rune(acr.word) {
 		fmt.Printf("%c -- %s\n", letter, acr.letterDecodings[i])
 	}
@@ -65,7 +66,7 @@ func processUserInputUntilExitCommand(
 	returnIfExitCommand := func(s string) bool { return s == ExitCommand }
 	returnNoNeedBreak := func(s string) bool { return false }
 
-	fmt.Printf("To exit (to stop) enter \"%s\"\n", ExitCommand)
+	fmt.Printf("\nTo exit (to stop) enter \"%s\"\n", ExitCommand)
 
 	return processUserInputUntil(
 		invitingMes,
