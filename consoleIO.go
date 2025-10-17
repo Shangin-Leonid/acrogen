@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
 // #
@@ -22,7 +23,9 @@ const Yes, No = true, !Yes
 // Returns 'Yes'(==true) or 'No'(== !Yes) and error, if user input is incorrect.
 // TODO implement several tries for input (amount of tries as parameter)
 // #
-func giveUserAChoiceYesOrNo(invitingMes, invalidInpMes string) (bool, error) {
+func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
+
+	returnNoNeedBreak := func(s string) bool { return false }
 	isInpValid := func(inp string) (bool, error) {
 		return inp == "y" || inp == "n", nil
 	}
@@ -35,7 +38,6 @@ func giveUserAChoiceYesOrNo(invitingMes, invalidInpMes string) (bool, error) {
 		}
 		return nil
 	}
-	returnNoNeedBreak := func(s string) bool { return false }
 	returnIfYesOrNoInput := func(s string) bool { return (s == "y" || s == "n") }
 
 	err, _ := processUserInputUntil(
@@ -47,6 +49,39 @@ func giveUserAChoiceYesOrNo(invitingMes, invalidInpMes string) (bool, error) {
 		isYes,
 		returnIfYesOrNoInput)
 	return YesOrNo, err
+}
+
+// #
+// Prints a string inviting user to make a decision about number.
+// Returns the entered number (0, if err) and error, if user input is incorrect.
+// TODO implement several tries for input (amount of tries as parameter)
+// #
+func giveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err error) {
+
+	returnNoNeedBreak := func(s string) bool { return false }
+	isInpValid := func(inp string) (bool, error) {
+		userNum, err = strconv.Atoi(inp)
+		if err != nil {
+			return false, err
+		} else {
+			return true, nil
+		}
+	}
+	doNothing := func(inp string) error {
+		return nil
+	}
+	returnNeedBreak := func(s string) bool { return true }
+
+	err, _ = processUserInputUntil(
+		invitingMes,
+		"Print a number",
+		invalidInpMes,
+		returnNoNeedBreak,
+		isInpValid,
+		doNothing,
+		returnNeedBreak)
+
+	return userNum, err
 }
 
 // Equals to string that represents user's query of exit.

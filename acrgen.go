@@ -1,7 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"math"
 	"os"
 
 	"acrgen/fio"
@@ -21,7 +23,7 @@ func main() {
 
 	const LoadDumpChoiceMes = "Would you like to load generated acronyms from dump file? Else they will be generated from source."
 	const UserChoiceInputFormatErrMes = "Unexpected choice (incorrect input format)."
-	yesOrNo, err := giveUserAChoiceYesOrNo(LoadDumpChoiceMes, UserChoiceInputFormatErrMes)
+	yesOrNo, err := giveUserYesOrNoChoice(LoadDumpChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
 		return
@@ -66,20 +68,34 @@ func main() {
 		}
 	}
 
-	const AcrConsolePrintChoiceMes = "Would you like to print all generated acronyms in console?"
-	yesOrNo, err = giveUserAChoiceYesOrNo(AcrConsolePrintChoiceMes, UserChoiceInputFormatErrMes)
+	const AcrConsolePrintChoiceMes = "Would you like to print acronyms in console?"
+	yesOrNo, err = giveUserYesOrNoChoice(AcrConsolePrintChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
 		return
 	}
 	if yesOrNo == Yes {
-		printAcronyms(acrs)
+		const AmountOfAcronymsChoiceMes = "Choose number of acronyms for console printing (0 for all)."
+		const IncorrectNumberMes = "Unexpected choice (a number was expected)."
+		amount, err := giveUserNumberChoice(AmountOfAcronymsChoiceMes, IncorrectNumberMes)
+		if err != nil {
+			formatAndPrintError(err)
+			return
+		}
+		if amount > len(acrs) {
+			formatAndPrintError(errors.New("too many acronyms are requested to print"))
+			return
+		}
+		if amount == 0 {
+			amount = math.MaxInt
+		}
+		printAcronyms(acrs, amount)
 	} else if yesOrNo == No {
 		return
 	}
 
 	const DecodeChoiceMes = "Would you like to decode any generated acronym?"
-	yesOrNo, err = giveUserAChoiceYesOrNo(DecodeChoiceMes, UserChoiceInputFormatErrMes)
+	yesOrNo, err = giveUserYesOrNoChoice(DecodeChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
 		return

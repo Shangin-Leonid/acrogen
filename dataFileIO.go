@@ -244,11 +244,15 @@ func LoadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 }
 
 // #
-// Prints acronyms in console in poor format (acroonym only, without any decoding info).
+// Prints acronyms in console in poor format (acronym only, without any decoding info).
 // #
-func printAcronyms(acrs Acronyms) {
+func printAcronyms(acrs Acronyms, amount int) {
+	if amount == 0 {
+		return
+	}
+
 	fmt.Printf("\nList of acronyms:\n")
-	for i := range acrs {
+	for i := 0; i < len(acrs) && i < amount; i++ {
 		fmt.Println(acrs[i].word)
 	}
 	fmt.Printf("\n")
