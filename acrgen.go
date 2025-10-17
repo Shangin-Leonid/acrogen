@@ -6,6 +6,7 @@ import (
 	"math"
 	"os"
 
+	"acrgen/cio"
 	"acrgen/fio"
 )
 
@@ -23,12 +24,12 @@ func main() {
 
 	const LoadDumpChoiceMes = "Would you like to load generated acronyms from dump file? Else they will be generated from source."
 	const UserChoiceInputFormatErrMes = "Unexpected choice (incorrect input format)."
-	yesOrNo, err := giveUserYesOrNoChoice(LoadDumpChoiceMes, UserChoiceInputFormatErrMes)
+	yesOrNo, err := cio.GiveUserYesOrNoChoice(LoadDumpChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
 		return
 	}
-	if yesOrNo == Yes {
+	if yesOrNo == cio.Yes {
 		acrs, err = LoadAcronymsFromFile(dumpFilename)
 		if err != nil {
 			formatAndPrintError(err)
@@ -36,7 +37,7 @@ func main() {
 		}
 
 		fmt.Printf("\n%d acronyms were successfully loaded from '%s'.\n", len(acrs), dumpFilename)
-	} else if yesOrNo == No {
+	} else if yesOrNo == cio.No {
 		src, err := loadSrcFromFile(srcFilename)
 		if err != nil {
 			formatAndPrintError(err)
@@ -69,15 +70,15 @@ func main() {
 	}
 
 	const AcrConsolePrintChoiceMes = "Would you like to print acronyms in console?"
-	yesOrNo, err = giveUserYesOrNoChoice(AcrConsolePrintChoiceMes, UserChoiceInputFormatErrMes)
+	yesOrNo, err = cio.GiveUserYesOrNoChoice(AcrConsolePrintChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
 		return
 	}
-	if yesOrNo == Yes {
+	if yesOrNo == cio.Yes {
 		const AmountOfAcronymsChoiceMes = "Choose number of acronyms for console printing (0 for all)."
 		const IncorrectNumberMes = "Unexpected choice (a number was expected)."
-		amount, err := giveUserNumberChoice(AmountOfAcronymsChoiceMes, IncorrectNumberMes)
+		amount, err := cio.GiveUserNumberChoice(AmountOfAcronymsChoiceMes, IncorrectNumberMes)
 		if err != nil {
 			formatAndPrintError(err)
 			return
@@ -90,18 +91,18 @@ func main() {
 			amount = math.MaxInt
 		}
 		printAcronyms(acrs, amount)
-	} else if yesOrNo == No {
+	} else if yesOrNo == cio.No {
 		return
 	}
 
 	const DecodeChoiceMes = "Would you like to decode any generated acronym?"
-	yesOrNo, err = giveUserYesOrNoChoice(DecodeChoiceMes, UserChoiceInputFormatErrMes)
+	yesOrNo, err = cio.GiveUserYesOrNoChoice(DecodeChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
 		return
 	}
 
-	if yesOrNo == Yes {
+	if yesOrNo == cio.Yes {
 		containsAcronymWrap := func(userInp string) (bool, error) {
 			return containsAcronym(userInp, acrs), nil
 		}
@@ -112,7 +113,7 @@ func main() {
 			return nil
 		}
 
-		err, _ := processUserInputUntilExitCommand(
+		err, _ := cio.ProcessUserInputUntilExitCommand(
 			"",
 			"\nPlease, enter an acronym:",
 			"No such acronym was found.\n",

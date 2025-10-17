@@ -244,6 +244,16 @@ func LoadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 }
 
 // #
+// Prints acronym in console in detailed format (decodes each letter).
+// #
+func printAcronymInDetail(acr Acronym) {
+	fmt.Printf("%s%s%d\n", acr.word, TokenSeparator, acr.sumEstimation)
+	for i, letter := range []rune(acr.word) {
+		fmt.Printf("%c -- %s\n", letter, acr.letterDecodings[i])
+	}
+}
+
+// #
 // Prints acronyms in console in poor format (acronym only, without any decoding info).
 // #
 func printAcronyms(acrs Acronyms, amount int) {

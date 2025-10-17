@@ -1,19 +1,9 @@
-package main
+package cio /* Console Input Output */
 
 import (
 	"fmt"
 	"strconv"
 )
-
-// #
-// Prints acronym in console in detailed format (decodes each letter).
-// #
-func printAcronymInDetail(acr Acronym) {
-	fmt.Printf("%s%s%d\n", acr.word, TokenSeparator, acr.sumEstimation)
-	for i, letter := range []rune(acr.word) {
-		fmt.Printf("%c -- %s\n", letter, acr.letterDecodings[i])
-	}
-}
 
 // Binary choice constants (Yes == true, No == !Yes).
 const Yes, No = true, !Yes
@@ -23,7 +13,7 @@ const Yes, No = true, !Yes
 // Returns 'Yes'(==true) or 'No'(== !Yes) and error, if user input is incorrect.
 // TODO implement several tries for input (amount of tries as parameter)
 // #
-func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
+func GiveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 
 	returnNoNeedBreak := func(s string) bool { return false }
 	isInpValid := func(inp string) (bool, error) {
@@ -40,7 +30,7 @@ func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 	}
 	returnIfYesOrNoInput := func(s string) bool { return (s == "y" || s == "n") }
 
-	err, _ := processUserInputUntil(
+	err, _ := ProcessUserInputUntil(
 		invitingMes,
 		"Print [y/n]",
 		invalidInpMes,
@@ -56,7 +46,7 @@ func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 // Returns the entered number (0, if err) and error, if user input is incorrect.
 // TODO implement several tries for input (amount of tries as parameter)
 // #
-func giveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err error) {
+func GiveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err error) {
 
 	returnNoNeedBreak := func(s string) bool { return false }
 	isInpValid := func(inp string) (bool, error) {
@@ -72,7 +62,7 @@ func giveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 	}
 	returnNeedBreak := func(s string) bool { return true }
 
-	err, _ = processUserInputUntil(
+	err, _ = ProcessUserInputUntil(
 		invitingMes,
 		"Print a number",
 		invalidInpMes,
@@ -91,7 +81,7 @@ const ExitCommand = "!q"
 // No words about format, just look inside...
 // TODO documentation
 // #
-func processUserInputUntilExitCommand(
+func ProcessUserInputUntilExitCommand(
 	invitingMes string,
 	userGuideMes string,
 	invalidInpMes string,
@@ -103,7 +93,7 @@ func processUserInputUntilExitCommand(
 
 	fmt.Printf("\nTo exit (to stop) enter \"%s\"\n", ExitCommand)
 
-	return processUserInputUntil(
+	return ProcessUserInputUntil(
 		invitingMes,
 		userGuideMes,
 		invalidInpMes,
@@ -117,7 +107,7 @@ func processUserInputUntilExitCommand(
 // No words about format, just look inside...
 // TODO documentation
 // #
-func processUserInputUntil(
+func ProcessUserInputUntil(
 	invitingMes string,
 	userGuideMes string,
 	invalidInpMes string,
