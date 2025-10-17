@@ -10,7 +10,6 @@ import (
 // Here is an example:
 // {1, 2} x {3, 4} x {5, 6} -> {{135}, {136}, {145}, {146}, {235}, {236}, {245}, {246}} (result without commas)
 // #
-
 func CalcOrderedCartesianProduct[T any](inp [][]T) ([][]T, error) {
 	if len(inp) == 0 {
 		return nil, errors.New("no sets (slices) were passed")
