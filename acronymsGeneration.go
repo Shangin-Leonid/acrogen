@@ -19,7 +19,7 @@ type LetterOpts = []LetterOpt
 type Src = []LetterOpts
 
 type Acronym struct {
-	word            string
+	word            string // TODO maybe use []rune instead of string
 	sumEstimation   int
 	letterDecodings []string
 }

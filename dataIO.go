@@ -103,7 +103,6 @@ func exportAcronymsToFile(acrs Acronyms, outputFilename string, mode ExportModeT
 	if mode == FullFormat {
 		formatFunc = func(acr Acronym) string {
 			outp := acr.word + TokenSeparator + strconv.Itoa(acr.sumEstimation) + "\n"
-			// TODO optimize by switching from string to []rune
 			for i, letter := range []rune(acr.word) {
 				outp += string(letter) + TokenSeparator + acr.letterDecodings[i] + "\n"
 			}
@@ -161,7 +160,6 @@ func LoadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 
 	var prev LineT = First
 	var cur LineT
-	// TODO optimize strings and runes. Maybe use new type to represent strings
 	// TODO refactor, simplify
 	var parseAcronymsInDumpFile fio.StringParserFunc = func(line string) error {
 		lineRunes := []rune(line)
