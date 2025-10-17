@@ -14,7 +14,7 @@ func main() {
 	argsWithoutProgName := os.Args[1:]
 	if len(argsWithoutProgName) != 4 {
 		fmt.Println("Incorrect number of program input arguments!")
-		fmt.Println("Restart the program with passing 4 names of \".txt\" files: for input, with real existing words (dictionary) and for output.")
+		fmt.Println("Restart the program with passing 4 names of \".txt\" files: for input, with real existing words (dictionary), for acronyms dump and for output.")
 		return
 	}
 	srcFilename, dictFilename := argsWithoutProgName[0], argsWithoutProgName[1]
