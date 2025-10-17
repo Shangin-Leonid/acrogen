@@ -19,8 +19,8 @@ func main() {
 
 	var acrs Acronyms
 
-	const LoadDumpChoiceMes = "Would you like to load generated acronyms from dump file?"
-	const UserChoiceInputFormatErrMes = "Incorrect choice (incorrect input format)."
+	const LoadDumpChoiceMes = "Would you like to load generated acronyms from dump file? Else they will be generated from source."
+	const UserChoiceInputFormatErrMes = "Unexpected choice (incorrect input format)."
 	yesOrNo, err := giveUserAChoiceYesOrNo(LoadDumpChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
