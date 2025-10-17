@@ -90,7 +90,7 @@ func main() {
 			return containsAcronym(userInp, acrs), nil
 		}
 		takeAndPrintAcronym := func(userInp string) error {
-			acr, _ := takeAcronym(userInp, acrs) // No error can be, we've just checked that the acronym is in the collection
+			acr, _ := takeAcronym(userInp, acrs) // No need to check 'ok': we've just checked that the acronym is in the collection
 			printAcronymInDetail(acr)
 			fmt.Printf("\n")
 			return nil

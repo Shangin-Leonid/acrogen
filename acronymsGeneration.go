@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"slices"
 	"sort"
 
@@ -42,15 +41,15 @@ func containsAcronym(word string, acrs Acronyms) bool {
 // Searches for acronym 'word' in Acronyms collection.
 // Returns (acronym, nil) if have found, (Acronym{}, some error) else.
 // #
-func takeAcronym(word string, acrs Acronyms) (Acronym, error) {
+func takeAcronym(word string, acrs Acronyms) (Acronym, bool) {
 	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
 		return word == acr.word
 	})
 
 	if 0 <= ind && ind < len(acrs) {
-		return acrs[ind], nil
+		return acrs[ind], true
 	} else {
-		return Acronym{}, errors.New("acronym have not been found")
+		return Acronym{}, false
 	}
 }
 
