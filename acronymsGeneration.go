@@ -69,8 +69,7 @@ func generateAcronyms(src Src, dict Dict) (acrs Acronyms, err error) {
 	}
 
 	convertToAcronym := func(lo LetterOpts) Acronym {
-		// TODO warm up 'word'
-		word := []rune{}
+		word := make([]rune, 0, len(lo))
 		sumEstimation := 0
 		letterDecodings := []string{}
 
