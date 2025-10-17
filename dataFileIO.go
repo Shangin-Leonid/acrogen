@@ -121,60 +121,76 @@ func exportAcronymsToFile(acrs Acronyms, outputFilename string, mode ExportModeT
 // #
 // Import acronyms from dump file with 'FullFormat'.
 // #
-func importAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
+func LoadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 
 	var parseFirstLineInDumpFile fio.StringParserFunc = func(line string) error {
 		if len(line) == 0 {
 			return errors.New("unexpected empty first line in dump file")
 		}
-		size, err := strconv.Atoi(line[:len(line)-1]) // Exclude '\n' ending
+		capacity, err := strconv.Atoi(line)
 		if err == nil {
-			acrs = make(Acronyms, 0, size)
+			acrs = make(Acronyms, 0, capacity)
 		}
 		return err
 	}
 
 	// Enumeration represents the type of previous parsed line.
-	type PrevLineT int
+	type LineT int
 	const (
-		First PrevLineT = iota + 1
-		Empty
-		Acr
-		NotLastLetter
-		LastLetterInCurAcr
+		First         LineT = 1
+		Empty         LineT = 2
+		Acr           LineT = 3
+		Letter        LineT = 4
+		LastAcrLetter LineT = 5
 	)
-	prev := First
+	isCurLineTypeCorrect := func(cur, prev LineT) bool {
+		switch cur {
+		case Empty:
+			return prev == First || prev == LastAcrLetter
+		case Acr:
+			return prev == Empty
+		case Letter:
+			return prev == Acr || prev == Letter
+		case LastAcrLetter:
+			return prev == Letter
+		}
+		return false
+	}
+
+	var prev LineT = First
+	var cur LineT
 	// TODO optimize strings and runes. Maybe use new type to represent strings
 	// TODO last line must be empty
+	// TODO refactoring
 	var parseAcronymsInDumpFile fio.StringParserFunc = func(line string) error {
-		var cur PrevLineT
-		lineAsRune := []rune(line)
+		lineRunes := []rune(line)
 
-		if line == LineSeparator+"\n" || line == "\n" || line == "" {
-			switch prev {
-			case Empty, NotLastLetter, Acr:
+		if line == LineSeparator {
+			cur = Empty
+			if !isCurLineTypeCorrect(cur, prev) {
 				return errors.New("data/format error: unexpected empty line")
 			}
-
-			lastLD := acrs[len(acrs)-1].letterDecodings
-			if prev == NotLastLetter && len(lastLD) != cap(lastLD) {
-				return errors.New("data/format error: unexpected empty line within acronyms description")
+			if prev != First {
+				lastLD := acrs[len(acrs)-1].letterDecodings
+				if prev == Letter && len(lastLD) != cap(lastLD) {
+					return errors.New("data/format error: unexpected empty line within acronyms description")
+				}
 			}
-			cur = Empty
-		} else if len(lineAsRune) < 2 {
+		} else if len(lineRunes) < 2 {
 			return errors.New("data/format error: some short line with no unexpected meaning")
-		} else if unicode.IsLetter(lineAsRune[0]) && !unicode.IsLetter(lineAsRune[1]) {
-			// TODO check or delete last '\n' if exist ?
-			// TODO check upper or lower case letter
-			if prev != NotLastLetter && prev != Acr {
+		} else if unicode.IsLetter(lineRunes[0]) && !unicode.IsLetter(lineRunes[1]) {
+			cur = Letter
+			if !isCurLineTypeCorrect(cur, prev) {
 				return errors.New("data/format error: maybe unexpected letter decoding line")
 			}
 
-			curAcrAsRune := []rune(acrs[len(acrs)-1].word)
-			lastLD := acrs[len(acrs)-1].letterDecodings
-			curLetterInd := len(lastLD)
+			if !unicode.IsLower(lineRunes[0]) {
+				return errors.New("incorrect format: the letter is not lowercase")
+			}
 
-			if lineAsRune[0] != curAcrAsRune[curLetterInd] {
+			curAcrAsRune := []rune(acrs[len(acrs)-1].word)
+			curLetterInd := len(acrs[len(acrs)-1].letterDecodings)
+			if lineRunes[0] != curAcrAsRune[curLetterInd] {
 				return errors.New("incorrect data: the letter is not the same as in the acronym")
 			}
 
@@ -183,19 +199,17 @@ func importAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 				return errors.New("data/format error: incorrect format of letter decoding line (no token separator between letter and decoding)")
 			}
 			decodingInd := tsInd + len(TokenSeparator)
-
-			if len(lastLD) == cap(lastLD) {
-				return errors.New("unexpected error: 'len(lD) == cap(lD)'")
+			if len(acrs[len(acrs)-1].letterDecodings) == cap(acrs[len(acrs)-1].letterDecodings) {
+				return errors.New("unexpected error: maybe unexpected (extra) letter in acronym")
 			}
-			lastLD = append(lastLD, line[decodingInd:])
+			acrs[len(acrs)-1].letterDecodings = append(acrs[len(acrs)-1].letterDecodings, line[decodingInd:])
 
-			if len(lastLD) == cap(lastLD) {
-				cur = LastLetterInCurAcr
-			} else {
-				cur = NotLastLetter
+			if curLetterInd == len(curAcrAsRune)-1 {
+				cur = LastAcrLetter
 			}
 		} else {
-			if prev != Empty {
+			cur = Acr
+			if !isCurLineTypeCorrect(cur, prev) {
 				return errors.New("data/format error: unexpected acronym line or smth else")
 			}
 
@@ -209,14 +223,14 @@ func importAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 				return errors.New("data/format error: incorrect summary estimation of acronym")
 			}
 
+			nLetters := 0
 			for _, l := range line[:tsInd] {
-				if !unicode.IsLetter(l) || !!unicode.IsLower(l) {
+				if !unicode.IsLetter(l) || !unicode.IsLower(l) {
 					return errors.New("data/format error: not letters or upper case letters in acronym")
 				}
+				nLetters++
 			}
-			acrs = append(acrs, Acronym{line[:tsInd], est, make([]string, 0, tsInd)})
-
-			cur = Acr
+			acrs = append(acrs, Acronym{line[:tsInd], est, make([]string, 0, nLetters)})
 		}
 
 		prev = cur

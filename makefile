@@ -1,8 +1,9 @@
 SRC_FILENAME ?= data/src.txt
 DICT_FILENAME ?= data/russian_words.txt
+DUMP_FILENAME ?= acrs_dump.txt
 OUTP_FILENAME ?= acrs.txt
 
-INPUT_PARAMS = $(SRC_FILENAME) $(DICT_FILENAME) $(OUTP_FILENAME)
+INPUT_PARAMS = $(SRC_FILENAME) $(DICT_FILENAME) $(DUMP_FILENAME) $(OUTP_FILENAME)
 
 all: build run
 
@@ -21,4 +22,4 @@ clean:
 clean_all:
 	rm -f ./acrgen.out
 	rm -f $(OUTP_FILENAME)
-	rm -f $(basename $(OUTP_FILENAME))_*.txt
+	rm -f $(DUMP_FILENAME)
