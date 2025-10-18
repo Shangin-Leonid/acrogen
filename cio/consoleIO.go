@@ -12,10 +12,10 @@ const Yes, No = true, !Yes
 // Prints a string inviting user to make a decision: yes or no.
 // Returns 'Yes'(==true) or 'No'(== !Yes) and error, if user input is incorrect.
 // TODO implement several tries for input (amount of tries as parameter)
+// TODO maybe add 2 callbacks as params: 1 for yes and 1 for no. Then implify usage of the function.
 // #
 func GiveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 
-	returnNoNeedBreak := func(s string) bool { return false }
 	isInpValid := func(inp string) (bool, error) {
 		return inp == "y" || inp == "n", nil
 	}
@@ -28,13 +28,13 @@ func GiveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 		}
 		return nil
 	}
-	returnIfYesOrNoInput := func(s string) bool { return (s == "y" || s == "n") }
+	returnIfYesOrNoInput := func(inp string) bool { return (inp == "y" || inp == "n") }
 
 	err, _ := ProcessUserInputUntil(
 		invitingMes,
 		"Print [y/n]",
 		invalidInpMes,
-		returnNoNeedBreak,
+		nil,
 		isInpValid,
 		isYes,
 		returnIfYesOrNoInput)
@@ -48,7 +48,6 @@ func GiveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 // #
 func GiveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err error) {
 
-	returnNoNeedBreak := func(s string) bool { return false }
 	isInpValid := func(inp string) (bool, error) {
 		userNum, err = strconv.Atoi(inp)
 		if err != nil {
@@ -57,18 +56,15 @@ func GiveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 			return true, nil
 		}
 	}
-	doNothing := func(inp string) error {
-		return nil
-	}
 	returnNeedBreak := func(s string) bool { return true }
 
 	err, _ = ProcessUserInputUntil(
 		invitingMes,
 		"Print a number",
 		invalidInpMes,
-		returnNoNeedBreak,
+		nil,
 		isInpValid,
-		doNothing,
+		nil,
 		returnNeedBreak)
 
 	return userNum, err
@@ -89,7 +85,6 @@ func ProcessUserInputUntilExitCommand(
 	processInp func(string) error) (err error, nProcessed int) {
 
 	returnIfExitCommand := func(s string) bool { return s == ExitCommand }
-	returnNoNeedBreak := func(s string) bool { return false }
 
 	fmt.Printf("\nTo exit (to stop) enter \"%s\"\n", ExitCommand)
 
@@ -100,7 +95,7 @@ func ProcessUserInputUntilExitCommand(
 		returnIfExitCommand,
 		checkIfInpValid,
 		processInp,
-		returnNoNeedBreak)
+		nil)
 }
 
 // #
@@ -111,7 +106,7 @@ func ProcessUserInputUntil(
 	invitingMes string,
 	userGuideMes string,
 	invalidInpMes string,
-	checkIfNeedBreakBeforeValidationAndProcess func(string) bool,
+	checkIfNeedBreakBeforeValidation func(string) bool,
 	checkIfInpValid func(string) (bool, error),
 	processInp func(string) error,
 	checkIfNeedBreakAfterProcess func(string) bool) (err error, nProcessed int) {
@@ -130,7 +125,7 @@ func ProcessUserInputUntil(
 			return err, nProcessed
 		}
 
-		if checkIfNeedBreakBeforeValidationAndProcess(userInp) {
+		if checkIfNeedBreakBeforeValidation != nil && checkIfNeedBreakBeforeValidation(userInp) {
 			break
 		}
 
@@ -139,7 +134,7 @@ func ProcessUserInputUntil(
 			return err, nProcessed
 		}
 
-		if isInpValid {
+		if isInpValid && processInp != nil {
 			err = processInp(userInp)
 			nProcessed++
 			if err != nil {
@@ -151,7 +146,7 @@ func ProcessUserInputUntil(
 			}
 		}
 
-		if checkIfNeedBreakAfterProcess(userInp) {
+		if checkIfNeedBreakAfterProcess != nil && checkIfNeedBreakAfterProcess(userInp) {
 			break
 		}
 	}
