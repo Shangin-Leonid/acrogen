@@ -139,10 +139,10 @@ func LoadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 	type LineT int
 	const (
 		First         LineT = 1
-		Empty         LineT = 2
-		Acr           LineT = 3
-		Letter        LineT = 4
-		LastAcrLetter LineT = 5
+		Empty               = 2
+		Acr                 = 3
+		Letter              = 4
+		LastAcrLetter       = 5
 	)
 	isCurLineTypeCorrect := func(cur, prev LineT) bool {
 		switch cur {
