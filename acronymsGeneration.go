@@ -59,14 +59,39 @@ func takeAcronym(word string, acrs Acronyms) (Acronym, bool) {
 type Dict map[string]struct{}
 
 // #
-// Generates acronyms from 'src': check all possible letter sequences and take some that are in dictionary.
-// Returns Acronyms collection and error.
+// Describes a parameter for acronym generating function.
 // #
-func generateAcronyms(src Src, dict Dict) (acrs Acronyms, err error) {
-	letterCombs, err := algo.CalcOrderedCartesianProduct(src)
-	if err != nil {
-		return nil, err
+type AcrGeneratorMode int
+
+const (
+	Ordered    AcrGeneratorMode = 1
+	NonOrdered AcrGeneratorMode = 2
+)
+
+// #
+// Generates acronyms from 'src': check all possible (non-)ordered (depends on 'agm' param) letter combinations and take all that are in dictionary.
+// Returns Acronyms collection.
+// #
+func generateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
+	if len(src) == 0 || len(src) == 1 {
+		return Acronyms{}
 	}
+	switch agm {
+	case Ordered:
+		return generateAcronymsWithOrder(src, dict)
+	case NonOrdered:
+		return generateAcronymsWithoutOrder(src, dict)
+	}
+
+	return Acronyms{}
+}
+
+// #
+// Generates acronyms from 'src': check all possible ordered letter combinations and take all that are in dictionary.
+// Returns Acronyms collection.
+// #
+func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
+	letterCombs, _ := algo.CalcOrderedCartesianProduct(src)
 
 	convertToAcronym := func(lo LetterOpts) Acronym {
 		word := make([]rune, 0, len(lo))
@@ -90,6 +115,7 @@ func generateAcronyms(src Src, dict Dict) (acrs Acronyms, err error) {
 		}
 	}
 
+	var acrs Acronyms
 	for i := range letterCombs {
 		acrCandidate := convertToAcronym(letterCombs[i])
 		if isRealWord(acrCandidate.word) {
@@ -97,7 +123,26 @@ func generateAcronyms(src Src, dict Dict) (acrs Acronyms, err error) {
 		}
 	}
 
-	return acrs, nil
+	return acrs
+}
+
+// #
+// Generates acronyms from 'src': check all possible non-ordered letter combinations and take all that are in dictionary.
+// Returns Acronyms collection.
+// #
+func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
+	var acrs Acronyms
+
+	perm := algo.GetIdPermutation(len(src))
+	nPermutations := int(algo.CalcFactorial(uint(len(src))))
+	for _ = range nPermutations {
+		permSrc, _ := algo.GetPermutatedSlice(src, perm)
+		newAcrs := generateAcronymsWithOrder(permSrc, dict)
+		acrs = slices.Concat(acrs, newAcrs)
+		algo.ChangeToNextPermutation(perm)
+	}
+
+	return acrs
 }
 
 // #

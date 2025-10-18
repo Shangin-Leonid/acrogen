@@ -51,13 +51,8 @@ func main() {
 			return
 		}
 
-		acrs, err = generateAcronyms(src, dict)
-		if err != nil {
-			formatAndPrintError(err)
-			return
-		}
+		acrs = generateAcronyms(src, dict, NonOrdered)
 		SortAcronymsBySumEstimation(acrs)
-
 		fmt.Printf("\n%d acronyms were successfully generated and sorted by their estimation.\n", len(acrs))
 
 		const dumpFilenameSuffix = "_dump"
