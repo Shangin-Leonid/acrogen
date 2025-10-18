@@ -51,7 +51,20 @@ func main() {
 			return
 		}
 
-		acrs = generateAcronyms(src, dict, NonOrdered)
+		const AcrGenerationModeChoiceMes = "Does the order of items in acronym matter?"
+		yesOrNo, err = cio.GiveUserYesOrNoChoice(AcrGenerationModeChoiceMes, UserChoiceInputFormatErrMes)
+		if err != nil {
+			formatAndPrintError(err)
+			return
+		}
+		var mode AcrGeneratorMode
+		if yesOrNo == cio.Yes {
+			mode = Ordered
+		} else if yesOrNo == cio.No {
+			mode = NonOrdered
+		}
+
+		acrs = generateAcronyms(src, dict, mode)
 
 		if len(acrs) == 0 {
 			return
