@@ -150,8 +150,8 @@ func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
 // Returns nothing, just sorts in place.
 // #
 func SortAcronymsBySumEstimation(acrs Acronyms) {
-	isMoreSumEstimationFunc := func(i, j int) bool {
+	isMoreSumEstimationComparator := func(i, j int) bool {
 		return acrs[i].sumEstimation > acrs[j].sumEstimation
 	}
-	sort.Slice(acrs, isMoreSumEstimationFunc)
+	sort.Slice(acrs, isMoreSumEstimationComparator)
 }
