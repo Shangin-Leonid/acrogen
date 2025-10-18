@@ -52,6 +52,11 @@ func main() {
 		}
 
 		acrs = generateAcronyms(src, dict, NonOrdered)
+
+		if len(acrs) == 0 {
+			return
+		}
+
 		SortAcronymsBySumEstimation(acrs)
 		fmt.Printf("\n%d acronyms were successfully generated and sorted by their estimation.\n", len(acrs))
 
