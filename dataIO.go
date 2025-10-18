@@ -261,7 +261,7 @@ func printAcronyms(acrs Acronyms, amount int) {
 
 	fmt.Printf("\nList of acronyms:\n")
 	for i := 0; i < len(acrs) && i < amount; i++ {
-		fmt.Println(acrs[i].word)
+		fmt.Printf("%s%s%d", acrs[i].word, TokenSeparator, acrs[i].sumEstimation)
 	}
 	fmt.Printf("\n")
 }
