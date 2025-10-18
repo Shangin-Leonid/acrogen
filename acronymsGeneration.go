@@ -39,7 +39,7 @@ func containsAcronym(word string, acrs Acronyms) bool {
 
 // #
 // Searches for acronym 'word' in Acronyms collection.
-// Returns (acronym, nil) if have found, (Acronym{}, some error) else.
+// Returns (acronym, true) if have found, (nil, false) else.
 // #
 func takeAcronym(word string, acrs Acronyms) (Acronym, bool) {
 	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
