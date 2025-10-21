@@ -122,7 +122,7 @@ func exportAcronymsToFile(acrs Acronyms, outputFilename string, mode ExportModeT
 // #
 // Import acronyms from dump file with 'FullFormat'.
 // #
-func LoadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
+func loadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 
 	var parseFirstLineInDumpFile fio.StringParserFunc = func(line string) error {
 		if len(line) == 0 {

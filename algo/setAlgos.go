@@ -5,7 +5,7 @@ import (
 )
 
 // #
-// Calculates and returns ordered Cartesion product of sets.
+// Calculates and returns ordered Cartesian product of sets.
 // Input and output sets are actually represented by slices (as types).
 // Here is an example:
 // {1, 2} x {3, 4} x {5, 6} -> {{135}, {136}, {145}, {146}, {235}, {236}, {245}, {246}} (result without commas)
@@ -15,7 +15,6 @@ func CalcOrderedCartesianProduct[T any](inp [][]T) ([][]T, error) {
 		return nil, errors.New("no sets (slices) were passed")
 	}
 
-	// Prealloc enough memory
 	amountOfOutputSlices := 1
 	for i := range inp {
 		amountOfOutputSlices *= len(inp[i])
@@ -25,6 +24,7 @@ func CalcOrderedCartesianProduct[T any](inp [][]T) ([][]T, error) {
 		return [][]T{}, nil // return empty set
 	}
 
+	// Prealloc enough memory
 	outp := make([][]T, amountOfOutputSlices)
 	for i := range outp {
 		outp[i] = make([]T, len(inp))

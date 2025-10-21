@@ -18,6 +18,10 @@ type LetterOpt struct {
 type LetterOpts = []LetterOpt
 type Src = []LetterOpts
 
+// #
+// Describes one acronym: the word, summary estimation (sum of letter estimations) and decodings of each letter.
+// #
+// TODO maybe change the order of fields for better memory allocating
 type Acronym struct {
 	word            string // TODO maybe use []rune instead of string
 	sumEstimation   int
