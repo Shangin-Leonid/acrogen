@@ -4,7 +4,7 @@ import (
 	"slices"
 	"sort"
 
-	"acrgen/algo"
+	"acrogen/algo"
 )
 
 // #

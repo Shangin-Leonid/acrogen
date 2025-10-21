@@ -6,8 +6,8 @@ import (
 	"math"
 	"os"
 
-	"acrgen/cio"
-	"acrgen/fio"
+	"acrogen/cio"
+	"acrogen/fio"
 )
 
 func main() {
@@ -150,7 +150,7 @@ func main() {
 		}
 	}
 
-	fmt.Printf("\n\"Acrgen\" (\"%s\") finished with success.\n", os.Args[0])
+	fmt.Printf("\n\"Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
 	return
 }
 
