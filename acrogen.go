@@ -129,6 +129,7 @@ func main() {
 			return ok, nil
 		}
 		takeAndPrintAcronym := func(userInp string) error {
+			// TODO maybe reuse index that was found in 'containsAcronymWrap'
 			acr, _ := takeAcronymBS(userInp, acrs) // No need to check 'ok': we've just checked that the acronym is in the collection
 			printAcronymInDetail(acr)
 			fmt.Printf("\n")
