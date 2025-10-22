@@ -80,6 +80,7 @@ func generateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
 	if len(src) == 0 || len(src) == 1 {
 		return Acronyms{}
 	}
+
 	switch agm {
 	case Ordered:
 		return generateAcronymsWithOrder(src, dict)
