@@ -139,7 +139,7 @@ func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
 
 	perm := algo.GetIdPermutation(len(src))
 	nPermutations := int(algo.CalcFactorial(uint(len(src))))
-	for _ = range nPermutations {
+	for range nPermutations {
 		permSrc, _ := algo.GetPermutatedSlice(src, perm)
 		newAcrs := generateAcronymsWithOrder(permSrc, dict)
 		acrs = slices.Concat(acrs, newAcrs)
