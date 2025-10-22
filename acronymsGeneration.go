@@ -157,8 +157,19 @@ func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
 // Returns nothing, just sorts in place.
 // #
 func SortAcronymsBySumEstimation(acrs Acronyms) {
-	isMoreSumEstimationComparator := func(i, j int) bool {
+	decreasingSumEstimationComparator := func(i, j int) bool {
 		return acrs[i].sumEstimation > acrs[j].sumEstimation
 	}
-	sort.Slice(acrs, isMoreSumEstimationComparator)
+	sort.Slice(acrs, decreasingSumEstimationComparator)
+}
+
+// #
+// A wrapper for alphabetically sorting of Acronyms collection.
+// Returns nothing, just sorts in place.
+// #
+func SortAcronymsByAlphabet(acrs Acronyms) {
+	increasingAlphabetComparator := func(i, j int) bool {
+		return acrs[i].word < acrs[j].word
+	}
+	sort.Slice(acrs, increasingAlphabetComparator)
 }
