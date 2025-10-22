@@ -76,8 +76,8 @@ func main() {
 		if len(acrs) == 0 {
 			return
 		}
-		SortAcronymsBySumEstimation(acrs)
-		fmt.Printf("\n%d acronyms were successfully generated and sorted by their estimation.\n", len(acrs))
+		SortAcronymsByAlphabet(acrs)
+		fmt.Printf("\n%d acronyms were successfully generated and sorted by alphabet.\n", len(acrs))
 
 		// Export generated acronyms to the dump file.
 		const dumpFilenameSuffix = "_dump"
@@ -125,10 +125,11 @@ func main() {
 	}
 	if yesOrNo == cio.Yes {
 		containsAcronymWrap := func(userInp string) (bool, error) {
-			return containsAcronym(userInp, acrs), nil
+			_, ok := containsAcronymBS(userInp, acrs)
+			return ok, nil
 		}
 		takeAndPrintAcronym := func(userInp string) error {
-			acr, _ := takeAcronym(userInp, acrs) // No need to check 'ok': we've just checked that the acronym is in the collection
+			acr, _ := takeAcronymBS(userInp, acrs) // No need to check 'ok': we've just checked that the acronym is in the collection
 			printAcronymInDetail(acr)
 			fmt.Printf("\n")
 			return nil
