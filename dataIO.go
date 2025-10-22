@@ -253,15 +253,37 @@ func printAcronymInDetail(acr Acronym) {
 
 // #
 // Prints acronyms in console in poor format (acronym only, without any decoding info).
+// 'amount' == 0 means printing all acronyms.
 // #
-func printAcronyms(acrs Acronyms, amount int) {
-	if amount == 0 {
-		return
+func printAcronyms(acrs Acronyms, amount int) error {
+
+	switch {
+	case amount < 0:
+		return errors.New("incorrect (negative) amount of acronyms")
+	case amount == 0:
+		amount = len(acrs)
+	case amount > len(acrs):
+		return errors.New("too many acronyms are requested to print")
 	}
 
 	fmt.Printf("\nList of acronyms:\n")
-	for i := 0; i < len(acrs) && i < amount; i++ {
+	for i := 0; i < amount; i++ {
 		fmt.Printf("%s%s%d", acrs[i].word, TokenSeparator, acrs[i].sumEstimation)
 	}
 	fmt.Printf("\n")
+
+	return nil
+}
+
+// #
+// Prints most suitable (by sumEstimation) acronyms in console in poor format (acronym only, without any decoding info).
+// #
+func printMostSuitableAcronyms(acrs Acronyms, amount int) error {
+
+	// TODO optimize by not sorting all elements, but by taking the amount of best ones
+	sortedAcrs := make(Acronyms, len(acrs))
+	copy(sortedAcrs, acrs)
+	SortAcronymsBySumEstimation(sortedAcrs)
+
+	return printAcronyms(sortedAcrs, amount)
 }

@@ -1,9 +1,7 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"math"
 	"os"
 
 	"acrogen/cio"
@@ -94,7 +92,7 @@ func main() {
 	// Process generated acronyms.
 
 	// Give a choice and maybe print some acronyms to console.
-	const AcrConsolePrintChoiceMes = "Print some acronyms in console?"
+	const AcrConsolePrintChoiceMes = "Print most suitable acronyms in console?"
 	yesOrNo, err = cio.GiveUserYesOrNoChoice(AcrConsolePrintChoiceMes, UserChoiceInputFormatErrMes)
 	if err != nil {
 		formatAndPrintError(err)
@@ -108,16 +106,14 @@ func main() {
 			formatAndPrintError(err)
 			return
 		}
-		if amount > len(acrs) {
-			formatAndPrintError(errors.New("too many acronyms are requested to print"))
+
+		err = printMostSuitableAcronyms(acrs, amount)
+		if err != nil {
+			formatAndPrintError(err)
 			return
 		}
-		if amount == 0 {
-			amount = math.MaxInt
-		}
-		printAcronyms(acrs, amount)
 	} else if yesOrNo == cio.No {
-		return
+		/* Do nothing */
 	}
 
 	// Maybe decode some acronyms.
