@@ -33,19 +33,19 @@ type Acronyms = []Acronym
 
 // #
 // Searches for acronym 'word' in Acronyms collection.
-// Returns true if have found, false else.
+// Returns index and true if have found, some int and false else.
 // #
-func containsAcronym(word string, acrs Acronyms) bool {
+func containsAcronym(word string, acrs Acronyms) (int, bool) {
 	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
 		return word == acr.word
 	})
 
-	return (0 <= ind) && (ind < len(acrs))
+	return ind, (0 <= ind) && (ind < len(acrs))
 }
 
 // #
 // Searches for acronym 'word' in Acronyms collection by binary search (collection must be in alphabet order).
-// Returns index and true if have found, index of place for insetring and false else.
+// Returns index and true if have found, index of place for inserting and false else.
 // #
 func containsAcronymBS(word string, acrs Acronyms) (int, bool) {
 	return slices.BinarySearchFunc(acrs, word, func(acr Acronym, word string) int {
@@ -62,14 +62,12 @@ func containsAcronymBS(word string, acrs Acronyms) (int, bool) {
 
 // #
 // Searches for acronym 'word' in Acronyms collection.
-// Returns (acronym, true) if have found, (nil, false) else.
+// Returns (acronym, true) if have found, (empty acronym, false) else.
 // #
 func takeAcronym(word string, acrs Acronyms) (Acronym, bool) {
-	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
-		return word == acr.word
-	})
+	ind, ok := containsAcronym(word, acrs)
 
-	if 0 <= ind && ind < len(acrs) {
+	if ok {
 		return acrs[ind], true
 	} else {
 		return Acronym{}, false
