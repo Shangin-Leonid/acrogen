@@ -80,9 +80,7 @@ func main() {
 		fmt.Printf("\n%d acronyms were successfully generated and sorted by alphabet.\n", len(acrs))
 
 		// Export generated acronyms to the dump file.
-		const dumpFilenameSuffix = "_dump"
-		dumpOutputFilename := fio.GetWithoutExt(outputFilename) + dumpFilenameSuffix + ".txt"
-		err = exportAcronymsToFile(acrs, dumpOutputFilename, FullFormat)
+		err = exportAcronymsToFile(acrs, makeDumpOutputFilename(outputFilename), FullFormat)
 		if err != nil {
 			formatAndPrintError(err)
 			return
@@ -157,4 +155,9 @@ func main() {
 // #
 func formatAndPrintError(err error) {
 	fmt.Fprintln(os.Stderr, fmt.Errorf("Error: %w.", err))
+}
+
+func makeDumpOutputFilename(outputFilename string) string {
+	const dumpFilenameSuffix = "_dump"
+	return (fio.GetWithoutExt(outputFilename) + dumpFilenameSuffix + ".txt")
 }
