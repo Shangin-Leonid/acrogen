@@ -11,6 +11,8 @@ const (
 )
 
 // User menu commands
+type MenuCommand = string
+
 const (
 	HelpCommand        = "!H"
 	ExitProgramCommand = "!Q"
@@ -22,6 +24,26 @@ const (
 	DecodeAcronymCommand              = "!4"
 	SaveAcronymsToFileCommand         = "!5"
 )
+
+type void = struct{}
+
+var AllCommands = map[MenuCommand]void{
+	HelpCommand:        void{},
+	ExitProgramCommand: void{},
+	QuitModeCommand:    void{},
+
+	LoadAcronymsFromFileCommand:       void{},
+	GenerateAcronymsFromSourceCommand: void{},
+	PrintListOfAcronymsCommand:        void{},
+	DecodeAcronymCommand:              void{},
+	SaveAcronymsToFileCommand:         void{},
+}
+
+// Checks if 'str' is valid menu command
+func isValidMenuCommand(str string) bool {
+	_, isExisting := AllCommands[str]
+	return isExisting
+}
 
 // Menu messages
 const (

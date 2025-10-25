@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
 	"acrogen/cio"
 )
@@ -54,7 +55,7 @@ func runApp() {
 			// HERE
 			runSavingAcronymsToFileMode(acrs)
 		default:
-			processIncorrectUserMenuCommand(userInp)
+			processInvalidUserMenuCommand(userInp)
 		}
 
 		fmt.Printf("\n")
@@ -278,10 +279,17 @@ func runSavingAcronymsToFileMode(acrs Acronyms) {
 // #
 // Processes incorrect user menu command and tries to help or guess the meaning of the user's input.
 // #
-func processIncorrectUserMenuCommand(userInp string) {
-	if userInp == "!h" {
+func processInvalidUserMenuCommand(userInp string) {
+	spaceFreeUserInp := strings.ReplaceAll(userInp, " ", "")
+
+	if isValidMenuCommand(spaceFreeUserInp) {
+		fmt.Printf("> Unexpected spaces. Maybe you mean \"%s\"? Try again.\n", spaceFreeUserInp)
+	} else if isValidMenuCommand("!" + spaceFreeUserInp) {
+		fmt.Printf("> Maybe you mean \"%s\"? Try again.\n", "!"+spaceFreeUserInp)
+	} else if userInp == "!h" {
 		fmt.Printf("> Maybe you mean \"%s\"? Try again.\n", HelpCommand)
 	} else {
-		fmt.Println("Incorrect input!")
+		fmt.Printf("> Incorrect command. Try again.\n")
 	}
+	// fmt.Println(spaceFreeUserInp)
 }
