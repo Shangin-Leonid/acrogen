@@ -70,7 +70,7 @@ const (
 func printMenuInfo() {
 	fmt.Printf("\n>>> Menu (enter commands without quotes):\n")
 	fmt.Printf("\n")
-	fmt.Printf("  * Help -                          \"%s\"\n", ExitProgramCommand)
+	fmt.Printf("  * Help -                          \"%s\"\n", HelpCommand)
 	fmt.Printf("  * Exit 'acrogen' program -        \"%s\"\n", ExitProgramCommand)
 	fmt.Printf("  * Quit current mode -             \"%s\"\n", QuitModeCommand)
 	fmt.Printf("\n")
