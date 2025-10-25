@@ -29,7 +29,8 @@ const (
 
 type void = struct{}
 
-var AllCommands = map[MenuCommand]void{
+// All menu commands in set
+var AllMenuCommands = map[MenuCommand]void{
 	HelpCommand:        void{},
 	ExitProgramCommand: void{},
 	QuitModeCommand:    void{},
@@ -43,7 +44,7 @@ var AllCommands = map[MenuCommand]void{
 
 // Checks if 'str' is valid menu command
 func isValidMenuCommand(str string) bool {
-	_, isExisting := AllCommands[str]
+	_, isExisting := AllMenuCommands[str]
 	return isExisting
 }
 
@@ -59,7 +60,7 @@ const (
 	UseDefaultDictFileChoiceMes   = "Use default file name ('" + DictDefaultFilename + "')?"
 	UseDefaultOutputFileChoiceMes = "Use default file name ('" + OutputDefaultFilename + "')?"
 
-	AcrGenerationModeChoiceMes = "Does the order of items in acronym matter?"
+	AcrGenerationModeChoiceMes = "Must items in acronym be ordered?"
 
 	AmountOfAcronymsToBePrintedChoiceMes = "Choose the number of acronyms for printing (0 for all)."
 )
