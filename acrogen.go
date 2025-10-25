@@ -39,10 +39,10 @@ func runApp() {
 		case HelpCommand:
 			runHelpMode()
 		case ExitProgramCommand:
-			fmt.Printf("\n\"Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
+			fmt.Printf("\n\"> Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
 			return
 		case QuitModeCommand:
-			fmt.Printf("You are in the menu - nothing to quit from.\n")
+			fmt.Printf("> You are in the menu - nothing to quit from.\n")
 		case LoadAcronymsFromFileCommand:
 			acrs = runLoadingAcronymsFromFileMode()
 		case GenerateAcronymsFromSourceCommand:
@@ -52,7 +52,6 @@ func runApp() {
 		case DecodeAcronymCommand:
 			runAcronymsDecodingMode(acrs)
 		case SaveAcronymsToFileCommand:
-			// HERE
 			runSavingAcronymsToFileMode(acrs)
 		default:
 			processInvalidUserMenuCommand(userInp)
