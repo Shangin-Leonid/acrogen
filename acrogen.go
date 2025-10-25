@@ -42,8 +42,9 @@ func runApp() {
 		case HelpCommand:
 			runHelpMode()
 		case ExitProgramCommand:
-			fmt.Printf("\n>>> \" Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
-			return
+			if runTryOfExiting() {
+				return
+			}
 		case QuitModeCommand:
 			fmt.Printf("> You are in the menu - nothing to quit from.\n")
 		case LoadAcronymsFromFileCommand:
@@ -77,6 +78,26 @@ func formatAndPrintError(err error) {
 func runHelpMode() {
 	// TODO
 	printMenuInfo()
+}
+
+// #
+// Asks user to confirm exiting. Prints something before return positive exiting flag.
+// Returns 'true' if need to exit program.
+// #
+func runTryOfExiting() (needExit bool) {
+	yesOrNo, err := cio.GiveUserYesOrNoChoice(UserConfirmExitMes, UserChoiceInputFormatErrMes)
+	if err != nil {
+		formatAndPrintError(err)
+		return true
+	}
+
+	if yesOrNo == cio.No {
+
+		return false
+	}
+
+	fmt.Printf("\n>>> \" Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
+	return true
 }
 
 // #

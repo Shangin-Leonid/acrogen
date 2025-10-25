@@ -49,6 +49,8 @@ func isValidMenuCommand(str string) bool {
 
 // Menu messages
 const (
+	UserConfirmExitMes = "Are you sure about exiting?"
+
 	UserChoiceInputFormatErrMes = "Unexpected choice (incorrect input format)."
 	IncorrectNumberChoiceMes    = "Unexpected choice (a number was expected)."
 
