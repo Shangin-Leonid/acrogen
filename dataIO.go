@@ -120,13 +120,13 @@ func exportAcronymsToFile(acrs Acronyms, outputFilename string, mode ExportModeT
 }
 
 // #
-// Import acronyms from dump file with 'FullFormat'.
+// Import acronyms from file with 'FullFormat'.
 // #
-func loadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
+func loadAcronymsFromFile(filename string) (acrs Acronyms, err error) {
 
-	var parseFirstLineInDumpFile fio.StringParserFunc = func(line string) error {
+	var parseFirstLineInFile fio.StringParserFunc = func(line string) error {
 		if len(line) == 0 {
-			return errors.New("unexpected empty first line in dump file")
+			return errors.New("unexpected empty first line in file")
 		}
 		capacity, err := strconv.Atoi(line)
 		if err == nil {
@@ -161,7 +161,7 @@ func loadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 	var prev LineT = First
 	var cur LineT
 	// TODO refactor, simplify
-	var parseAcronymsInDumpFile fio.StringParserFunc = func(line string) error {
+	var parseAcronymsInFile fio.StringParserFunc = func(line string) error {
 		lineRunes := []rune(line)
 
 		if line == LineSeparator {
@@ -236,7 +236,7 @@ func loadAcronymsFromFile(dumpFilename string) (acrs Acronyms, err error) {
 		return nil
 	}
 
-	_, err = fio.ParseTextFileLineByLine(dumpFilename, parseFirstLineInDumpFile, parseAcronymsInDumpFile)
+	_, err = fio.ParseTextFileLineByLine(filename, parseFirstLineInFile, parseAcronymsInFile)
 
 	return acrs, err
 }

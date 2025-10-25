@@ -1,6 +1,8 @@
 package cio /* Console Input Output */
 
 import (
+	"acrogen/fio"
+	"errors"
 	"fmt"
 	"strconv"
 )
@@ -70,8 +72,23 @@ func GiveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 	return userNum, err
 }
 
-// Equals to string that represents user's query of exit.
-const ExitCommand = "!q"
+// #
+// TODO docs
+// #
+func GiveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
+	fmt.Printf(invitingMes)
+
+	_, err = fmt.Scanf("%s", &filename)
+	if err != nil {
+		return "", err
+	}
+
+	if !fio.IsTextFileNameValid(filename) {
+		return "", errors.New("incorrect text file name")
+	}
+
+	return filename, nil
+}
 
 // #
 // No words about format, just look inside...
@@ -81,12 +98,11 @@ func ProcessUserInputUntilExitCommand(
 	invitingMes string,
 	userGuideMes string,
 	invalidInpMes string,
+	exitCommand string,
 	checkIfInpValid func(string) (bool, error),
 	processInp func(string) error) (err error, nProcessed int) {
 
-	returnIfExitCommand := func(s string) bool { return s == ExitCommand }
-
-	fmt.Printf("\nTo exit (to stop) enter \"%s\"\n", ExitCommand)
+	returnIfExitCommand := func(s string) bool { return s == exitCommand }
 
 	return ProcessUserInputUntil(
 		invitingMes,

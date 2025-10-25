@@ -12,10 +12,10 @@ endif
 # File names
 #--------------------------------------------------------------------------------------------------
 
-SRC_FILENAME ?= data/src.txt
-DICT_FILENAME ?= data/russian_words.txt
-DUMP_FILENAME ?= acrs_dump.txt
-OUTP_FILENAME ?= acrs.txt
+# SRC_FILENAME ?= data/src.txt
+# DICT_FILENAME ?= data/russian_words.txt
+# DUMP_FILENAME ?= acrs_dump.txt
+# OUTP_FILENAME ?= acrs.txt
 
 EXE_FILENAME = ./acrogen.$(EXE_EXT)
 
@@ -23,7 +23,7 @@ EXE_FILENAME = ./acrogen.$(EXE_EXT)
 # Input coomand line params
 #--------------------------------------------------------------------------------------------------
 
-INPUT_PARAMS = $(SRC_FILENAME) $(DICT_FILENAME) $(DUMP_FILENAME) $(OUTP_FILENAME)
+# INPUT_PARAMS = $(SRC_FILENAME) $(DICT_FILENAME) $(DUMP_FILENAME) $(OUTP_FILENAME)
 
 #--------------------------------------------------------------------------------------------------
 # Rules / goals / targets
@@ -35,7 +35,8 @@ build:
 	go build -o $(EXE_FILENAME) *.go
 
 run:
-	$(EXE_FILENAME) $(INPUT_PARAMS)
+	$(EXE_FILENAME)
+#	$(EXE_FILENAME) $(INPUT_PARAMS)
 
 debug:
 	dlv debug -- $(INPUT_PARAMS)
