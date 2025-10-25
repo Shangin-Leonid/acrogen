@@ -157,7 +157,7 @@ func ProcessUserInputUntil(
 			}
 		} else {
 			if invalidInpMes != "" {
-				fmt.Printf("%s\n%s\n", invalidInpMes, userGuideMes)
+				fmt.Printf("%s\n", invalidInpMes)
 			}
 		}
 
