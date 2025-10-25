@@ -1,6 +1,8 @@
 package algo /* Algorithms */
 
-import "errors" // TODO remake with OOP
+import "errors"
+
+// TODO remake with OOP
 
 // WARNING! All permutations are zero based (strats from zero).
 

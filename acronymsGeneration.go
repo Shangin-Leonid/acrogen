@@ -27,8 +27,6 @@ type Acronym struct {
 	sumEstimation   int
 	letterDecodings []string
 }
-
-// TODO maybe sort Acronyms by '.word. field for quick searching.
 type Acronyms = []Acronym
 
 // #
