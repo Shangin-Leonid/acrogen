@@ -95,10 +95,10 @@ func GiveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
 // TODO documentation
 // #
 func ProcessUserInputUntilExitCommand(
+	exitCommand string,
 	invitingMes string,
 	userGuideMes string,
 	invalidInpMes string,
-	exitCommand string,
 	checkIfInpValid func(string) (bool, error),
 	processInp func(string) error) (err error, nProcessed int) {
 
@@ -130,12 +130,11 @@ func ProcessUserInputUntil(
 	var userInp string
 
 	if invitingMes != "" {
-		fmt.Printf("%s %s\n", invitingMes, userGuideMes)
-	} else {
-		fmt.Printf("%s\n", userGuideMes)
+		fmt.Printf("%s\n", invitingMes)
 	}
 
 	for {
+		fmt.Printf("%s\n", userGuideMes)
 		_, err = fmt.Scanf("%s", &userInp)
 		if err != nil {
 			return err, nProcessed
@@ -158,7 +157,7 @@ func ProcessUserInputUntil(
 			}
 		} else {
 			if invalidInpMes != "" {
-				fmt.Printf("%s %s\n", invalidInpMes, userGuideMes)
+				fmt.Printf("%s\n%s\n", invalidInpMes, userGuideMes)
 			}
 		}
 

@@ -19,6 +19,9 @@ func main() {
 // #
 // Runs the 'acrogen' application.
 // The inner point of the program.
+// TODO '!Q' in decoding mode must exit the program
+// TODO ask user if he is sure before exit the program
+// TODO '!H' in decoding mode must work
 // #
 func runApp() {
 	var err error
@@ -39,7 +42,7 @@ func runApp() {
 		case HelpCommand:
 			runHelpMode()
 		case ExitProgramCommand:
-			fmt.Printf("\n\"> Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
+			fmt.Printf("\n>>> \" Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
 			return
 		case QuitModeCommand:
 			fmt.Printf("> You are in the menu - nothing to quit from.\n")
@@ -65,7 +68,7 @@ func runApp() {
 // Formats and prints error in console in 'stderr'.
 // #
 func formatAndPrintError(err error) {
-	fmt.Fprintln(os.Stderr, fmt.Errorf("> Error: %w.", err))
+	fmt.Fprintln(os.Stderr, fmt.Errorf(">>> Error: %w.", err))
 }
 
 // #
@@ -80,7 +83,7 @@ func runHelpMode() {
 // TODO docs
 // #
 func runLoadingAcronymsFromFileMode() Acronyms {
-	fmt.Println("> Loading acronyms from file:")
+	fmt.Println(">>> Loading acronyms from file:")
 
 	// Give a choice of input file
 	yesOrNo, err := cio.GiveUserYesOrNoChoice(UseDefaultDumpFileChoiceMes, UserChoiceInputFormatErrMes)
@@ -113,7 +116,7 @@ func runLoadingAcronymsFromFileMode() Acronyms {
 // TODO docs
 // #
 func runGeneratingAcronymsFromSourceMode() Acronyms {
-	fmt.Println("> Generating acronyms from source:")
+	fmt.Println(">>> Generating acronyms from source:")
 
 	// Give a choice of source file
 	yesOrNo, err := cio.GiveUserYesOrNoChoice(UseDefaultSrcFileChoiceMes, UserChoiceInputFormatErrMes)
@@ -188,7 +191,7 @@ func runGeneratingAcronymsFromSourceMode() Acronyms {
 // TODO docs
 // #
 func runListOfAcronymsPrintingMode(acrs Acronyms) {
-	fmt.Println("> Printing acronyms in console:")
+	fmt.Println(">>> Printing acronyms in console:")
 
 	if acrs == nil {
 		formatAndPrintError(errors.New("unexpected empty acronym collection"))
@@ -212,7 +215,7 @@ func runListOfAcronymsPrintingMode(acrs Acronyms) {
 // TODO docs
 // #
 func runAcronymsDecodingMode(acrs Acronyms) {
-	invitingLine := fmt.Sprintf("> Acronyms decoding (use \"%s\" to quit from this mode):\n", QuitModeCommand)
+	invitingLine := fmt.Sprintf(">>> Acronyms decoding (use \"%s\" to quit from this mode):\n", QuitModeCommand)
 
 	if acrs == nil {
 		formatAndPrintError(errors.New("unexpected empty acronym collection"))
@@ -232,10 +235,10 @@ func runAcronymsDecodingMode(acrs Acronyms) {
 	}
 
 	err, _ := cio.ProcessUserInputUntilExitCommand(
-		invitingLine,
-		"Please, enter an acronym:",
-		"No such acronym was found.\n",
 		QuitModeCommand,
+		invitingLine,
+		"> Please, enter an acronym:",
+		"> No such acronym was found.",
 		containsAcronymWrap,
 		takeAndPrintAcronym)
 
@@ -249,7 +252,7 @@ func runAcronymsDecodingMode(acrs Acronyms) {
 // TODO docs
 // #
 func runSavingAcronymsToFileMode(acrs Acronyms) {
-	fmt.Println("> Saving acronyms to file:")
+	fmt.Println(">>> Saving acronyms to file:")
 
 	// Give a choice of output file
 	yesOrNo, err := cio.GiveUserYesOrNoChoice(UseDefaultOutputFileChoiceMes, UserChoiceInputFormatErrMes)

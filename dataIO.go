@@ -268,7 +268,7 @@ func printAcronyms(acrs Acronyms, amount int) error {
 
 	fmt.Printf("\nList of acronyms:\n")
 	for i := 0; i < amount; i++ {
-		fmt.Printf("%s%s%d", acrs[i].word, TokenSeparator, acrs[i].sumEstimation)
+		fmt.Printf("%s%s%d\n", acrs[i].word, TokenSeparator, acrs[i].sumEstimation)
 	}
 	fmt.Printf("\n")
 
