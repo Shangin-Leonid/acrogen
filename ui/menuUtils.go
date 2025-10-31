@@ -77,7 +77,7 @@ func giveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 // TODO docs
 // #
 func giveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
-	MenuColor.Printf("%s, %s\n", MessagePrefix, invitingMes)
+	MenuColor.Printf("%s %s\n", MessagePrefix, invitingMes)
 
 	_, err = fmt.Scanf("%s", &filename)
 	if err != nil {

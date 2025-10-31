@@ -24,7 +24,7 @@ func RunConsoleApp() {
 	printMenuInfo()
 	var userInp string
 	for {
-		MenuColor.Printf("%s Enter a command:\n", MessagePrefix)
+		MenuColor.Printf("%s Enter a menu command:\n", MessagePrefix)
 
 		_, err = fmt.Scanf("%s", &userInp)
 		if err != nil {
@@ -63,7 +63,7 @@ func RunConsoleApp() {
 // Formats and prints error in console in 'stderr'.
 // #
 func formatAndPrintError(err error) {
-	ErrorColor.Fprintln(os.Stderr, fmt.Errorf("%s Error: %w.", MenuPrefix, err))
+	ErrorColor.Fprintln(os.Stderr, fmt.Errorf("\n%s Error: %w.", MenuPrefix, err))
 }
 
 // #
@@ -98,7 +98,7 @@ func runTryOfExiting() (needExit bool) {
 // TODO docs
 // #
 func runLoadingAcronymsFromFileMode() ag.Acronyms {
-	MenuColor.Printf("%s Loading acronyms from file:\n", MenuPrefix)
+	MenuColor.Printf("\n%s Loading acronyms from file:\n", MenuPrefix)
 
 	// Give a choice of input file
 	yesOrNo, err := giveUserYesOrNoChoice(UseDefaultDumpFileChoiceMes, UserChoiceInputFormatErrMes)
@@ -131,7 +131,7 @@ func runLoadingAcronymsFromFileMode() ag.Acronyms {
 // TODO docs
 // #
 func runGeneratingAcronymsFromSourceMode() ag.Acronyms {
-	MenuColor.Printf("%s Generating acronyms from source:\n", MenuPrefix)
+	MenuColor.Printf("\n%s Generating acronyms from source:\n", MenuPrefix)
 
 	// Give a choice of source file
 	yesOrNo, err := giveUserYesOrNoChoice(UseDefaultSrcFileChoiceMes, UserChoiceInputFormatErrMes)
@@ -206,7 +206,7 @@ func runGeneratingAcronymsFromSourceMode() ag.Acronyms {
 // TODO docs
 // #
 func runListOfAcronymsPrintingMode(acrs ag.Acronyms) {
-	MenuColor.Printf("%s Printing acronyms in console:\n", MenuPrefix)
+	MenuColor.Printf("\n%s Printing acronyms in console:\n", MenuPrefix)
 
 	if acrs == nil {
 		formatAndPrintError(errors.New("unexpected empty acronym collection"))
@@ -230,7 +230,7 @@ func runListOfAcronymsPrintingMode(acrs ag.Acronyms) {
 // TODO docs
 // #
 func runAcronymsDecodingMode(acrs ag.Acronyms) {
-	invitingLine := fmt.Sprintf("%s Acronyms decoding (use \"%s\" to quit from this mode):\n", MenuPrefix, QuitModeCommand)
+	invitingLine := fmt.Sprintf("\n%s Acronyms decoding (use \"%s\" to quit from this mode):\n", MenuPrefix, QuitModeCommand)
 
 	if acrs == nil {
 		formatAndPrintError(errors.New("unexpected empty acronym collection"))
@@ -267,7 +267,7 @@ func runAcronymsDecodingMode(acrs ag.Acronyms) {
 // TODO docs
 // #
 func runSavingAcronymsToFileMode(acrs ag.Acronyms) {
-	MenuColor.Printf("%s Saving acronyms to file:\n", MenuPrefix)
+	MenuColor.Printf("\n%s Saving acronyms to file:\n", MenuPrefix)
 
 	// Give a choice of output file
 	yesOrNo, err := giveUserYesOrNoChoice(UseDefaultOutputFileChoiceMes, UserChoiceInputFormatErrMes)
@@ -291,6 +291,8 @@ func runSavingAcronymsToFileMode(acrs ag.Acronyms) {
 		formatAndPrintError(err)
 		return
 	}
+
+	SuccessColor.Printf("%s Acronyms have been successfully saved to file '%s'.\n", MessagePrefix, filename)
 }
 
 // #

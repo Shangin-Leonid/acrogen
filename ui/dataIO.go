@@ -36,7 +36,6 @@ func printAcronyms(acrs ag.Acronyms, amount int) error {
 	for i := 0; i < amount; i++ {
 		fmt.Printf("%s%s%d\n", acrs[i].Word, TokenSeparator, acrs[i].SumEstimation)
 	}
-	SuccessColor.Printf("\n")
 
 	return nil
 }
