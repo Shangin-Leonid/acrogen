@@ -35,7 +35,7 @@ func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 
 	err, _ := processUserInputUntil(
 		invitingMes,
-		"Print [y/n]",
+		"Print [y/n]:",
 		invalidInpMes,
 		nil,
 		isInpValid,
@@ -63,7 +63,7 @@ func giveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 
 	err, _ = processUserInputUntil(
 		invitingMes,
-		"Print a number",
+		"Enter a number:",
 		invalidInpMes,
 		nil,
 		isInpValid,
@@ -131,7 +131,7 @@ func processUserInputUntil(
 	var userInp string
 
 	if invitingMes != "" {
-		MenuColor.Printf("%s\n", invitingMes)
+		MenuColor.Printf("%s ", invitingMes)
 	}
 
 	for {
@@ -150,11 +150,13 @@ func processUserInputUntil(
 			return err, nProcessed
 		}
 
-		if isInpValid && processInp != nil {
-			err = processInp(userInp)
-			nProcessed++
-			if err != nil {
-				return err, nProcessed
+		if isInpValid {
+			if processInp != nil {
+				err = processInp(userInp)
+				nProcessed++
+				if err != nil {
+					return err, nProcessed
+				}
 			}
 		} else {
 			if invalidInpMes != "" {

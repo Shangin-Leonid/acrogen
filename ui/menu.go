@@ -253,7 +253,7 @@ func runAcronymsDecodingMode(acrs ag.Acronyms) {
 		QuitModeCommand,
 		invitingLine,
 		fmt.Sprintf("%s Please, enter an acronym:", MessagePrefix),
-		fmt.Sprintf("%s No such acronym was found.", MessagePrefix),
+		fmt.Sprintf("%s No such acronym was found.\n", MessagePrefix),
 		containsAcronymWrap,
 		takeAndPrintAcronym)
 
