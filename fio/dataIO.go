@@ -91,9 +91,9 @@ const (
 )
 
 // #
-// Export acronyms to output file in short format (without letters decoding, but each acronym is on new line).
+// Saves (exports) acronyms to output file in short format (without letters decoding, but each acronym is on new line).
 // #
-func ExportAcronymsToFile(acrs ag.Acronyms, outputFilename string, mode ExportModeT) error {
+func SaveAcronymsToFile(acrs ag.Acronyms, outputFilename string, mode ExportModeT) error {
 	var formatFunc func(acr ag.Acronym) string
 
 	if mode == FullFormat {

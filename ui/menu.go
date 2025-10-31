@@ -67,7 +67,7 @@ func formatAndPrintError(err error) {
 }
 
 // #
-// Helps a user to apply the 'acrogen'.
+// Prints a hint of menu. Helps a user to apply the 'acrogen'.
 // #
 func runHelpMode() {
 	// TODO
@@ -95,7 +95,8 @@ func runTryOfExiting() (needExit bool) {
 }
 
 // #
-// TODO docs
+// Tries to load acronyms from file (default or user defined).
+// Returns acronyms (nil if error).
 // #
 func runLoadingAcronymsFromFileMode() ag.Acronyms {
 	MenuColor.Printf("\n%s Loading acronyms from file:\n", MenuPrefix)
@@ -128,7 +129,8 @@ func runLoadingAcronymsFromFileMode() ag.Acronyms {
 }
 
 // #
-// TODO docs
+// Tries to generate acronyms from source and dictionary files (default or user defined).
+// Returns acronyms (nil if error).
 // #
 func runGeneratingAcronymsFromSourceMode() ag.Acronyms {
 	MenuColor.Printf("\n%s Generating acronyms from source:\n", MenuPrefix)
@@ -203,10 +205,18 @@ func runGeneratingAcronymsFromSourceMode() ag.Acronyms {
 }
 
 // #
-// TODO docs
+// Prints acronyms (all or user defined amount).
 // #
 func runListOfAcronymsPrintingMode(acrs ag.Acronyms) {
 	MenuColor.Printf("\n%s Printing acronyms in console:\n", MenuPrefix)
+
+	if acrs == nil {
+		formatAndPrintError(errors.New("unexpected empty acronym collection"))
+		return
+	} else if len(acrs) == 0 {
+		WarningColor.Printf("\n%s No acronyms were found\n", MenuPrefix)
+		return
+	}
 
 	if acrs == nil {
 		formatAndPrintError(errors.New("unexpected empty acronym collection"))
@@ -227,13 +237,16 @@ func runListOfAcronymsPrintingMode(acrs ag.Acronyms) {
 }
 
 // #
-// TODO docs
+// Decodes acronyms.
 // #
 func runAcronymsDecodingMode(acrs ag.Acronyms) {
 	invitingLine := fmt.Sprintf("\n%s Acronyms decoding (use \"%s\" to quit from this mode):\n", MenuPrefix, QuitModeCommand)
 
 	if acrs == nil {
 		formatAndPrintError(errors.New("unexpected empty acronym collection"))
+		return
+	} else if len(acrs) == 0 {
+		WarningColor.Printf("\n%s No acronyms were found\n", MenuPrefix)
 		return
 	}
 
@@ -264,10 +277,18 @@ func runAcronymsDecodingMode(acrs ag.Acronyms) {
 }
 
 // #
-// TODO docs
+// Saves acronyms to output file (default or user defined).
 // #
 func runSavingAcronymsToFileMode(acrs ag.Acronyms) {
 	MenuColor.Printf("\n%s Saving acronyms to file:\n", MenuPrefix)
+
+	if acrs == nil {
+		formatAndPrintError(errors.New("unexpected empty acronym collection"))
+		return
+	} else if len(acrs) == 0 {
+		WarningColor.Printf("\n%s No acronyms were found\n", MenuPrefix)
+		return
+	}
 
 	// Give a choice of output file
 	yesOrNo, err := giveUserYesOrNoChoice(UseDefaultOutputFileChoiceMes, UserChoiceInputFormatErrMes)
@@ -286,7 +307,8 @@ func runSavingAcronymsToFileMode(acrs ag.Acronyms) {
 		}
 	}
 
-	err = fio.ExportAcronymsToFile(acrs, filename, fio.FullFormat)
+	// Save acronyms to file
+	err = fio.SaveAcronymsToFile(acrs, filename, fio.FullFormat)
 	if err != nil {
 		formatAndPrintError(err)
 		return
