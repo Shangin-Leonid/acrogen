@@ -14,6 +14,6 @@ _debug_*
 *.swp
 
 # project data files
-# src.txt
+*.txt
 acrs.txt
 *_dump.*
