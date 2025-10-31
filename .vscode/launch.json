@@ -12,10 +12,6 @@
             "program": "${workspaceFolder}",
             "console": "integratedTerminal",
             "args": [
-                "data/src.txt",
-                "data/russian_words.txt",
-                "acrs_dump.txt",
-                "acrs.txt"
             ]
             //"env": {
             //    "MY_ENV_VAR": "some_value"
