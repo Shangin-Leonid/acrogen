@@ -5,6 +5,8 @@ import (
 	"errors"
 	"os"
 	"strconv"
+
+	"acrogen/utils"
 )
 
 type StringParserFunc = func(string) error // TODO without '='
@@ -13,8 +15,8 @@ type StringParserFunc = func(string) error // TODO without '='
 // Opens file, goes through it and parses each line by 'parserFunc'.
 // Returns error and amount of lines that have been parsed successfully.
 // #
-func ParseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc StringParserFunc) (nSuccessfullyParsed int, err error) {
-	if !IsTextFileNameValid(filename) {
+func parseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc StringParserFunc) (nSuccessfullyParsed int, err error) {
+	if !utils.IsTextFileNameValid(filename) {
 		return 0, errors.New("некорректное название файла")
 	}
 
@@ -48,8 +50,8 @@ func ParseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc St
 // Writes slice elements in file in format of 'formatFunc'.
 // Returns amount of successful written elements and error.
 // #
-func WriteSliceToTextFile[T any](slice []T, filename string, needWriteLen bool, formatFunc func(T) string) (nSuccessfulWrites int, err error) {
-	if !IsTextFileNameValid(filename) {
+func writeSliceToTextFile[T any](slice []T, filename string, needWriteLen bool, formatFunc func(T) string) (nSuccessfulWrites int, err error) {
+	if !utils.IsTextFileNameValid(filename) {
 		return 0, errors.New("incorrect name of output file")
 	}
 

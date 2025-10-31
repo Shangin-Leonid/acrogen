@@ -1,4 +1,4 @@
-package main
+package ag /* Acronyms Generation */
 
 import (
 	"slices"
@@ -11,9 +11,9 @@ import (
 // Describes one source file entry (line), that represents a variant of acronym letter, its estimation and decoding (description).
 // #
 type LetterOpt struct {
-	letter     rune
-	estimation int
-	decoding   string
+	Letter     rune
+	Estimation int
+	Decoding   string
 }
 type LetterOpts = []LetterOpt
 type Src = []LetterOpts
@@ -23,9 +23,9 @@ type Src = []LetterOpts
 // #
 // TODO maybe change the order of fields for better memory allocating
 type Acronym struct {
-	word            string // TODO maybe use []rune instead of string
-	sumEstimation   int
-	letterDecodings []string
+	Word            string // TODO maybe use []rune instead of string
+	SumEstimation   int
+	LetterDecodings []string
 }
 type Acronyms = []Acronym
 
@@ -33,9 +33,9 @@ type Acronyms = []Acronym
 // Searches for acronym 'word' in Acronyms collection.
 // Returns index and true if have found, some int and false else.
 // #
-func containsAcronym(word string, acrs Acronyms) (int, bool) {
+func ContainsAcronym(word string, acrs Acronyms) (int, bool) {
 	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
-		return word == acr.word
+		return word == acr.Word
 	})
 
 	return ind, (0 <= ind) && (ind < len(acrs))
@@ -45,12 +45,12 @@ func containsAcronym(word string, acrs Acronyms) (int, bool) {
 // Searches for acronym 'word' in Acronyms collection by binary search (collection must be in alphabet order).
 // Returns index and true if have found, index of place for inserting and false else.
 // #
-func containsAcronymBS(word string, acrs Acronyms) (int, bool) {
+func ContainsAcronymBS(word string, acrs Acronyms) (int, bool) {
 	return slices.BinarySearchFunc(acrs, word, func(acr Acronym, word string) int {
 		switch {
-		case acr.word < word:
+		case acr.Word < word:
 			return -1
-		case acr.word > word:
+		case acr.Word > word:
 			return 1
 		default:
 			return 0
@@ -62,8 +62,8 @@ func containsAcronymBS(word string, acrs Acronyms) (int, bool) {
 // Searches for acronym 'word' in Acronyms collection.
 // Returns (acronym, true) if have found, (empty acronym, false) else.
 // #
-func takeAcronym(word string, acrs Acronyms) (Acronym, bool) {
-	ind, ok := containsAcronym(word, acrs)
+func TakeAcronym(word string, acrs Acronyms) (Acronym, bool) {
+	ind, ok := ContainsAcronym(word, acrs)
 
 	if ok {
 		return acrs[ind], true
@@ -76,8 +76,8 @@ func takeAcronym(word string, acrs Acronyms) (Acronym, bool) {
 // Searches for acronym 'word' in Acronyms collection by binary search (collection must be in alphabet order).
 // Returns (acronym, true) if have found, (empty acronym, false) else.
 // #
-func takeAcronymBS(word string, acrs Acronyms) (Acronym, bool) {
-	ind, ok := containsAcronymBS(word, acrs)
+func TakeAcronymBS(word string, acrs Acronyms) (Acronym, bool) {
+	ind, ok := ContainsAcronymBS(word, acrs)
 
 	if ok {
 		return acrs[ind], true
@@ -105,7 +105,7 @@ const (
 // Generates acronyms from 'src': check all possible (non-)ordered (depends on 'agm' param) letter combinations and take all that are in dictionary.
 // Returns Acronyms collection.
 // #
-func generateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
+func GenerateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
 	if len(src) == 0 || len(src) == 1 {
 		return Acronyms{}
 	}
@@ -133,9 +133,9 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 		letterDecodings := []string{}
 
 		for i := range lo {
-			word = append(word, lo[i].letter)
-			sumEstimation += lo[i].estimation
-			letterDecodings = append(letterDecodings, lo[i].decoding)
+			word = append(word, lo[i].Letter)
+			sumEstimation += lo[i].Estimation
+			letterDecodings = append(letterDecodings, lo[i].Decoding)
 		}
 
 		return Acronym{string(word), sumEstimation, letterDecodings}
@@ -152,7 +152,7 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 	var acrs Acronyms
 	for i := range letterCombs {
 		acrCandidate := convertToAcronym(letterCombs[i])
-		if isRealWord(acrCandidate.word) {
+		if isRealWord(acrCandidate.Word) {
 			acrs = append(acrs, acrCandidate)
 		}
 	}
@@ -185,7 +185,7 @@ func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
 // #
 func SortAcronymsBySumEstimation(acrs Acronyms) {
 	decreasingSumEstimationComparator := func(i, j int) bool {
-		return acrs[i].sumEstimation > acrs[j].sumEstimation
+		return acrs[i].SumEstimation > acrs[j].SumEstimation
 	}
 	sort.Slice(acrs, decreasingSumEstimationComparator)
 }
@@ -196,7 +196,7 @@ func SortAcronymsBySumEstimation(acrs Acronyms) {
 // #
 func SortAcronymsByAlphabet(acrs Acronyms) {
 	increasingAlphabetComparator := func(i, j int) bool {
-		return acrs[i].word < acrs[j].word
+		return acrs[i].Word < acrs[j].Word
 	}
 	sort.Slice(acrs, increasingAlphabetComparator)
 }

@@ -1,4 +1,4 @@
-package main
+package ui /* User Interface */
 
 import (
 	"github.com/fatih/color"
@@ -48,6 +48,12 @@ func isValidMenuCommand(str string) bool {
 	return isExisting
 }
 
+// Prefix before menu message
+const (
+	MenuPrefix    = ">>>"
+	MessagePrefix = ">"
+)
+
 // Menu messages
 const (
 	UserConfirmExitMes = "Are you sure about exiting?"
@@ -65,16 +71,17 @@ const (
 	AmountOfAcronymsToBePrintedChoiceMes = "Choose the number of acronyms for printing (0 for all)."
 )
 
-var MenuColor *color.Color = color.New(color.FgHiYellow, color.Bold)
+// Color themes
+var MenuColor *color.Color = color.New(color.FgYellow, color.Bold, color.Faint)
 var SuccessColor *color.Color = color.New(color.FgGreen, color.Bold)
-var WarningColor *color.Color = color.New(color.FgOrange, color.Bold)
+var WarningColor *color.Color = color.RGB(255, 165, 0).Add(color.Bold) // Orange
 var ErrorColor *color.Color = color.New(color.FgRed, color.Bold)
 
 // #
 // Prints a list of available menu commands and modes (with some helper info).
 // #
 func printMenuInfo() {
-	MenuColor.Printf("\n>>> Menu (enter commands without quotes):\n")
+	MenuColor.Printf("\n%s Menu (enter commands without quotes):\n", MenuPrefix)
 	MenuColor.Printf("\n")
 	MenuColor.Printf("  * Help -                          \"%s\"\n", HelpCommand)
 	MenuColor.Printf("  * Exit 'acrogen' program -        \"%s\"\n", ExitProgramCommand)
@@ -90,3 +97,7 @@ func printMenuInfo() {
 	MenuColor.Printf("  * Save acronyms to file -         \"%s\"\n", SaveAcronymsToFileCommand)
 	MenuColor.Printf("\n")
 }
+
+// Data format in console input-output
+const TokenSeparator = " -- "
+const LineSeparator = ""

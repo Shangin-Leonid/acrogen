@@ -1,10 +1,11 @@
-package cio /* Console Input Output */
+package ui /* User Interface */
 
 import (
-	"acrogen/fio"
 	"errors"
 	"fmt"
 	"strconv"
+
+	"acrogen/utils"
 )
 
 // Binary choice constants (Yes == true, No == !Yes).
@@ -16,7 +17,7 @@ const Yes, No = true, !Yes
 // TODO implement several tries for input (amount of tries as parameter)
 // TODO maybe add 2 callbacks as params: 1 for yes and 1 for no. Then implify usage of the function.
 // #
-func GiveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
+func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 
 	isInpValid := func(inp string) (bool, error) {
 		return inp == "y" || inp == "n", nil
@@ -32,7 +33,7 @@ func GiveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 	}
 	returnIfYesOrNoInput := func(inp string) bool { return (inp == "y" || inp == "n") }
 
-	err, _ := ProcessUserInputUntil(
+	err, _ := processUserInputUntil(
 		invitingMes,
 		"Print [y/n]",
 		invalidInpMes,
@@ -48,7 +49,7 @@ func GiveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 // Returns the entered number (0, if err) and error, if user input is incorrect.
 // TODO implement several tries for input (amount of tries as parameter)
 // #
-func GiveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err error) {
+func giveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err error) {
 
 	isInpValid := func(inp string) (bool, error) {
 		userNum, err = strconv.Atoi(inp)
@@ -60,7 +61,7 @@ func GiveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 	}
 	returnNeedBreak := func(s string) bool { return true }
 
-	err, _ = ProcessUserInputUntil(
+	err, _ = processUserInputUntil(
 		invitingMes,
 		"Print a number",
 		invalidInpMes,
@@ -75,15 +76,15 @@ func GiveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 // #
 // TODO docs
 // #
-func GiveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
-	MenuColor.Printf(invitingMes)
+func giveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
+	MenuColor.Printf("%s, %s\n", MessagePrefix, invitingMes)
 
 	_, err = fmt.Scanf("%s", &filename)
 	if err != nil {
 		return "", err
 	}
 
-	if !fio.IsTextFileNameValid(filename) {
+	if !utils.IsTextFileNameValid(filename) {
 		return "", errors.New("incorrect text file name")
 	}
 
@@ -94,7 +95,7 @@ func GiveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
 // No words about format, just look inside...
 // TODO documentation
 // #
-func ProcessUserInputUntilExitCommand(
+func processUserInputUntilExitCommand(
 	exitCommand string,
 	invitingMes string,
 	userGuideMes string,
@@ -104,7 +105,7 @@ func ProcessUserInputUntilExitCommand(
 
 	returnIfExitCommand := func(s string) bool { return s == exitCommand }
 
-	return ProcessUserInputUntil(
+	return processUserInputUntil(
 		invitingMes,
 		userGuideMes,
 		invalidInpMes,
@@ -118,7 +119,7 @@ func ProcessUserInputUntilExitCommand(
 // No words about format, just look inside...
 // TODO documentation
 // #
-func ProcessUserInputUntil(
+func processUserInputUntil(
 	invitingMes string,
 	userGuideMes string,
 	invalidInpMes string,

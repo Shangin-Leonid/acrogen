@@ -1,4 +1,4 @@
-package fio /* File Input Output */
+package utils /* Utils */
 
 import (
 	"path"
@@ -18,6 +18,7 @@ func IsTextFileNameValid(filename string) bool {
 	return true
 }
 
+// TODO docs
 func GetWithoutExt(filename string) string {
 	return filename[:len(filename)-len(filepath.Ext(filename))]
 }

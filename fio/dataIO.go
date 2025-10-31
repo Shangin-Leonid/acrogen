@@ -1,32 +1,28 @@
-package main
+package fio /* File Input Output */
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
 	"unicode"
 
-	"acrogen/fio"
+	"acrogen/ag"
 )
-
-const TokenSeparator = " -- "
-const LineSeparator = ""
 
 // #
 // Parses source data file and load its content.
-// Returns 'Src' collection and error.
+// Returns 'ag.Src' collection and error.
 // #
-func loadSrcFromFile(srcFilename string) (Src, error) {
-	src := make(Src, 0, 10)
-	src = append(src, make(LetterOpts, 0, 10))
+func LoadSrcFromFile(srcFilename string) (ag.Src, error) {
+	src := make(ag.Src, 0, 10)
+	src = append(src, make(ag.LetterOpts, 0, 10))
 
-	var parseSrcFileLine fio.StringParserFunc = func(line string) error {
+	var parseSrcFileLine StringParserFunc = func(line string) error {
 		if line == LineSeparator {
 			if len(src[len(src)-1]) == 0 {
 				return errors.New("incorrect format of input file: first (initial) or multiple consecutive blank lines are prohibited")
 			}
-			src = append(src, make(LetterOpts, 0, 10))
+			src = append(src, make(ag.LetterOpts, 0, 10))
 			return nil
 		}
 
@@ -48,11 +44,11 @@ func loadSrcFromFile(srcFilename string) (Src, error) {
 
 		decoding := splittedLine[2]
 
-		src[len(src)-1] = append(src[len(src)-1], LetterOpt{letter, estimation, decoding})
+		src[len(src)-1] = append(src[len(src)-1], ag.LetterOpt{letter, estimation, decoding})
 		return nil
 	}
 
-	_, err := fio.ParseTextFileLineByLine(srcFilename, nil, parseSrcFileLine)
+	_, err := parseTextFileLineByLine(srcFilename, nil, parseSrcFileLine)
 
 	if err != nil {
 		return nil, err
@@ -69,15 +65,15 @@ func loadSrcFromFile(srcFilename string) (Src, error) {
 // Parses dictionary file (list of valid words) and load its content.
 // Returns dictionary and error.
 // #
-func loadDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (Dict, error) {
-	dict := make(Dict, expectedWordsAmount)
+func LoadDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (ag.Dict, error) {
+	dict := make(ag.Dict, expectedWordsAmount)
 
-	var parseWordFromFileLine fio.StringParserFunc = func(line string) error {
+	var parseWordFromFileLine StringParserFunc = func(line string) error {
 		dict[line] = struct{}{}
 		return nil
 	}
 
-	_, err := fio.ParseTextFileLineByLine(dictFilename, nil, parseWordFromFileLine)
+	_, err := parseTextFileLineByLine(dictFilename, nil, parseWordFromFileLine)
 
 	if err != nil {
 		return nil, err
@@ -97,40 +93,40 @@ const (
 // #
 // Export acronyms to output file in short format (without letters decoding, but each acronym is on new line).
 // #
-func exportAcronymsToFile(acrs Acronyms, outputFilename string, mode ExportModeT) error {
-	var formatFunc func(acr Acronym) string
+func ExportAcronymsToFile(acrs ag.Acronyms, outputFilename string, mode ExportModeT) error {
+	var formatFunc func(acr ag.Acronym) string
 
 	if mode == FullFormat {
-		formatFunc = func(acr Acronym) string {
-			outp := acr.word + TokenSeparator + strconv.Itoa(acr.sumEstimation) + "\n"
-			for i, letter := range []rune(acr.word) {
-				outp += string(letter) + TokenSeparator + acr.letterDecodings[i] + "\n"
+		formatFunc = func(acr ag.Acronym) string {
+			outp := acr.Word + TokenSeparator + strconv.Itoa(acr.SumEstimation) + "\n"
+			for i, letter := range []rune(acr.Word) {
+				outp += string(letter) + TokenSeparator + acr.LetterDecodings[i] + "\n"
 			}
 			outp += LineSeparator + "\n"
 			return outp
 		}
 	} else if mode == OnelineFormat {
-		formatFunc = func(acr Acronym) string {
-			return acr.word + "\n"
+		formatFunc = func(acr ag.Acronym) string {
+			return acr.Word + "\n"
 		}
 	}
 
-	_, err := fio.WriteSliceToTextFile(acrs, outputFilename, true, formatFunc)
+	_, err := writeSliceToTextFile(acrs, outputFilename, true, formatFunc)
 	return err
 }
 
 // #
 // Import acronyms from file with 'FullFormat'.
 // #
-func loadAcronymsFromFile(filename string) (acrs Acronyms, err error) {
+func LoadAcronymsFromFile(filename string) (acrs ag.Acronyms, err error) {
 
-	var parseFirstLineInFile fio.StringParserFunc = func(line string) error {
+	var parseFirstLineInFile StringParserFunc = func(line string) error {
 		if len(line) == 0 {
 			return errors.New("unexpected empty first line in file")
 		}
 		capacity, err := strconv.Atoi(line)
 		if err == nil {
-			acrs = make(Acronyms, 0, capacity)
+			acrs = make(ag.Acronyms, 0, capacity)
 		}
 		return err
 	}
@@ -161,7 +157,7 @@ func loadAcronymsFromFile(filename string) (acrs Acronyms, err error) {
 	var prev LineT = First
 	var cur LineT
 	// TODO refactor, simplify
-	var parseAcronymsInFile fio.StringParserFunc = func(line string) error {
+	var parseAcronymsInFile StringParserFunc = func(line string) error {
 		lineRunes := []rune(line)
 
 		if line == LineSeparator {
@@ -170,7 +166,7 @@ func loadAcronymsFromFile(filename string) (acrs Acronyms, err error) {
 				return errors.New("incorrect data/format: unexpected empty line")
 			}
 			if prev != First {
-				lastLD := acrs[len(acrs)-1].letterDecodings
+				lastLD := acrs[len(acrs)-1].LetterDecodings
 				if prev == Letter && len(lastLD) != cap(lastLD) {
 					return errors.New("incorrect data/format: unexpected empty line within acronyms description")
 				}
@@ -187,8 +183,8 @@ func loadAcronymsFromFile(filename string) (acrs Acronyms, err error) {
 				return errors.New("incorrect format: the letter is not lowercase")
 			}
 
-			curAcrAsRune := []rune(acrs[len(acrs)-1].word)
-			curLetterInd := len(acrs[len(acrs)-1].letterDecodings)
+			curAcrAsRune := []rune(acrs[len(acrs)-1].Word)
+			curLetterInd := len(acrs[len(acrs)-1].LetterDecodings)
 			if lineRunes[0] != curAcrAsRune[curLetterInd] {
 				return errors.New("incorrect data: the letter is not the same as in the acronym")
 			}
@@ -198,10 +194,10 @@ func loadAcronymsFromFile(filename string) (acrs Acronyms, err error) {
 				return errors.New("incorrect data/format: incorrect format of letter decoding line (no token separator between letter and decoding)")
 			}
 			decodingInd := tsInd + len(TokenSeparator)
-			if len(acrs[len(acrs)-1].letterDecodings) == cap(acrs[len(acrs)-1].letterDecodings) {
+			if len(acrs[len(acrs)-1].LetterDecodings) == cap(acrs[len(acrs)-1].LetterDecodings) {
 				return errors.New("unexpected error: maybe unexpected (extra) letter in acronym")
 			}
-			acrs[len(acrs)-1].letterDecodings = append(acrs[len(acrs)-1].letterDecodings, line[decodingInd:])
+			acrs[len(acrs)-1].LetterDecodings = append(acrs[len(acrs)-1].LetterDecodings, line[decodingInd:])
 
 			if curLetterInd == len(curAcrAsRune)-1 {
 				cur = LastAcrLetter
@@ -229,61 +225,14 @@ func loadAcronymsFromFile(filename string) (acrs Acronyms, err error) {
 				}
 				nLetters++
 			}
-			acrs = append(acrs, Acronym{line[:tsInd], est, make([]string, 0, nLetters)})
+			acrs = append(acrs, ag.Acronym{line[:tsInd], est, make([]string, 0, nLetters)})
 		}
 
 		prev = cur
 		return nil
 	}
 
-	_, err = fio.ParseTextFileLineByLine(filename, parseFirstLineInFile, parseAcronymsInFile)
+	_, err = parseTextFileLineByLine(filename, parseFirstLineInFile, parseAcronymsInFile)
 
 	return acrs, err
-}
-
-// #
-// Prints acronym in console in detailed format (decodes each letter).
-// #
-func printAcronymInDetail(acr Acronym) {
-	fmt.Printf("%s%s%d\n", acr.word, TokenSeparator, acr.sumEstimation)
-	for i, letter := range []rune(acr.word) {
-		fmt.Printf("%c -- %s\n", letter, acr.letterDecodings[i])
-	}
-}
-
-// #
-// Prints acronyms in console in poor format (acronym only, without any decoding info).
-// 'amount' == 0 means printing all acronyms.
-// #
-func printAcronyms(acrs Acronyms, amount int) error {
-
-	switch {
-	case amount < 0:
-		return errors.New("incorrect (negative) amount of acronyms")
-	case amount == 0:
-		amount = len(acrs)
-	case amount > len(acrs):
-		return errors.New("too many acronyms are requested to print")
-	}
-
-	SuccessColor.Printf("\nList of acronyms:\n")
-	for i := 0; i < amount; i++ {
-		fmt.Printf("%s%s%d\n", acrs[i].word, TokenSeparator, acrs[i].sumEstimation)
-	}
-	SuccessColor.Printf("\n")
-
-	return nil
-}
-
-// #
-// Prints most suitable (by sumEstimation) acronyms in console in poor format (acronym only, without any decoding info).
-// #
-func printMostSuitableAcronyms(acrs Acronyms, amount int) error {
-
-	// TODO optimize by not sorting all elements, but by taking the amount of best ones
-	sortedAcrs := make(Acronyms, len(acrs))
-	copy(sortedAcrs, acrs)
-	SortAcronymsBySumEstimation(sortedAcrs)
-
-	return printAcronyms(sortedAcrs, amount)
 }
