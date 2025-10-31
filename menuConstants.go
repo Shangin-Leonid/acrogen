@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"github.com/fatih/color"
 )
 
 // Default filenames enumeration
@@ -65,23 +65,28 @@ const (
 	AmountOfAcronymsToBePrintedChoiceMes = "Choose the number of acronyms for printing (0 for all)."
 )
 
+var MenuColor *color.Color = color.New(color.FgHiYellow, color.Bold)
+var SuccessColor *color.Color = color.New(color.FgGreen, color.Bold)
+var WarningColor *color.Color = color.New(color.FgOrange, color.Bold)
+var ErrorColor *color.Color = color.New(color.FgRed, color.Bold)
+
 // #
 // Prints a list of available menu commands and modes (with some helper info).
 // #
 func printMenuInfo() {
-	fmt.Printf("\n>>> Menu (enter commands without quotes):\n")
-	fmt.Printf("\n")
-	fmt.Printf("  * Help -                          \"%s\"\n", HelpCommand)
-	fmt.Printf("  * Exit 'acrogen' program -        \"%s\"\n", ExitProgramCommand)
-	fmt.Printf("  * Quit current mode -             \"%s\"\n", QuitModeCommand)
-	fmt.Printf("\n")
-	fmt.Printf("~ Initial commands:\n")
-	fmt.Printf("  * Load acronyms from file -       \"%s\"\n", LoadAcronymsFromFileCommand)
-	fmt.Printf("  * Generate acronyms from source - \"%s\"\n", GenerateAcronymsFromSourceCommand)
-	fmt.Printf("\n")
-	fmt.Printf("~ Commands available after loading or generating:\n")
-	fmt.Printf("  * Print list of acronyms -        \"%s\"\n", PrintListOfAcronymsCommand)
-	fmt.Printf("  * Decode single acronym -         \"%s\"\n", DecodeAcronymCommand)
-	fmt.Printf("  * Save acronyms to file -         \"%s\"\n", SaveAcronymsToFileCommand)
-	fmt.Printf("\n")
+	MenuColor.Printf("\n>>> Menu (enter commands without quotes):\n")
+	MenuColor.Printf("\n")
+	MenuColor.Printf("  * Help -                          \"%s\"\n", HelpCommand)
+	MenuColor.Printf("  * Exit 'acrogen' program -        \"%s\"\n", ExitProgramCommand)
+	MenuColor.Printf("  * Quit current mode -             \"%s\"\n", QuitModeCommand)
+	MenuColor.Printf("\n")
+	MenuColor.Printf("~ Initial commands:\n")
+	MenuColor.Printf("  * Load acronyms from file -       \"%s\"\n", LoadAcronymsFromFileCommand)
+	MenuColor.Printf("  * Generate acronyms from source - \"%s\"\n", GenerateAcronymsFromSourceCommand)
+	MenuColor.Printf("\n")
+	MenuColor.Printf("~ Commands available after loading or generating:\n")
+	MenuColor.Printf("  * Print list of acronyms -        \"%s\"\n", PrintListOfAcronymsCommand)
+	MenuColor.Printf("  * Decode single acronym -         \"%s\"\n", DecodeAcronymCommand)
+	MenuColor.Printf("  * Save acronyms to file -         \"%s\"\n", SaveAcronymsToFileCommand)
+	MenuColor.Printf("\n")
 }

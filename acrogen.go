@@ -30,7 +30,7 @@ func runApp() {
 	printMenuInfo()
 	var userInp string
 	for {
-		fmt.Printf("> Enter a command:\n")
+		MenuColor.Printf("> Enter a command:\n")
 
 		_, err = fmt.Scanf("%s", &userInp)
 		if err != nil {
@@ -46,7 +46,7 @@ func runApp() {
 				return
 			}
 		case QuitModeCommand:
-			fmt.Printf("> You are in the menu - nothing to quit from.\n")
+			MenuColor.Printf("> You are in the menu - nothing to quit from.\n")
 		case LoadAcronymsFromFileCommand:
 			acrs = runLoadingAcronymsFromFileMode()
 		case GenerateAcronymsFromSourceCommand:
@@ -61,7 +61,7 @@ func runApp() {
 			processInvalidUserMenuCommand(userInp)
 		}
 
-		fmt.Printf("\n")
+		MenuColor.Printf("\n")
 	}
 }
 
@@ -69,7 +69,7 @@ func runApp() {
 // Formats and prints error in console in 'stderr'.
 // #
 func formatAndPrintError(err error) {
-	fmt.Fprintln(os.Stderr, fmt.Errorf(">>> Error: %w.", err))
+	ErrorColor.Fprintln(os.Stderr, fmt.Errorf(">>> Error: %w.", err))
 }
 
 // #
@@ -96,7 +96,7 @@ func runTryOfExiting() (needExit bool) {
 		return false
 	}
 
-	fmt.Printf("\n>>> \" Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
+	MenuColor.Printf("\n>>> \" Acrogen\" (\"%s\") finished with success.\n", os.Args[0])
 	return true
 }
 
@@ -129,7 +129,7 @@ func runLoadingAcronymsFromFileMode() Acronyms {
 		formatAndPrintError(err)
 		return nil
 	}
-	fmt.Printf("\n> %d acronyms have been successfully loaded from '%s'.\n", len(acrs), filename)
+	SuccessColor.Printf("\n> %d acronyms have been successfully loaded from '%s'.\n", len(acrs), filename)
 	return acrs
 }
 
@@ -204,7 +204,7 @@ func runGeneratingAcronymsFromSourceMode() Acronyms {
 	// Generate and sort acronyms.
 	acrs := generateAcronyms(src, dict, mode)
 	SortAcronymsByAlphabet(acrs)
-	fmt.Printf("\n> %d acronyms were successfully generated and sorted by alphabet.\n", len(acrs))
+	SuccessColor.Printf("\n> %d acronyms were successfully generated and sorted by alphabet.\n", len(acrs))
 	return acrs
 }
 
@@ -306,13 +306,12 @@ func processInvalidUserMenuCommand(userInp string) {
 	spaceFreeUserInp := strings.ReplaceAll(userInp, " ", "")
 
 	if isValidMenuCommand(spaceFreeUserInp) {
-		fmt.Printf("> Unexpected spaces. Maybe you mean \"%s\"? Try again.\n", spaceFreeUserInp)
+		WarningColor.Printf("> Unexpected spaces. Maybe you mean \"%s\"? Try again.\n", spaceFreeUserInp)
 	} else if isValidMenuCommand("!" + spaceFreeUserInp) {
-		fmt.Printf("> Maybe you mean \"%s\"? Try again.\n", "!"+spaceFreeUserInp)
+		WarningColor.Printf("> Maybe you mean \"%s\"? Try again.\n", "!"+spaceFreeUserInp)
 	} else if userInp == "!h" {
-		fmt.Printf("> Maybe you mean \"%s\"? Try again.\n", HelpCommand)
+		WarningColor.Printf("> Maybe you mean \"%s\"? Try again.\n", HelpCommand)
 	} else {
-		fmt.Printf("> Incorrect command. Try again.\n")
+		WarningColor.Printf("> Incorrect command. Try again.\n")
 	}
-	// fmt.Println(spaceFreeUserInp)
 }

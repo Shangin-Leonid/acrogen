@@ -266,11 +266,11 @@ func printAcronyms(acrs Acronyms, amount int) error {
 		return errors.New("too many acronyms are requested to print")
 	}
 
-	fmt.Printf("\nList of acronyms:\n")
+	SuccessColor.Printf("\nList of acronyms:\n")
 	for i := 0; i < amount; i++ {
 		fmt.Printf("%s%s%d\n", acrs[i].word, TokenSeparator, acrs[i].sumEstimation)
 	}
-	fmt.Printf("\n")
+	SuccessColor.Printf("\n")
 
 	return nil
 }

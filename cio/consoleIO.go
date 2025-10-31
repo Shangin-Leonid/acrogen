@@ -76,7 +76,7 @@ func GiveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 // TODO docs
 // #
 func GiveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
-	fmt.Printf(invitingMes)
+	MenuColor.Printf(invitingMes)
 
 	_, err = fmt.Scanf("%s", &filename)
 	if err != nil {
@@ -130,11 +130,11 @@ func ProcessUserInputUntil(
 	var userInp string
 
 	if invitingMes != "" {
-		fmt.Printf("%s\n", invitingMes)
+		MenuColor.Printf("%s\n", invitingMes)
 	}
 
 	for {
-		fmt.Printf("%s\n", userGuideMes)
+		MenuColor.Printf("%s\n", userGuideMes)
 		_, err = fmt.Scanf("%s", &userInp)
 		if err != nil {
 			return err, nProcessed
@@ -157,7 +157,7 @@ func ProcessUserInputUntil(
 			}
 		} else {
 			if invalidInpMes != "" {
-				fmt.Printf("%s\n", invalidInpMes)
+				WarningColor.Printf("%s\n", invalidInpMes)
 			}
 		}
 
