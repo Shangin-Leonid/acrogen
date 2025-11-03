@@ -2,6 +2,8 @@ package ui /* User Interface */
 
 import (
 	"github.com/fatih/color"
+
+	"acrogen/utils"
 )
 
 // Default filenames enumeration
@@ -27,7 +29,7 @@ const (
 	SaveAcronymsToFileCommand         = "!5"
 )
 
-type void = struct{}
+type void = utils.Void
 
 // All menu commands in set
 var AllMenuCommands = map[MenuCommand]void{

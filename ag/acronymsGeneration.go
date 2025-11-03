@@ -4,6 +4,7 @@ import (
 	"slices"
 
 	"acrogen/algo"
+	"acrogen/cont"
 )
 
 // #
@@ -82,13 +83,21 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
 	var acrs Acronyms
 
-	perm := algo.GetIdPermutation(len(src))
+	/*perm := algo.GetIdPermutation(len(src))
 	nPermutations := int(algo.CalcFactorial(uint(len(src))))
 	for range nPermutations {
 		permSrc, _ := algo.GetPermutatedSlice(src, perm)
 		newAcrs := generateAcronymsWithOrder(permSrc, dict)
 		acrs = slices.Concat(acrs, newAcrs)
 		algo.ChangeToNextPermutation(perm)
+	}*/
+
+	perm := cont.NewIdPermutation(len(src))
+	for range cont.PermutationsGroupOrder(len(src)) {
+		permSrc, _ := cont.GetPermutatedSlice(src, perm)
+		newAcrs := generateAcronymsWithOrder(permSrc, dict)
+		acrs = slices.Concat(acrs, newAcrs)
+		perm.Shift(1)
 	}
 
 	return acrs
