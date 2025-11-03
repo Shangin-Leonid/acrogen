@@ -8,6 +8,7 @@ import (
 
 	"acrogen/ag"
 	"acrogen/fio"
+	"acrogen/utils"
 )
 
 // #
@@ -86,7 +87,6 @@ func runTryOfExiting() (needExit bool) {
 	}
 
 	if yesOrNo == No {
-
 		return false
 	}
 
@@ -190,12 +190,7 @@ func runGeneratingAcronymsFromSourceMode() ag.Acronyms {
 		formatAndPrintError(err)
 		return nil
 	}
-	var mode ag.AcrGeneratorMode
-	if yesOrNo == Yes {
-		mode = ag.Ordered
-	} else if yesOrNo == No {
-		mode = ag.NonOrdered
-	}
+	mode := utils.TerOp(yesOrNo == Yes, ag.Ordered, ag.NonOrdered)
 
 	// Generate and sort acronyms.
 	acrs := ag.GenerateAcronyms(src, dict, mode)

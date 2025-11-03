@@ -24,11 +24,7 @@ func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 	}
 	var YesOrNo bool
 	isYes := func(inp string) error {
-		if inp == "y" {
-			YesOrNo = Yes
-		} else {
-			YesOrNo = No
-		}
+		YesOrNo = utils.TerOp(inp == "y", Yes, No)
 		return nil
 	}
 	returnIfYesOrNoInput := func(inp string) bool { return (inp == "y" || inp == "n") }

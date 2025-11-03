@@ -58,11 +58,8 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 	}
 
 	isRealWord := func(s string) bool {
-		if _, exist := dict[s]; exist {
-			return true
-		} else {
-			return false
-		}
+		_, exist := dict[s]
+		return exist
 	}
 
 	var acrs Acronyms
