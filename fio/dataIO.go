@@ -86,7 +86,8 @@ func LoadDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (ag
 type ExportModeT int
 
 const (
-	FullFormat ExportModeT = iota + 1
+	_ ExportModeT = iota
+	FullFormat
 	OnelineFormat
 )
 
