@@ -6,6 +6,7 @@
 
 # files with logs
 _log_*
+*.log
 
 # files for debugging
 _debug_*
