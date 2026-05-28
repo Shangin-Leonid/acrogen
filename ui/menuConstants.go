@@ -74,10 +74,10 @@ const (
 )
 
 // Color themes
-var MenuColor *color.Color = color.New(color.FgYellow, color.Bold, color.Faint)
-var SuccessColor *color.Color = color.New(color.FgGreen, color.Bold)
-var WarningColor *color.Color = color.RGB(255, 165, 0).Add(color.Bold) // Orange
-var ErrorColor *color.Color = color.New(color.FgRed, color.Bold)
+var MenuColor *color.Color = color.New(color.FgYellow, color.Bold, color.Faint) // Neutral color
+var SuccessColor *color.Color = color.New(color.FgGreen, color.Bold)            // Green
+var WarningColor *color.Color = color.RGB(255, 165, 0).Add(color.Bold)          // Orange
+var ErrorColor *color.Color = color.New(color.FgRed, color.Bold)                // Red
 
 // #
 // Prints a list of available menu commands and modes (with some helper info).
