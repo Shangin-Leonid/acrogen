@@ -3,7 +3,9 @@ package ui /* User Interface */
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
+	"runtime/debug"
 	"strings"
 
 	"acrogen/ag"
@@ -19,10 +21,21 @@ import (
 // TODO '!H' in decoding mode must work
 // #
 func RunConsoleApp() {
+
+	defer func() {
+		if p := recover(); p != nil {
+			defer os.Exit(1)
+			log.Printf("PANIC: %v\n", p)
+			log.Printf("Stack trace:\n%s", debug.Stack())
+			ErrorColor.Printf("PANIC: %v\n", p)
+		}
+	}()
+
 	var err error
 	var acrs ag.Acronyms
 
 	printMenuInfo()
+
 	var userInp string
 	for {
 		MenuColor.Printf("%s Enter a menu command:\n", MessagePrefix)
