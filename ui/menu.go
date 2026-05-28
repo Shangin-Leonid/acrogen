@@ -77,7 +77,7 @@ func RunConsoleApp() {
 // Formats and prints error in console in 'stderr'.
 // #
 func formatAndPrintError(err error) {
-	ErrorColor.Fprintln(os.Stderr, fmt.Errorf("\n%s Error: %w.", MenuPrefix, err))
+	ErrorColor.Fprintf(os.Stderr, "\n%s Error: %w.", MenuPrefix, err)
 }
 
 // #
