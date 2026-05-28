@@ -26,6 +26,7 @@ func printAcronyms(acrs ag.Acronyms, amount int) error {
 	switch {
 	case amount < 0:
 		return errors.New("incorrect (negative) amount of acronyms")
+	// TODO use 'all' command to print all acronyms
 	case amount == 0:
 		amount = len(acrs)
 	case amount > len(acrs):
@@ -44,11 +45,12 @@ func printAcronyms(acrs ag.Acronyms, amount int) error {
 // Prints most suitable (by SumEstimation) acronyms in console in poor format (acronym only, without any decoding info).
 // #
 func printMostSuitableAcronyms(acrs ag.Acronyms, amount int) error {
-
 	// TODO optimize by not sorting all elements, but by taking the amount of best ones
 	sortedAcrs := make(ag.Acronyms, len(acrs))
 	copy(sortedAcrs, acrs)
 	ag.SortAcronymsBySumEstimation(sortedAcrs)
 
-	return printAcronyms(sortedAcrs, amount)
+	err := printAcronyms(sortedAcrs, amount)
+
+	return err
 }
