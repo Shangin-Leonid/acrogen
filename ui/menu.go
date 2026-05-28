@@ -38,7 +38,7 @@ func RunConsoleApp() {
 
 	var userInp string
 	for {
-		MenuColor.Printf("%s Enter a menu command:\n", MessagePrefix)
+		MenuColor.Println(AskUserToEnterAnyCommandMes)
 
 		_, err = fmt.Scanf("%s", &userInp)
 		if err != nil {
@@ -54,7 +54,7 @@ func RunConsoleApp() {
 				return
 			}
 		case QuitModeCommand:
-			WarningColor.Printf("%s You are in the menu - nothing to quit from.\n", MessagePrefix)
+			WarningColor.Println(WrongAttemptOfExitingFromMenuMes)
 		case LoadAcronymsFromFileCommand:
 			acrs = runLoadingAcronymsFromFileMode()
 		case GenerateAcronymsFromSourceCommand:
@@ -69,7 +69,7 @@ func RunConsoleApp() {
 			processInvalidUserMenuCommand(userInp)
 		}
 
-		MenuColor.Printf("\n")
+		MenuColor.Println()
 	}
 }
 

@@ -58,7 +58,10 @@ const (
 
 // Menu messages
 const (
-	UserConfirmExitMes = MessagePrefix + " Are you sure about exiting?"
+	AskUserToEnterAnyCommandMes = MessagePrefix + " Enter a menu command:"
+
+	UserConfirmExitMes               = MessagePrefix + " Are you sure about exiting?"
+	WrongAttemptOfExitingFromMenuMes = MessagePrefix + " You are in the menu - nothing to quit from."
 
 	UserChoiceInputFormatErrMes = MessagePrefix + " Unexpected choice (incorrect input format)."
 	IncorrectNumberChoiceMes    = MessagePrefix + " Unexpected choice (a number was expected)."
