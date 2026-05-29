@@ -5,21 +5,30 @@ import (
 	"sort"
 )
 
-// #
-// Describes one acronym: the word, summary estimation (sum of letter estimations) and decodings of each letter.
-// #
-// TODO maybe change the order of fields for better memory allocating
+// # Acronym describes one acronym: the word, summary estimation (sum of letter estimations) and decodings of each letter.
+//
+// # TODOs:
+//
+//   - Maybe change the order of fields for better memory allocating.
+//   - Maybe use []rune instead of string
 type Acronym struct {
-	Word            string // TODO maybe use []rune instead of string
+	Word            string
 	SumEstimation   int
 	LetterDecodings []string
 }
 type Acronyms = []Acronym
 
-// #
-// Searches for acronym 'word' in Acronyms collection.
-// Returns index and true if have found, some int and false else.
-// #
+// # ContainsAcronym searches for acronym 'word' in Acronyms collection.
+//
+// # Params:
+//
+//   - acronym to find
+//   - acronyms collection to find in
+//
+// # Returns:
+//
+//   - index (0 if not found)
+//   - flag if found
 func ContainsAcronym(word string, acrs Acronyms) (int, bool) {
 	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
 		return word == acr.Word
@@ -28,10 +37,21 @@ func ContainsAcronym(word string, acrs Acronyms) (int, bool) {
 	return ind, (0 <= ind) && (ind < len(acrs))
 }
 
-// #
-// Searches for acronym 'word' in Acronyms collection by binary search (collection must be in alphabet order).
-// Returns index and true if have found, index of place for inserting and false else.
-// #
+// # ContainsAcronymBS searches for acronym 'word' in Acronyms collection.
+//
+// # Params:
+//
+//   - acronym to find
+//   - acronyms collection to find in
+//
+// # Returns:
+//
+//   - index (0 if not found)
+//   - flag if found
+//
+// # Description:
+//
+// Uses binary search. Needs alphabet ordered acronyms collection.
 func ContainsAcronymBS(word string, acrs Acronyms) (int, bool) {
 	return slices.BinarySearchFunc(acrs, word, func(acr Acronym, word string) int {
 		switch {
@@ -45,10 +65,17 @@ func ContainsAcronymBS(word string, acrs Acronyms) (int, bool) {
 	})
 }
 
-// #
-// Searches for acronym 'word' in Acronyms collection.
-// Returns (acronym, true) if have found, (empty acronym, false) else.
-// #
+// # TakeAcronym searches for acronym 'word' in Acronyms collection.
+//
+// # Params:
+//
+//   - acronym to find
+//   - acronyms collection to find in
+//
+// # Returns:
+//
+//   - found acronym
+//   - flag if found
 func TakeAcronym(word string, acrs Acronyms) (Acronym, bool) {
 	ind, ok := ContainsAcronym(word, acrs)
 
@@ -59,10 +86,21 @@ func TakeAcronym(word string, acrs Acronyms) (Acronym, bool) {
 	}
 }
 
-// #
-// Searches for acronym 'word' in Acronyms collection by binary search (collection must be in alphabet order).
-// Returns (acronym, true) if have found, (empty acronym, false) else.
-// #
+// # ContainsAcronymBS searches for acronym 'word' in Acronyms collection.
+//
+// # Params:
+//
+//   - acronym to find
+//   - acronyms collection to find in
+//
+// # Returns:
+//
+//   - found acronym
+//   - flag if found
+//
+// # Description:
+//
+// Uses binary search. Needs alphabet ordered acronyms collection.
 func TakeAcronymBS(word string, acrs Acronyms) (Acronym, bool) {
 	ind, ok := ContainsAcronymBS(word, acrs)
 
@@ -73,10 +111,7 @@ func TakeAcronymBS(word string, acrs Acronyms) (Acronym, bool) {
 	}
 }
 
-// #
-// A wrapper for sorting Acronyms collection by summary estimations of its elements.
-// Returns nothing, just sorts in place.
-// #
+// # SortAcronymsBySumEstimation is a wrapper for sorting (in place) Acronyms collection by summary estimations of its elements.
 func SortAcronymsBySumEstimation(acrs Acronyms) {
 	decreasingSumEstimationComparator := func(i, j int) bool {
 		return acrs[i].SumEstimation > acrs[j].SumEstimation
@@ -84,10 +119,7 @@ func SortAcronymsBySumEstimation(acrs Acronyms) {
 	sort.Slice(acrs, decreasingSumEstimationComparator)
 }
 
-// #
-// A wrapper for alphabetically sorting of Acronyms collection.
-// Returns nothing, just sorts in place.
-// #
+// # SortAcronymsByAlphabet is a wrapper for alphabetically sorting (in place) of Acronyms collection.
 func SortAcronymsByAlphabet(acrs Acronyms) {
 	increasingAlphabetComparator := func(i, j int) bool {
 		return acrs[i].Word < acrs[j].Word

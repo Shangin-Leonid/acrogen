@@ -7,20 +7,30 @@ import (
 	"github.com/Shangin-Leonid/acrogen/cont"
 )
 
-// #
-// Describes a parameter for acronym generating function.
-// #
+// # AcrGeneratorMode describes a parameter for acronym generating function.
 type AcrGeneratorMode int
 
+// Modes of acronym generation.
 const (
 	Ordered    AcrGeneratorMode = 1
 	NonOrdered AcrGeneratorMode = 2
 )
 
-// #
-// Generates acronyms from 'src': check all possible (non-)ordered (depends on 'agm' param) letter combinations and take all that are in dictionary.
-// Returns Acronyms collection.
-// #
+// GenerateAcronyms generates acronyms in passed mode.
+//
+// # Params:
+//
+//   - source data
+//   - dictionary of existing words
+//   - mode of generation (see 'AcrGeneratorMode')
+//
+// # Returns:
+//
+//   - generated acronyms collection
+//
+// # Description:
+//
+// Uses source and dictionary for checking all possible (non-)ordered (depends on 'agm' param) letter combinations and take all that are in the dictionary.
 func GenerateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
 	if len(src) == 0 || len(src) == 1 {
 		return Acronyms{}
@@ -36,10 +46,17 @@ func GenerateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
 	return Acronyms{}
 }
 
-// #
-// Generates acronyms from 'src': check all possible ordered letter combinations and take all that are in dictionary.
-// Returns Acronyms collection.
-// #
+// generateAcronymsWithOrder generates acronyms with strong order of letters.
+//
+// # Params:
+//
+//   - source data
+//   - dictionary of existing words
+//   - mode of generation (see 'AcrGeneratorMode')
+//
+// # Returns:
+//
+//   - generated acronyms collection
 func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 	letterCombs := algo.CalcOrderedCartesianProduct(src)
 
@@ -73,10 +90,17 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 	return acrs
 }
 
-// #
-// Generates acronyms from 'src': check all possible non-ordered letter combinations and take all that are in dictionary.
-// Returns Acronyms collection.
-// #
+// generateAcronymsWithOrder generates acronyms without any order of letters.
+//
+// # Params:
+//
+//   - source data
+//   - dictionary of existing words
+//   - mode of generation (see 'AcrGeneratorMode')
+//
+// # Returns:
+//
+//   - generated acronyms collection
 func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
 	var acrs Acronyms
 
