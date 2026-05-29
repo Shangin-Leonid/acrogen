@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"acrogen/ag"
+	"github.com/Shangin-Leonid/acrogen/ag"
 )
 
 // # printAcronymInDetail prints an acronym in console in detailed format (decodes each letter).

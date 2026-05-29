@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"acrogen/utils"
+	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
 type StringParserFunc = func(string) error // TODO without '='

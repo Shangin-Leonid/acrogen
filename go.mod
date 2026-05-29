@@ -1,4 +1,4 @@
-module acrogen
+module github.com/Shangin-Leonid/acrogen
 
 go 1.25.1
 

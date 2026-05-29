@@ -3,8 +3,8 @@ package cont /* Containers */
 import (
 	"errors"
 
-	"acrogen/algo"
-	"acrogen/utils"
+	"github.com/Shangin-Leonid/acrogen/algo"
+	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
 // TODO refactor with OOP

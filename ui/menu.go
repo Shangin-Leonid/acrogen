@@ -8,9 +8,9 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"acrogen/ag"
-	"acrogen/fio"
-	"acrogen/utils"
+	"github.com/Shangin-Leonid/acrogen/ag"
+	"github.com/Shangin-Leonid/acrogen/fio"
+	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
 // # RunConsoleApp runs the whole 'acrogen' application (the inner point).

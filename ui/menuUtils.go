@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"acrogen/utils"
+	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
 // Binary choice constants (Yes == true, No == !Yes).

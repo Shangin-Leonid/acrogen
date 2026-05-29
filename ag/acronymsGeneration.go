@@ -3,8 +3,8 @@ package ag /* Acronyms Generation */
 import (
 	"slices"
 
-	"acrogen/algo"
-	"acrogen/cont"
+	"github.com/Shangin-Leonid/acrogen/algo"
+	"github.com/Shangin-Leonid/acrogen/cont"
 )
 
 // #

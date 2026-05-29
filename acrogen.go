@@ -1,7 +1,7 @@
 package main
 
 import (
-	"acrogen/ui"
+	"github.com/Shangin-Leonid/acrogen/ui"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package ui /* User Interface */
 import (
 	"github.com/fatih/color"
 
-	"acrogen/utils"
+	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
 // Default filenames enumeration

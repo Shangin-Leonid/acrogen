@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode"
 
-	"acrogen/ag"
+	"github.com/Shangin-Leonid/acrogen/ag"
 )
 
 // #
