@@ -45,7 +45,7 @@ endif
 all: build run
 
 build:
-	go build -o $(EXE_FILENAME) *.go
+	go build -trimpath -o $(EXE_FILENAME) *.go
 
 run:
 	$(EXE_FILENAME) $(LOG_REDIRECT_COMMAND)
