@@ -7,9 +7,13 @@ import (
 	"acrogen/ag"
 )
 
-// #
-// Prints acronym in console in detailed format (decodes each letter).
-// #
+// # printAcronymInDetail prints an acronym in console in detailed format (decodes each letter).
+//
+// # Params:
+//
+//   - acronym to print
+//
+// # Returns: -
 func printAcronymInDetail(acr ag.Acronym) {
 	fmt.Printf("%s%s%d\n", acr.Word, TokenSeparator, acr.SumEstimation)
 	for i, letter := range []rune(acr.Word) {
@@ -17,16 +21,31 @@ func printAcronymInDetail(acr ag.Acronym) {
 	}
 }
 
-// #
-// Prints acronyms in console in poor format (acronym only, without any decoding info).
+// # printAcronyms prints first acronyms from collection in console.
+//
+// # Params:
+//
+//   - collection of acronyms to print
+//   - amount of acronyms to print
+//
+// # Returns:
+//
+//   - error
+//
+// # Description:
+//
+// The format is poor (acronym only, without any decoding info).
+//
 // 'amount' == 0 means printing all acronyms.
-// #
+//
+// # TODOs:
+//
+//   - Use 'all' instead of '0' command to print all acronyms.
 func printAcronyms(acrs ag.Acronyms, amount int) error {
 
 	switch {
 	case amount < 0:
 		return errors.New("incorrect (negative) amount of acronyms")
-	// TODO use 'all' command to print all acronyms
 	case amount == 0:
 		amount = len(acrs)
 	case amount > len(acrs):
@@ -41,11 +60,25 @@ func printAcronyms(acrs ag.Acronyms, amount int) error {
 	return nil
 }
 
-// #
-// Prints most suitable (by SumEstimation) acronyms in console in poor format (acronym only, without any decoding info).
-// #
+// # printMostSuitableAcronyms prints most suitable (by SumEstimation) acronyms in console.
+//
+// # Params:
+//
+//   - collection of acronyms to select from
+//   - amount of acronyms to print
+//
+// # Returns:
+//
+//   - error
+//
+// # Description:
+//
+// The format is poor (acronym only, without any decoding info).
+//
+// # TODOs:
+//
+//   - Use another data structure (skip list maybe) to avoid sorting and getting suitable acronyms faster.
 func printMostSuitableAcronyms(acrs ag.Acronyms, amount int) error {
-	// TODO optimize by not sorting all elements, but by taking the amount of best ones
 	sortedAcrs := make(ag.Acronyms, len(acrs))
 	copy(sortedAcrs, acrs)
 	ag.SortAcronymsBySumEstimation(sortedAcrs)

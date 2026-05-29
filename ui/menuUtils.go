@@ -11,12 +11,22 @@ import (
 // Binary choice constants (Yes == true, No == !Yes).
 const Yes, No = true, !Yes
 
-// #
-// Prints a string inviting user to make a decision: yes or no.
-// Returns 'Yes'(==true) or 'No'(== !Yes) and error, if user input is incorrect.
-// TODO implement several tries for input (amount of tries as parameter)
-// TODO maybe add 2 callbacks as params: 1 for yes and 1 for no. Then implify usage of the function.
-// #
+// # giveUserYesOrNoChoice prints a string inviting user to make a decision: yes or no and processes his choice.
+//
+// # Params:
+//
+//   - inviting message
+//   - message for invalid input
+//
+// # Returns:
+//
+//   - user choice as bool: yes or no
+//   - error for invalid input
+//
+// # TODOs:
+//
+//   - implement several tries for input (amount of tries as parameter).
+//   - maybe add 2 callbacks as params: 1 for yes and 1 for no. Then implify usage of the function.
 func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 
 	isInpValid := func(inp string) (bool, error) {
@@ -40,11 +50,21 @@ func giveUserYesOrNoChoice(invitingMes, invalidInpMes string) (bool, error) {
 	return YesOrNo, err
 }
 
-// #
-// Prints a string inviting user to make a decision about number.
-// Returns the entered number (0, if err) and error, if user input is incorrect.
-// TODO implement several tries for input (amount of tries as parameter)
-// #
+// # giveUserNumberChoice prints a string inviting user to make a decision about number and processes his choice.
+//
+// # Params:
+//
+//   - inviting message
+//   - message for invalid input
+//
+// # Returns:
+//
+//   - user choice: number (0 if error)
+//   - error for invalid input
+//
+// # TODOs:
+//
+//   - implement several tries for input (amount of tries as parameter).
 func giveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err error) {
 
 	isInpValid := func(inp string) (bool, error) {
@@ -69,9 +89,17 @@ func giveUserNumberChoice(invitingMes, invalidInpMes string) (userNum int, err e
 	return userNum, err
 }
 
-// #
-// TODO docs
-// #
+// # giveUserChoiceOfFilename prints a string inviting user to make a decision about filename and processes his choice.
+//
+// # Params:
+//
+//   - inviting message
+//   - message for invalid input
+//
+// # Returns:
+//
+//   - user choice: filename as string
+//   - error for invalid input
 func giveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
 	MenuColor.Printf("%s %s\n", MessagePrefix, invitingMes)
 
@@ -87,10 +115,17 @@ func giveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
 	return filename, nil
 }
 
-// #
+// # processUserInputUntilExitCommand
+//
+// # Description:
+//
 // No words about format, just look inside...
-// TODO documentation
-// #
+//
+// # TODOs:
+//
+//   - docs
+//   - simplify if possible
+//   - maybe change the signature
 func processUserInputUntilExitCommand(
 	exitCommand string,
 	invitingMes string,
@@ -111,10 +146,17 @@ func processUserInputUntilExitCommand(
 		nil)
 }
 
-// #
+// # processUserInputUntil
+//
+// # Description:
+//
 // No words about format, just look inside...
-// TODO documentation
-// #
+//
+// # TODOs:
+//
+//   - docs
+//   - simplify if possible
+//   - maybe change the signature
 func processUserInputUntil(
 	invitingMes string,
 	userGuideMes string,

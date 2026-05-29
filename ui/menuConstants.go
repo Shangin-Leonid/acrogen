@@ -14,9 +14,9 @@ const (
 	OutputDefaultFilename = "acrs.txt"
 )
 
-// User menu commands
 type MenuCommand = string
 
+// User menu commands
 const (
 	HelpCommand        = "!H"
 	ExitProgramCommand = "!Q"
@@ -82,9 +82,7 @@ var SuccessColor *color.Color = color.New(color.FgGreen, color.Bold)            
 var WarningColor *color.Color = color.RGB(255, 165, 0).Add(color.Bold)          // Orange
 var ErrorColor *color.Color = color.New(color.FgRed, color.Bold)                // Red
 
-// #
-// Prints a list of available menu commands and modes (with some helper info).
-// #
+// # printMenuInfo prints a list of available menu commands and modes (with some helper info).
 func printMenuInfo() {
 	MenuColor.Printf("\n%s Menu (enter commands without quotes):\n", MenuPrefix)
 	MenuColor.Printf("\n")
@@ -104,5 +102,7 @@ func printMenuInfo() {
 }
 
 // Data format in console input-output
-const TokenSeparator = " -- "
-const LineSeparator = ""
+const (
+	TokenSeparator = " -- "
+	LineSeparator  = ""
+)

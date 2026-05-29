@@ -13,13 +13,21 @@ import (
 	"acrogen/utils"
 )
 
-// #
-// Runs the 'acrogen' application.
-// The inner point of the program.
-// TODO '!Q' in decoding mode must exit the program
-// TODO ask user if he is sure before exit the program
-// TODO '!H' in decoding mode must work
-// #
+// # RunConsoleApp runs the whole 'acrogen' application (the inner point).
+//
+// # Params: -
+//
+// # Returns: -
+//
+// # Description:
+//
+// Covers panic, handles errors.
+//
+// # TODOs:
+//
+//   - '!Q' in decoding mode must exit the program.
+//   - Ask user if he is sure before exit the program.
+//   - '!H' in decoding mode must work.
 func RunConsoleApp() {
 
 	defer func() {
@@ -77,9 +85,13 @@ func RunConsoleApp() {
 	}
 }
 
-// #
-// Formats and prints error in console in 'stderr'.
-// #
+// # printAndLogErrorIfExists formats, logs and prints error if it exists.
+//
+// # Params: -
+//
+// # Returns: -
+//
+// # Description:
 func printAndLogErrorIfExists(err error) {
 	if err == nil {
 		return
@@ -89,18 +101,31 @@ func printAndLogErrorIfExists(err error) {
 	ErrorColor.Fprintf(os.Stdout, "\n%s Error: %v.", MenuPrefix, err)
 }
 
-// #
-// Prints a hint of menu. Helps a user to apply the 'acrogen'.
-// #
+// # runHelpMode prints a hint of menu.
+//
+// # Params: -
+//
+// # Returns: -
+//
+// # Description:
+//
+// Helps a user to apply the 'acrogen'.
 func runHelpMode() {
-	// TODO
 	printMenuInfo()
 }
 
-// #
-// Asks user to confirm exiting. Prints something before return positive exiting flag.
-// Returns 'true' if need to exit program.
-// #
+// # runTryOfExiting asks user to confirm exiting and returns result of his input.
+//
+// # Params: -
+//
+// # Returns:
+//
+//   - flag if need to exit application
+//   - error
+//
+// # Description:
+//
+// Prints "bye-bye" message if need.
 func runTryOfExiting() (needExit bool, _ error) {
 	yesOrNo, err := giveUserYesOrNoChoice(UserConfirmExitMes, UserChoiceInputFormatErrMes)
 	if err != nil {
@@ -115,10 +140,14 @@ func runTryOfExiting() (needExit bool, _ error) {
 	return true, nil
 }
 
-// #
-// Tries to load acronyms from file (default or user defined).
-// Returns acronyms (nil if error).
-// #
+// # runLoadingAcronymsFromFileMode tries to load acronyms from file (default or user's).
+//
+// # Params: -
+//
+// # Returns:
+//
+//   - acronyms collection (nil if error)
+//   - error
 func runLoadingAcronymsFromFileMode() (ag.Acronyms, error) {
 	MenuColor.Printf("\n%s Loading acronyms from file:\n", MenuPrefix)
 
@@ -147,10 +176,14 @@ func runLoadingAcronymsFromFileMode() (ag.Acronyms, error) {
 	return acrs, nil
 }
 
-// #
-// Tries to generate acronyms from source and dictionary files (default or user defined).
-// Returns acronyms (nil if error).
-// #
+// # runGeneratingAcronymsFromSourceMode tries to generate acronyms from source and dictionary files (default or user's)
+//
+// # Params: -
+//
+// # Returns:
+//
+//   - acronyms collection (nil if error)
+//   - error
 func runGeneratingAcronymsFromSourceMode() (ag.Acronyms, error) {
 	MenuColor.Printf("\n%s Generating acronyms from source:\n", MenuPrefix)
 
@@ -211,9 +244,19 @@ func runGeneratingAcronymsFromSourceMode() (ag.Acronyms, error) {
 	return acrs, nil
 }
 
-// #
-// Prints acronyms (all or user defined amount).
-// #
+// # runListOfAcronymsPrintingMode prints acronyms.
+//
+// # Params:
+//
+//   - collection of acronyms to print
+//
+// # Returns:
+//
+//   - error
+//
+// # Description:
+//
+// Gives a user a choice of acronyms amount.
 func runListOfAcronymsPrintingMode(acrs ag.Acronyms) error {
 	MenuColor.Printf("\n%s Printing acronyms in console:\n", MenuPrefix)
 
@@ -241,9 +284,19 @@ func runListOfAcronymsPrintingMode(acrs ag.Acronyms) error {
 	return nil
 }
 
-// #
-// Decodes acronyms.
-// #
+// # runAcronymsDecodingMode decodes acronyms.
+//
+// # Params:
+//
+//   - collection of acronyms to decode
+//
+// # Returns:
+//
+//   - error
+//
+// # TODOs:
+//
+//   - Maybe reuse index that was found in 'containsAcronymWrap' for 'takeAndPrintAcronym'
 func runAcronymsDecodingMode(acrs ag.Acronyms) error {
 	invitingLine := fmt.Sprintf("\n%s Acronyms decoding (use \"%s\" to quit from this mode):\n", MenuPrefix, QuitModeCommand)
 
@@ -281,9 +334,15 @@ func runAcronymsDecodingMode(acrs ag.Acronyms) error {
 	return nil
 }
 
-// #
-// Saves acronyms to output file (default or user defined).
-// #
+// # runSavingAcronymsToFileMode saves acronyms to output file (default or user's).
+//
+// # Params:
+//
+//   - collection of acronyms to save
+//
+// # Returns:
+//
+//   - error
 func runSavingAcronymsToFileMode(acrs ag.Acronyms) error {
 	MenuColor.Printf("\n%s Saving acronyms to file:\n", MenuPrefix)
 
@@ -320,9 +379,17 @@ func runSavingAcronymsToFileMode(acrs ag.Acronyms) error {
 	return nil
 }
 
-// #
-// Processes incorrect user menu command and tries to help or guess the meaning of the user's input.
-// #
+// # processInvalidUserMenuCommand processes incorrect user menu command and tries to help.
+//
+// # Params:
+//
+//   - user's input as string
+//
+// # Returns: -
+//
+// # Description:
+//
+// Tries to guess the meaning of the user's incorrect input.
 func processInvalidUserMenuCommand(userInp string) {
 	spaceFreeUserInp := strings.ReplaceAll(userInp, " ", "")
 
