@@ -77,10 +77,12 @@ const (
 )
 
 // Color themes
-var MenuColor *color.Color = color.New(color.FgYellow, color.Bold, color.Faint) // Neutral color
-var SuccessColor *color.Color = color.New(color.FgGreen, color.Bold)            // Green
-var WarningColor *color.Color = color.RGB(255, 165, 0).Add(color.Bold)          // Orange
-var ErrorColor *color.Color = color.New(color.FgRed, color.Bold)                // Red
+var (
+	MenuColor    *color.Color = color.New(color.FgYellow, color.Bold, color.Faint) // Neutral color
+	SuccessColor *color.Color = color.New(color.FgGreen, color.Bold)               // Green
+	WarningColor *color.Color = color.RGB(255, 165, 0).Add(color.Bold)             // Orange
+	ErrorColor   *color.Color = color.New(color.FgRed, color.Bold)                 // Red
+)
 
 // # printMenuInfo prints a list of available menu commands and modes (with some helper info).
 func printMenuInfo() {
