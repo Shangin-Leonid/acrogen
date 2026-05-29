@@ -127,7 +127,7 @@ func GetCopy(p Permutation) Permutation {
 	return Permutation{algo.GetCopy(p.elems)}
 }
 
-// # GetPermutatedSlice returns copy of 'slice' permutated by 'perm'.
+// # GetPermutatedSlice returns copy of 'slice' permutated by 'perm' and error.
 func GetPermutatedSlice[T any](slice []T, perm Permutation) ([]T, error) {
 	if len(slice) < perm.Len() {
 		return nil, errors.New("incorrect slice and permutation sizes in 'GetPermutatedSlice()'")
