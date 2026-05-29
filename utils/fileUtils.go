@@ -5,10 +5,19 @@ import (
 	"path/filepath"
 )
 
-// #
-// Checks validness of name of plain text file.
-// TODO check file existance. If it exists then ask user if he is sure about rewriting content
-// #
+// # IsTextFileNameValid checks validness of name of plain text file.
+//
+// # Params:
+//
+//   - filename
+//
+// # Returns:
+//
+//   - flag if valid
+//
+// # TODOs:
+//
+//   - Check file existance. If it exists then ask user if he is sure about rewriting content.
 func IsTextFileNameValid(filename string) bool {
 	ext := path.Ext(filename)
 	if ext != ".txt" {
@@ -18,7 +27,7 @@ func IsTextFileNameValid(filename string) bool {
 	return true
 }
 
-// TODO docs
+// # GetWithoutExt trims file extension from filename.
 func GetWithoutExt(filename string) string {
 	return filename[:len(filename)-len(filepath.Ext(filename))]
 }
