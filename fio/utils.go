@@ -25,7 +25,7 @@ type StringParserFunc = func(string) error // TODO without '='
 //   - error
 func parseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc StringParserFunc) (nSuccessfullyParsed int, err error) {
 	if !utils.IsTextFileNameValid(filename) {
-		return 0, errors.New("некорректное название файла")
+		return 0, errors.New("invalid name of text file")
 	}
 
 	file, err := os.Open(filename)
