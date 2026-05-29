@@ -41,7 +41,7 @@ func GenerateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
 // Returns Acronyms collection.
 // #
 func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
-	letterCombs, _ := algo.CalcOrderedCartesianProduct(src)
+	letterCombs := algo.CalcOrderedCartesianProduct(src)
 
 	convertToAcronym := func(lo LetterOpts) Acronym {
 		word := make([]rune, 0, len(lo))

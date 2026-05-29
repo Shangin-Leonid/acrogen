@@ -1,18 +1,27 @@
 package algo /* Algorithms */
 
-import (
-	"errors"
-)
-
-// #
-// Calculates and returns ordered Cartesian product of sets.
-// Input and output sets are actually represented by slices (as types).
-// Here is an example:
+// # CalcOrderedCartesianProduct calculates ordered Cartesian product of sets.
+//
+// # Params:
+//
+//   - slice that represents a set
+//
+// # Returns:
+//
+//   - slice that represents a cartesian product of input set:
+//     (nil if input is empty; empty if input contains at least one empty set)
+//
+// # Description:
+//
+// Example:
 // {1, 2} x {3, 4} x {5, 6} -> {{135}, {136}, {145}, {146}, {235}, {236}, {245}, {246}} (result without commas)
-// #
-func CalcOrderedCartesianProduct[T any](inp [][]T) ([][]T, error) {
+//
+// # TODOs:
+//
+//   - Optimize by using remainder arithmetic.
+func CalcOrderedCartesianProduct[T any](inp [][]T) [][]T {
 	if len(inp) == 0 {
-		return nil, errors.New("no sets (slices) were passed")
+		return nil
 	}
 
 	amountOfOutputSlices := 1
@@ -21,7 +30,7 @@ func CalcOrderedCartesianProduct[T any](inp [][]T) ([][]T, error) {
 	}
 
 	if amountOfOutputSlices == 0 { // means one of sets is empty, so the product is empty too
-		return [][]T{}, nil // return empty set
+		return [][]T{}
 	}
 
 	// Prealloc enough memory
@@ -33,7 +42,6 @@ func CalcOrderedCartesianProduct[T any](inp [][]T) ([][]T, error) {
 	// Calculate the product
 
 	indicesToTake := make([]int, len(inp))
-	// TODO optimize by using remainder arithmetic
 	updateIndicesToTake := func() {
 		i := len(indicesToTake) - 1
 		for i > 0 && indicesToTake[i] == len(inp[i])-1 {
@@ -50,5 +58,5 @@ func CalcOrderedCartesianProduct[T any](inp [][]T) ([][]T, error) {
 		updateIndicesToTake()
 	}
 
-	return outp, nil
+	return outp
 }

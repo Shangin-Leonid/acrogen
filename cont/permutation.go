@@ -136,7 +136,7 @@ func GetPermutatedSlice[T any](slice []T, perm Permutation) ([]T, error) {
 	permutated := algo.GetCopy(slice)
 
 	for ind := 0; ind < perm.Len(); ind++ {
-		permutated[ind] = slice[perm.get(ind)]
+		permutated[ind] = slice[perm.Get(ind)]
 	}
 
 	return permutated, nil
