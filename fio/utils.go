@@ -11,10 +11,18 @@ import (
 
 type StringParserFunc = func(string) error // TODO without '='
 
-// #
-// Opens file, goes through it and parses each line by 'parserFunc'.
-// Returns error and amount of lines that have been parsed successfully.
-// #
+// # parseTextFileLineByLine opens file, goes through it and parses each line by 'parserFunc'.
+//
+// # Params:
+//
+//   - filename
+//   - function for parsing first line (maybe nil)
+//   - function for parsing other lines
+//
+// # Returns:
+//
+//   - amount of successfully parsed lines
+//   - error
 func parseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc StringParserFunc) (nSuccessfullyParsed int, err error) {
 	if !utils.IsTextFileNameValid(filename) {
 		return 0, errors.New("некорректное название файла")
@@ -45,11 +53,19 @@ func parseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc St
 	return nSuccessfullyParsed, nil
 }
 
-// #
-// Creates new file with 'filename'.
-// Writes slice elements in file in format of 'formatFunc'.
-// Returns amount of successful written elements and error.
-// #
+// # writeSliceToTextFile creates new file and write slice elements to it using formatting func.
+//
+// # Params:
+//
+//   - slice
+//   - destination file name
+//   - flag if need to write len of slice at first line
+//   - func for formatting elements
+//
+// # Returns:
+//
+//   - amount of successfully written lines
+//   - error
 func writeSliceToTextFile[T any](slice []T, filename string, needWriteLen bool, formatFunc func(T) string) (nSuccessfulWrites int, err error) {
 	if !utils.IsTextFileNameValid(filename) {
 		return 0, errors.New("incorrect name of output file")

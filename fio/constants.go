@@ -1,4 +1,7 @@
 package fio /* File Input Output */
 
-const TokenSeparator = " -- "
-const LineSeparator = ""
+// Separators for text tokens
+const (
+	TokenSeparator = " -- "
+	LineSeparator  = ""
+)

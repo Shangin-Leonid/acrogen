@@ -9,10 +9,16 @@ import (
 	"github.com/Shangin-Leonid/acrogen/ag"
 )
 
-// #
-// Parses source data file and load its content.
-// Returns 'ag.Src' collection and error.
-// #
+// # LoadSrcFromFile parses source data file and load its content.
+//
+// # Params:
+//
+//   - source file name
+//
+// # Returns:
+//
+//   - 'ag.Src' collection
+//   - error
 func LoadSrcFromFile(srcFilename string) (ag.Src, error) {
 	src := make(ag.Src, 0, 10)
 	src = append(src, make(ag.LetterOpts, 0, 10))
@@ -61,10 +67,17 @@ func LoadSrcFromFile(srcFilename string) (ag.Src, error) {
 	return src, nil
 }
 
-// #
-// Parses dictionary file (list of valid words) and load its content.
-// Returns dictionary and error.
-// #
+// # LoadDictionaryFromFile parses dictionary file (list of valid words) and load its content.
+//
+// # Params:
+//
+//   - dictionary file name
+//   - expected amount of words
+//
+// # Returns:
+//
+//   - 'ag.Dict' collection
+//   - error
 func LoadDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (ag.Dict, error) {
 	dict := make(ag.Dict, expectedWordsAmount)
 
@@ -82,18 +95,30 @@ func LoadDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (ag
 	return dict, nil
 }
 
-// Enumeration represents mode of acronyms file export.
 type ExportModeT int
 
+// Enumeration represents mode of acronyms file export.
 const (
 	_ ExportModeT = iota
 	FullFormat
 	OnelineFormat
 )
 
-// #
-// Saves (exports) acronyms to output file in short format (without letters decoding, but each acronym is on new line).
-// #
+// # SaveAcronymsToFile saves (exports) acronyms to output file.
+//
+// # Params:
+//
+//   - acronyms to save
+//   - destination file name
+//   - mode of export (full or oneline, see fio.ExportModeT)
+//
+// # Returns:
+//
+//   - error
+//
+// # Description:
+//
+// The format is the third parameter passed to function.
 func SaveAcronymsToFile(acrs ag.Acronyms, outputFilename string, mode ExportModeT) error {
 	var formatFunc func(acr ag.Acronym) string
 
@@ -116,9 +141,19 @@ func SaveAcronymsToFile(acrs ag.Acronyms, outputFilename string, mode ExportMode
 	return err
 }
 
-// #
-// Import acronyms from file with 'FullFormat'.
-// #
+// # LoadAcronymsFromFile imports acronyms from file with 'FullFormat'.
+//
+// # Params:
+//
+//   - source file name
+//
+// # Returns:
+//
+//   - acronyms have been read
+//   - error
+//
+// # TODOs:
+//   - Refactor, simplify (see 'parseAcronymsInFile' inside)
 func LoadAcronymsFromFile(filename string) (acrs ag.Acronyms, err error) {
 
 	var parseFirstLineInFile StringParserFunc = func(line string) error {
