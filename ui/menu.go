@@ -67,7 +67,7 @@ func RunConsoleApp() {
 			processInvalidUserMenuCommand(userInp)
 		}
 
-		formatAndPrintErrorIfExists(err)
+		printAndLogErrorIfExists(err)
 
 		if needExit {
 			return
@@ -80,11 +80,12 @@ func RunConsoleApp() {
 // #
 // Formats and prints error in console in 'stderr'.
 // #
-func formatAndPrintErrorIfExists(err error) {
+func printAndLogErrorIfExists(err error) {
 	if err == nil {
 		return
 	}
 
+	log.Printf("Error: %v.\n", err)
 	ErrorColor.Fprintf(os.Stdout, "\n%s Error: %v.", MenuPrefix, err)
 }
 
