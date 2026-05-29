@@ -10,14 +10,12 @@ import (
 // TODO refactor with OOP
 // TODO operator < > ==
 
-// Permutation is a bijection [0, 1, ... N] <--> [0, 1, ... N] with lexicographical order.
+// # Permutation is a bijection [0, 1, ... N] <--> [0, 1, ... N] with lexicographical order.
 type Permutation struct {
 	elems []int
 }
 
-// #
-// Creates new identity permutation (0, 1, ... length-1).
-// #
+// # NewIdPermutation creates new identity permutation (0, 1, ... length-1).
 func NewIdPermutation(length int) Permutation {
 	idPerm := Permutation{make([]int, length)}
 	for i := range idPerm.elems {
@@ -26,55 +24,41 @@ func NewIdPermutation(length int) Permutation {
 	return idPerm
 }
 
-// #
-// Returns a length (size) of the permutation.
-// #
+// # Len returns a length (size) of the permutation.
 func (p Permutation) Len() int {
 	return len(p.elems)
 }
 
-// #
-// Returns the copy of underlying slice.
-// #
+// # AsSlice returns the copy of underlying int slice.
 func (p Permutation) AsSlice() []int {
 	return algo.GetCopy(p.elems)
 }
 
-// #
-// Returns the i-th element.
-// #
-func (p Permutation) get(i int) int {
+// # get returns the i-th element.
+func (p Permutation) Get(i int) int {
 	return p.elems[i]
 }
 
-// #
-// Resizes the permutation and set it to Id.
-// #
+// # Resize resizes the permutation and set it to Id.
 func (p *Permutation) Resize(newLength int) {
 	*p = NewIdPermutation(newLength)
 }
 
-// #
-// Returns the next (lexicographically) permutation.
-// #
+// # Next returns the next (lexicographically) permutation.
 func (p Permutation) Next() Permutation {
 	nextP := GetCopy(p)
 	nextP.shiftToNext()
 	return nextP
 }
 
-// #
-// Returns the previous (lexicographically) permutation.
-// #
+// # Prev returns the previous (lexicographically) permutation.
 func (p Permutation) Prev() Permutation {
 	prevP := GetCopy(p)
 	prevP.shiftToPrev()
 	return prevP
 }
 
-// #
-// Shifts in place with 's' steps toward or backward (lexicographically).
-// #
+// # Shift shifts in place with 's' steps toward or backward (lexicographically).
 func (p *Permutation) Shift(s int) {
 	var shiftFunc func(*Permutation)
 	if s < 0 {
@@ -89,9 +73,7 @@ func (p *Permutation) Shift(s int) {
 	}
 }
 
-// #
-// Shifts the permutation to next (lexicographically).
-// #
+// # shiftToNext shifts the permutation to next (lexicographically).
 func (p *Permutation) shiftToNext() {
 	elems := p.elems
 
@@ -115,17 +97,16 @@ func (p *Permutation) shiftToNext() {
 	algo.ReverseSlice(elems[i+1:])
 }
 
-// #
-// Shifts the permutation to previous (lexicographically).
-// #
+// # shiftToPrev shifts the permutation to previous (lexicographically).
+//
+// TODOs:
+//
+//   - Reverse shifting instead.
 func (p *Permutation) shiftToPrev() {
-	// TODO reverse shifting instead
 	p.Shift(PermutationsGroupOrder(p.Len()) - 1)
 }
 
-// #
-// Returns if slice can represent a valid permutation.
-// #
+// # IsPermutation returns if slice can represent a valid permutation.
 func IsPermutation(slice []int) bool {
 	type void = utils.Void
 	elems := make(map[int]void, len(slice))
@@ -141,16 +122,12 @@ func IsPermutation(slice []int) bool {
 	return len(elems) == len(slice)
 }
 
-// #
-// Returns a copy of permutation.
-// #
+// # GetCopy returns a copy of permutation.
 func GetCopy(p Permutation) Permutation {
 	return Permutation{algo.GetCopy(p.elems)}
 }
 
-// #
-// Returns copy of 'slice' permutated by 'perm'.
-// #
+// # GetPermutatedSlice returns copy of 'slice' permutated by 'perm'.
 func GetPermutatedSlice[T any](slice []T, perm Permutation) ([]T, error) {
 	if len(slice) < perm.Len() {
 		return nil, errors.New("incorrect slice and permutation sizes in 'GetPermutatedSlice()'")
@@ -165,9 +142,7 @@ func GetPermutatedSlice[T any](slice []T, perm Permutation) ([]T, error) {
 	return permutated, nil
 }
 
-// #
-// Returns the order of S_n group that contains permutation of 'permLength'.
-// #
+// # PermutationsGroupOrder returns the order of S_n group that contains permutation of 'permLength'.
 func PermutationsGroupOrder(permLength int) int {
 	return int(algo.CalcFactorial(uint(permLength)))
 }
