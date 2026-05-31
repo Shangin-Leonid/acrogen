@@ -1,7 +1,6 @@
 package ui /* User Interface */
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 
@@ -105,11 +104,11 @@ func giveUserChoiceOfFilename(invitingMes string) (filename string, err error) {
 
 	_, err = fmt.Scanf("%s", &filename)
 	if err != nil {
-		return "", err
+		return "", utils.NewSTError(err.Error())
 	}
 
 	if !utils.IsTextFileNameValid(filename) {
-		return "", errors.New("incorrect text file name")
+		return "", utils.NewSTError("incorrect text file name")
 	}
 
 	return filename, nil
@@ -176,7 +175,7 @@ func processUserInputUntil(
 		MenuColor.Printf("%s\n", userGuideMes)
 		_, err = fmt.Scanf("%s", &userInp)
 		if err != nil {
-			return err, nProcessed
+			return utils.NewSTError(err.Error()), nProcessed
 		}
 
 		if checkIfNeedBreakBeforeValidation != nil && checkIfNeedBreakBeforeValidation(userInp) {

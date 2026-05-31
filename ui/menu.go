@@ -98,7 +98,11 @@ func printAndLogErrorIfExists(err error) {
 	}
 
 	log.Printf("Error: %v.\n", err)
-	ErrorColor.Fprintf(os.Stdout, "\n%s Error: %v.", MenuPrefix, err)
+	if ste := utils.NewSTError(""); errors.As(err, &ste) {
+		log.Printf("Stack trace of error:\n %s\n\n", ste.StackTrace())
+	}
+
+	ErrorColor.Fprintf(os.Stdout, "%s Error: %v.", MenuPrefix, err)
 }
 
 // # runHelpMode prints a hint of menu.
@@ -261,14 +265,14 @@ func runListOfAcronymsPrintingMode(acrs ag.Acronyms) error {
 	MenuColor.Printf("\n%s Printing acronyms in console:\n", MenuPrefix)
 
 	if acrs == nil {
-		return errors.New("unexpected empty acronym collection")
+		return utils.NewSTError("unexpected empty acronym collection")
 	} else if len(acrs) == 0 {
 		WarningColor.Printf("\n%s No acronyms were found\n", MenuPrefix)
 		return nil
 	}
 
 	if acrs == nil {
-		return errors.New("unexpected empty acronym collection")
+		return utils.NewSTError("unexpected empty acronym collection")
 	}
 
 	amount, err := giveUserNumberChoice(AmountOfAcronymsToBePrintedChoiceMes, IncorrectNumberChoiceMes)
@@ -301,7 +305,7 @@ func runAcronymsDecodingMode(acrs ag.Acronyms) error {
 	invitingLine := fmt.Sprintf("\n%s Acronyms decoding (use \"%s\" to quit from this mode):\n", MenuPrefix, QuitModeCommand)
 
 	if acrs == nil {
-		return errors.New("unexpected empty acronym collection")
+		return utils.NewSTError("unexpected empty acronym collection")
 	} else if len(acrs) == 0 {
 		WarningColor.Printf("\n%s No acronyms were found\n", MenuPrefix)
 		return nil
@@ -347,7 +351,7 @@ func runSavingAcronymsToFileMode(acrs ag.Acronyms) error {
 	MenuColor.Printf("\n%s Saving acronyms to file:\n", MenuPrefix)
 
 	if acrs == nil {
-		return errors.New("unexpected empty acronym collection")
+		return utils.NewSTError("unexpected empty acronym collection")
 	} else if len(acrs) == 0 {
 		WarningColor.Printf("\n%s No acronyms were found\n", MenuPrefix)
 		return nil

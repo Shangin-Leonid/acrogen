@@ -1,12 +1,12 @@
 package fio /* File Input Output */
 
 import (
-	"errors"
 	"strconv"
 	"strings"
 	"unicode"
 
 	"github.com/Shangin-Leonid/acrogen/ag"
+	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
 // # LoadSrcFromFile parses source data file and load its content.
@@ -26,7 +26,7 @@ func LoadSrcFromFile(srcFilename string) (ag.Src, error) {
 	var parseSrcFileLine StringParserFunc = func(line string) error {
 		if line == LineSeparator {
 			if len(src[len(src)-1]) == 0 {
-				return errors.New("incorrect format of input file: first (initial) or multiple consecutive blank lines are prohibited")
+				return utils.NewSTError("incorrect format of input file: first (initial) or multiple consecutive blank lines are prohibited")
 			}
 			src = append(src, make(ag.LetterOpts, 0, 10))
 			return nil
@@ -34,18 +34,18 @@ func LoadSrcFromFile(srcFilename string) (ag.Src, error) {
 
 		splittedLine := strings.Split(line, TokenSeparator)
 		if len(splittedLine) != 3 {
-			return errors.New("incorrect format of input file: unexpected data format error during reading the file")
+			return utils.NewSTError("incorrect format of input file: unexpected data format error during reading the file")
 		}
 
 		letterToken := []rune(splittedLine[0])
 		if len(letterToken) != 1 || !unicode.IsLetter(letterToken[0]) {
-			return errors.New("incorrect format of input file. first token is not a letter")
+			return utils.NewSTError("incorrect format of input file. first token is not a letter")
 		}
 		letter := unicode.ToLower(letterToken[0])
 
 		estimation, err := strconv.Atoi(splittedLine[1])
 		if err != nil {
-			return errors.New("incorrect format of input file. second token is not a number or incorrect number")
+			return utils.NewSTError("incorrect format of input file. second token is not a number or incorrect number")
 		}
 
 		decoding := splittedLine[2]
@@ -120,8 +120,8 @@ const (
 //
 // The format is the third parameter passed to function.
 func SaveAcronymsToFile(acrs ag.Acronyms, outputFilename string, mode ExportModeT) error {
-	var formatFunc func(acr ag.Acronym) string
 
+	var formatFunc func(acr ag.Acronym) string
 	if mode == FullFormat {
 		formatFunc = func(acr ag.Acronym) string {
 			outp := acr.Word + TokenSeparator + strconv.Itoa(acr.SumEstimation) + "\n"
@@ -158,13 +158,16 @@ func LoadAcronymsFromFile(filename string) (acrs ag.Acronyms, err error) {
 
 	var parseFirstLineInFile StringParserFunc = func(line string) error {
 		if len(line) == 0 {
-			return errors.New("unexpected empty first line in file")
+			return utils.NewSTError("unexpected empty first line in file")
 		}
 		capacity, err := strconv.Atoi(line)
-		if err == nil {
-			acrs = make(ag.Acronyms, 0, capacity)
+		if err != nil {
+			return utils.NewSTError(err.Error())
 		}
-		return err
+
+		acrs = make(ag.Acronyms, 0, capacity)
+
+		return nil
 	}
 
 	// Enumeration represents the type of previous parsed line.
@@ -199,39 +202,39 @@ func LoadAcronymsFromFile(filename string) (acrs ag.Acronyms, err error) {
 		if line == LineSeparator {
 			cur = Empty
 			if !isCurLineTypeCorrect(cur, prev) {
-				return errors.New("incorrect data/format: unexpected empty line")
+				return utils.NewSTError("incorrect data/format: unexpected empty line")
 			}
 			if prev != First {
 				lastLD := acrs[len(acrs)-1].LetterDecodings
 				if prev == Letter && len(lastLD) != cap(lastLD) {
-					return errors.New("incorrect data/format: unexpected empty line within acronyms description")
+					return utils.NewSTError("incorrect data/format: unexpected empty line within acronyms description")
 				}
 			}
 		} else if len(lineRunes) < 2 {
-			return errors.New("incorrect data/format: some short line with no unexpected meaning")
+			return utils.NewSTError("incorrect data/format: some short line with no unexpected meaning")
 		} else if unicode.IsLetter(lineRunes[0]) && !unicode.IsLetter(lineRunes[1]) {
 			cur = Letter
 			if !isCurLineTypeCorrect(cur, prev) {
-				return errors.New("incorrect data/format: maybe unexpected letter decoding line")
+				return utils.NewSTError("incorrect data/format: maybe unexpected letter decoding line")
 			}
 
 			if !unicode.IsLower(lineRunes[0]) {
-				return errors.New("incorrect format: the letter is not lowercase")
+				return utils.NewSTError("incorrect format: the letter is not lowercase")
 			}
 
 			curAcrAsRune := []rune(acrs[len(acrs)-1].Word)
 			curLetterInd := len(acrs[len(acrs)-1].LetterDecodings)
 			if lineRunes[0] != curAcrAsRune[curLetterInd] {
-				return errors.New("incorrect data: the letter is not the same as in the acronym")
+				return utils.NewSTError("incorrect data: the letter is not the same as in the acronym")
 			}
 
 			tsInd := strings.Index(line, TokenSeparator)
 			if tsInd == -1 {
-				return errors.New("incorrect data/format: incorrect format of letter decoding line (no token separator between letter and decoding)")
+				return utils.NewSTError("incorrect data/format: incorrect format of letter decoding line (no token separator between letter and decoding)")
 			}
 			decodingInd := tsInd + len(TokenSeparator)
 			if len(acrs[len(acrs)-1].LetterDecodings) == cap(acrs[len(acrs)-1].LetterDecodings) {
-				return errors.New("unexpected error: maybe unexpected (extra) letter in acronym")
+				return utils.NewSTError("unexpected error: maybe unexpected (extra) letter in acronym")
 			}
 			acrs[len(acrs)-1].LetterDecodings = append(acrs[len(acrs)-1].LetterDecodings, line[decodingInd:])
 
@@ -241,23 +244,23 @@ func LoadAcronymsFromFile(filename string) (acrs ag.Acronyms, err error) {
 		} else {
 			cur = Acr
 			if !isCurLineTypeCorrect(cur, prev) {
-				return errors.New("incorrect data/format: unexpected acronym line or smth else")
+				return utils.NewSTError("incorrect data/format: unexpected acronym line or smth else")
 			}
 
 			tsInd := strings.Index(line, TokenSeparator)
 			if tsInd == -1 {
-				return errors.New("incorrect data/format: incorrect format of acronym line (no token separator between word and estimation)")
+				return utils.NewSTError("incorrect data/format: incorrect format of acronym line (no token separator between word and estimation)")
 			}
 			estInd := tsInd + len(TokenSeparator)
 			est, err := strconv.Atoi(line[estInd:])
 			if err != nil {
-				return errors.New("incorrect data/format: incorrect summary estimation of acronym")
+				return utils.NewSTError("incorrect data/format: incorrect summary estimation of acronym")
 			}
 
 			nLetters := 0
 			for _, l := range line[:tsInd] {
 				if !unicode.IsLetter(l) || !unicode.IsLower(l) {
-					return errors.New("incorrect data/format: not letters or upper case letters in acronym")
+					return utils.NewSTError("incorrect data/format: not letters or upper case letters in acronym")
 				}
 				nLetters++
 			}

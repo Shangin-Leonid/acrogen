@@ -1,10 +1,10 @@
 package ui /* User Interface */
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/Shangin-Leonid/acrogen/ag"
+	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
 // # printAcronymInDetail prints an acronym in console in detailed format (decodes each letter).
@@ -45,11 +45,11 @@ func printAcronyms(acrs ag.Acronyms, amount int) error {
 
 	switch {
 	case amount < 0:
-		return errors.New("incorrect (negative) amount of acronyms")
+		return utils.NewSTError("incorrect (negative) amount of acronyms")
 	case amount == 0:
 		amount = len(acrs)
 	case amount > len(acrs):
-		return errors.New("too many acronyms are requested to print")
+		return utils.NewSTError("too many acronyms are requested to print")
 	}
 
 	SuccessColor.Printf("\nList of acronyms:\n")

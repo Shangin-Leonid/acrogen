@@ -2,7 +2,6 @@ package fio /* File Input Output */
 
 import (
 	"bufio"
-	"errors"
 	"os"
 	"strconv"
 
@@ -25,12 +24,12 @@ type StringParserFunc = func(string) error // TODO without '='
 //   - error
 func parseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc StringParserFunc) (nSuccessfullyParsed int, err error) {
 	if !utils.IsTextFileNameValid(filename) {
-		return 0, errors.New("invalid name of text file")
+		return 0, utils.NewSTError("invalid name of text file")
 	}
 
 	file, err := os.Open(filename)
 	if err != nil {
-		return 0, err
+		return 0, utils.NewSTError(err.Error())
 	}
 	defer file.Close()
 
@@ -47,7 +46,7 @@ func parseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc St
 		return nSuccessfullyParsed - 1, err
 	}
 	if fsErr := fs.Err(); fsErr != nil {
-		return nSuccessfullyParsed, fsErr
+		return nSuccessfullyParsed, utils.NewSTError(err.Error())
 	}
 
 	return nSuccessfullyParsed, nil
@@ -68,24 +67,24 @@ func parseTextFileLineByLine(filename string, firstLineParserFunc, parserFunc St
 //   - error
 func writeSliceToTextFile[T any](slice []T, filename string, needWriteLen bool, formatFunc func(T) string) (nSuccessfulWrites int, err error) {
 	if !utils.IsTextFileNameValid(filename) {
-		return 0, errors.New("incorrect name of output file")
+		return 0, utils.NewSTError("incorrect name of output file")
 	}
 
 	outputFile, err := os.Create(filename)
 	if err != nil {
-		return 0, err
+		return 0, utils.NewSTError(err.Error())
 	}
 	defer outputFile.Close()
 
 	_, err = outputFile.WriteString(strconv.Itoa(len(slice)) + "\n\n")
 	if err != nil {
-		return 0, err
+		return 0, utils.NewSTError(err.Error())
 	}
 	nSuccessfulWrites++
 	for i := range slice {
 		_, err = outputFile.WriteString(formatFunc(slice[i]))
 		if err != nil {
-			return nSuccessfulWrites, err
+			return nSuccessfulWrites, utils.NewSTError(err.Error())
 		}
 		nSuccessfulWrites++
 	}
