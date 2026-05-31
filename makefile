@@ -31,7 +31,7 @@ EXE_FILENAME = ./acrogen.$(EXE_EXT)
 # Run params
 #--------------------------------------------------------------------------------------------------
 
-LOG_FILENAME := acrogen.log
+LOG_FILENAME := ./data/acrogen.log
 ifeq ($(OS),Windows_NT)
 	LOG_REDIRECT_COMMAND =
 else
