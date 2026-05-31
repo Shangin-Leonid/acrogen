@@ -39,6 +39,8 @@ func RunConsoleApp() {
 		}
 	}()
 
+	log.Printf("Running application...\n")
+
 	var err error
 	var acrs ag.Acronyms
 
