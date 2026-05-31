@@ -4,26 +4,32 @@ import (
 	"runtime/debug"
 )
 
-// TODO docs
+// # StackTrace is an alias for type returned by debug.Stack()
 type StackTrace = []byte
 
-// TODO docs
+// # StackTraceError is a custom error type with opportunity of saving and passing a stack of calls.
+//
+// # Description:
+//
+// Use 'NewSTError(errMes string)' to create new instance.
+//
+// # Methods:
+//
+//   - Error() returns string of error message
+//   - StackTrace() returns call stack
 type StackTraceError struct {
 	errMes     string
 	stackTrace StackTrace
 }
 
-// TODO docs
 func (ste StackTraceError) Error() string {
 	return ste.errMes
 }
 
-// TODO docs
 func (ste StackTraceError) StackTrace() StackTrace {
 	return ste.stackTrace
 }
 
-// TODO docs
 func NewSTError(errMes string) *StackTraceError {
 	return &StackTraceError{
 		errMes:     errMes,
