@@ -58,6 +58,7 @@ func GenerateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
 //
 //   - generated acronyms collection
 func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
+
 	letterCombs := algo.CalcOrderedCartesianProduct(src)
 
 	convertToAcronym := func(lo LetterOpts) Acronym {
@@ -102,16 +103,8 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 //
 //   - generated acronyms collection
 func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
-	var acrs Acronyms
 
-	/*perm := algo.GetIdPermutation(len(src))
-	nPermutations := int(algo.CalcFactorial(uint(len(src))))
-	for range nPermutations {
-		permSrc, _ := algo.GetPermutatedSlice(src, perm)
-		newAcrs := generateAcronymsWithOrder(permSrc, dict)
-		acrs = slices.Concat(acrs, newAcrs)
-		algo.ChangeToNextPermutation(perm)
-	}*/
+	var acrs Acronyms
 
 	perm := cont.NewIdPermutation(len(src))
 	for range cont.PermutationsGroupOrder(len(src)) {
