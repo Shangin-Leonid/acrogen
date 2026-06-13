@@ -19,24 +19,14 @@
 
 ---
 
-## :open_file_folder: Project Structure
-
-The repository follows a clean and structured package layout:
-- `algo/` — Core algorithms and acronym generation logic.
-- `fio/` — File Input/Output subsystem (reading source text and writing results).
-- `ui/` — Terminal-based user interface and interaction components.
-- `utils/` — Common helpers and utility functions.
-
----
-
-## 🚀 Getting Started
+## 🚀 Getting started
 
 ### Prerequisites
 To build and run this project, you need:
-- **Go** (version 1.18 or higher)
-- **Make** (optional, for using the Makefile)
+- **Go** (see version above)
+- **Make** (optional, for quick build and run)
 
-### Installation and Setup
+### Installation and setup
 
 1. :arrow_down: Clone the repository:
 ```bash
@@ -68,6 +58,20 @@ Run the compiled binary by passing a string or a text source to process:
 
 ---
 
+## :open_file_folder: Project structure
+
+The repository follows a clean and structured package layout:
+- `makefile` — Make commands to build and run quickly
+- `ag/` — core of acronym representation and generation
+- `algo/` — common algorithms used for generation
+- `cont/` — some custom containers
+- `data/` — source data, russian and english dictionaries, default storage for log and output files
+- `fio/` — file Input/Output subsystem (reading source data and writing results)
+- `ui/` — user CLI, interaction components
+- `utils/` — common helpers and utility functions
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -78,4 +82,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **You can contact with me using info from [my Github profile](https://github.com/Shangin-Leonid/)**
 
 **If you find 'acrogen' helpful, please give me a star :star:**
-
