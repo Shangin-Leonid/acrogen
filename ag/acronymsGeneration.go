@@ -1,7 +1,9 @@
 package ag /* Acronyms Generation */
 
 import (
+	"runtime"
 	"slices"
+	"sync"
 
 	"github.com/Shangin-Leonid/acrogen/algo"
 	"github.com/Shangin-Leonid/acrogen/cont"
@@ -64,14 +66,29 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 		return exist
 	}
 
-	letterCombs := algo.CalcOrderedCartesianProduct(src)
-
 	var acrs Acronyms
-	for i := range letterCombs {
-		if isRealWord(asWord(letterCombs[i])) {
-			acrs = append(acrs, convertToAcronym(letterCombs[i]))
+	mu := sync.Mutex{}
+
+	wg := &sync.WaitGroup{}
+	processCandidates := func(candidates []LetterOpts) {
+		defer wg.Done()
+
+		for _, cand := range candidates {
+			if isRealWord(asWord(cand)) {
+				mu.Lock()
+				acrs = append(acrs, convertToAcronym(cand))
+				mu.Unlock()
+			}
 		}
 	}
+
+	candidates := algo.CalcOrderedCartesianProduct(src)
+	chunksRanges := algo.SplitSlice(candidates, runtime.NumCPU())
+	for _, chR := range chunksRanges {
+		wg.Add(1)
+		go processCandidates(candidates[chR.Beg:chR.End])
+	}
+	wg.Wait()
 
 	return acrs
 }
@@ -88,6 +105,9 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 //
 //   - generated acronyms collection
 func generateAcronymsWithoutOrder(src Src, dict Dict) Acronyms {
+
+	// CPU bound function, so do not parrallel it since
+	// 'generateAcronymsWithOrder()' is already paralleled into 'runtime.NumCPU()' goroutines.
 
 	var acrs Acronyms
 
