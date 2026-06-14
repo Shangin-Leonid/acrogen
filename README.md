@@ -11,6 +11,8 @@
 
 ## ✨ Features
 
+- :russia: **Russian language is supported (for generation, not for UI)**
+- :uk: **English language to be supported soon**
 - :desktop_computer: **Intuitive CLI**
 - 🛠️ **Easy to build and run with `makefile`**
 - ⚡ **High performance**
