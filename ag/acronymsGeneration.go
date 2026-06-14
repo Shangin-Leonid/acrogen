@@ -61,20 +61,6 @@ func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 
 	letterCombs := algo.CalcOrderedCartesianProduct(src)
 
-	convertToAcronym := func(lo LetterOpts) Acronym {
-		word := make([]rune, 0, len(lo))
-		sumEstimation := 0
-		letterDecodings := []string{}
-
-		for i := range lo {
-			word = append(word, lo[i].Letter)
-			sumEstimation += lo[i].Estimation
-			letterDecodings = append(letterDecodings, lo[i].Decoding)
-		}
-
-		return Acronym{string(word), sumEstimation, letterDecodings}
-	}
-
 	isRealWord := func(s string) bool {
 		_, exist := dict[s]
 		return exist
