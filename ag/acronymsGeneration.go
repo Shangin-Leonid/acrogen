@@ -59,18 +59,17 @@ func GenerateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
 //   - generated acronyms collection
 func generateAcronymsWithOrder(src Src, dict Dict) Acronyms {
 
-	letterCombs := algo.CalcOrderedCartesianProduct(src)
-
 	isRealWord := func(s string) bool {
 		_, exist := dict[s]
 		return exist
 	}
 
+	letterCombs := algo.CalcOrderedCartesianProduct(src)
+
 	var acrs Acronyms
 	for i := range letterCombs {
-		acrCandidate := convertToAcronym(letterCombs[i])
-		if isRealWord(acrCandidate.Word) {
-			acrs = append(acrs, acrCandidate)
+		if isRealWord(asWord(letterCombs[i])) {
+			acrs = append(acrs, convertToAcronym(letterCombs[i]))
 		}
 	}
 
