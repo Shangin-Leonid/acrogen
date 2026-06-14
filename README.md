@@ -15,7 +15,7 @@
 - 🛠️ **Easy to build and run with `makefile`**
 - ⚡ **High performance**
 - 📦 **Modular Architecture:**
-- :twisted_rightwards_arrows: **Concurrency supporting is going to be added**
+- :twisted_rightwards_arrows: **Concurrency is used**
 
 ---
 
