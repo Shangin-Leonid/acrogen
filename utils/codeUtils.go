@@ -22,3 +22,8 @@ func TerOp[T any](cond bool, vTrue, vFalse T) T {
 		return vFalse
 	}
 }
+
+// # AbsInt implements standart 'abs' function for int argument.
+func AbsInt(num int) int {
+	return TerOp(num < 0, -num, num)
+}

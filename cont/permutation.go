@@ -60,13 +60,9 @@ func (p Permutation) Prev() Permutation {
 
 // # Shift shifts in place with 's' steps toward or backward (lexicographically).
 func (p *Permutation) Shift(s int) {
-	var shiftFunc func(*Permutation)
-	if s < 0 {
-		shiftFunc = (*Permutation).shiftToPrev
-		s = -s
-	} else {
-		shiftFunc = (*Permutation).shiftToNext
-	}
+
+	shiftFunc := utils.TerOp(s < 0, (*Permutation).shiftToPrev, (*Permutation).shiftToNext)
+	s = utils.AbsInt(s)
 
 	for range s {
 		shiftFunc(p)
@@ -101,7 +97,7 @@ func (p *Permutation) shiftToNext() {
 //
 // TODOs:
 //
-//   - Reverse shifting instead.
+//   - Optimize: reverse shifting instead.
 func (p *Permutation) shiftToPrev() {
 	p.Shift(PermutationsGroupOrder(p.Len()) - 1)
 }
