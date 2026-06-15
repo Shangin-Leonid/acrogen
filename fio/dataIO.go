@@ -82,7 +82,7 @@ func LoadDictionaryFromFile(dictFilename string, expectedWordsAmount uint64) (ag
 	dict := make(ag.Dict, expectedWordsAmount)
 
 	var parseWordFromFileLine StringParserFunc = func(line string) error {
-		dict[line] = struct{}{}
+		dict[line] = utils.Void{}
 		return nil
 	}
 
