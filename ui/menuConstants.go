@@ -10,7 +10,7 @@ import (
 const (
 	DumpDefaultFilename   = "acrs_dump.txt"
 	SrcDefaultFilename    = "data/src.txt"
-	DictDefaultFilename   = "data/russian_words.txt"
+	DictDefaultFilename   = "data/rus_words.txt"
 	OutputDefaultFilename = "acrs.txt"
 )
 
