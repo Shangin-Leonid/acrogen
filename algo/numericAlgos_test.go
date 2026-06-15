@@ -1,33 +1,22 @@
 package algo_test
 
 import (
-	"testing"
+	"fmt"
 
 	"github.com/Shangin-Leonid/acrogen/algo"
 )
 
-func Test_CalcFactorial(t *testing.T) {
-	testSuites := []struct {
-		name     string
-		nParam   uint
-		expected uint
-	}{
-		{"zero", 0, 1},
-		{"one", 1, 1},
-		{"two", 2, 2},
-		{"three", 3, 6},
-		{"ten", 10, 3628800},
-	}
+func ExampleCalcFactorial() {
+	fmt.Println(algo.CalcFactorial(0))
+	fmt.Println(algo.CalcFactorial(1))
+	fmt.Println(algo.CalcFactorial(2))
+	fmt.Println(algo.CalcFactorial(3))
+	fmt.Println(algo.CalcFactorial(10))
 
-	for _, ts := range testSuites {
-		t.Run(ts.name, func(t *testing.T) {
-
-			// Test code
-			res := algo.CalcFactorial(ts.nParam)
-			if res != ts.expected {
-				t.Errorf("Expected: %d, got: %d", ts.expected, res)
-			}
-
-		})
-	}
+	// Output:
+	// 1
+	// 1
+	// 2
+	// 6
+	// 3628800
 }
