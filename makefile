@@ -16,7 +16,7 @@ endif
 
 EXE_FILENAME = ./acrogen.$(EXE_EXT)
 
-ALL_GO_PACKAGES = main ag algo cont fio ui utils
+ALL_GO_PACKAGES = ag algo cont fio ui utils
 
 # SRC_FILENAME ?= data/src.txt
 # DICT_FILENAME ?= data/russian_words.txt
