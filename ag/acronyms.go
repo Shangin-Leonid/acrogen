@@ -27,7 +27,7 @@ type Acronyms = []Acronym
 //
 // # Returns:
 //
-//   - index (0 if not found)
+//   - index (-1 if not found)
 //   - flag if found
 func ContainsAcronym(word string, acrs Acronyms) (int, bool) {
 	ind := slices.IndexFunc(acrs, func(acr Acronym) bool {
@@ -111,7 +111,7 @@ func TakeAcronymBS(word string, acrs Acronyms) (Acronym, bool) {
 	}
 }
 
-// # SortAcronymsBySumEstimation is a wrapper for sorting (in place) Acronyms collection by summary estimations of its elements.
+// # SortAcronymsBySumEstimation is a wrapper for sorting (in place, descending order) Acronyms collection by summary estimations of its elements.
 func SortAcronymsBySumEstimation(acrs Acronyms) {
 	decreasingSumEstimationComparator := func(i, j int) bool {
 		return acrs[i].SumEstimation > acrs[j].SumEstimation
