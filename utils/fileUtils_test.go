@@ -13,11 +13,13 @@ func ExampleIsTextFileNameValid() {
 	fmt.Println(utils.IsTextFileNameValid("filename.ttt"))
 	fmt.Println(utils.IsTextFileNameValid(".txt"))
 	fmt.Println(utils.IsTextFileNameValid("f.json"))
+	fmt.Println(utils.IsTextFileNameValid("file\xffname.txt"))
 
 	fmt.Println(utils.IsTextFileNameValid("filename.txt"))
 	fmt.Println(utils.IsTextFileNameValid("file.ru.txt"))
 
 	// Output:
+	// false
 	// false
 	// false
 	// false
