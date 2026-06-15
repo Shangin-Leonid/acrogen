@@ -16,5 +16,8 @@ _debug_*
 
 # project data files
 *.txt
-acrs.txt
 *_dump.*
+
+!data/eng_words.txt
+!data/rus_words.txt
+!data/rus_surnames.txt
