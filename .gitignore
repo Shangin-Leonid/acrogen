@@ -1,5 +1,8 @@
 # IGNORE:
 
+# development
+.vscode/
+
 # executable files
 *.exe
 *.out
