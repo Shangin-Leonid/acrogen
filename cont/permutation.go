@@ -7,53 +7,56 @@ import (
 	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
-// TODO refactor with OOP
-// TODO operator < > ==
-
 // # Permutation is a bijection [0, 1, ... N] <--> [0, 1, ... N] with lexicographical order.
 type Permutation struct {
 	elems []int
 }
 
 // # NewIdPermutation creates new identity permutation (0, 1, ... length-1).
-func NewIdPermutation(length int) Permutation {
+func NewIdPermutation(length int) *Permutation {
 	idPerm := Permutation{make([]int, length)}
 	for i := range idPerm.elems {
 		idPerm.elems[i] = i
 	}
-	return idPerm
+
+	return &idPerm
 }
 
 // # Len returns a length (size) of the permutation.
-func (p Permutation) Len() int {
+func (p *Permutation) Len() int {
 	return len(p.elems)
 }
 
 // # AsSlice returns the copy of underlying int slice.
-func (p Permutation) AsSlice() []int {
+func (p *Permutation) AsSlice() []int {
 	return algo.GetCopy(p.elems)
 }
 
+// # Clone returns the copy of permutation.
+func (p *Permutation) Clone() *Permutation {
+	return &Permutation{elems: algo.GetCopy(p.elems)}
+}
+
 // # get returns the i-th element.
-func (p Permutation) Get(i int) int {
+func (p *Permutation) Get(i int) int {
 	return p.elems[i]
 }
 
 // # Resize resizes the permutation and set it to Id.
 func (p *Permutation) Resize(newLength int) {
-	*p = NewIdPermutation(newLength)
+	*p = *NewIdPermutation(newLength)
 }
 
 // # Next returns the next (lexicographically) permutation.
-func (p Permutation) Next() Permutation {
-	nextP := GetCopy(p)
+func (p *Permutation) Next() *Permutation {
+	nextP := p.Clone()
 	nextP.shiftToNext()
 	return nextP
 }
 
 // # Prev returns the previous (lexicographically) permutation.
-func (p Permutation) Prev() Permutation {
-	prevP := GetCopy(p)
+func (p *Permutation) Prev() *Permutation {
+	prevP := p.Clone()
 	prevP.shiftToPrev()
 	return prevP
 }
@@ -104,6 +107,11 @@ func (p *Permutation) shiftToPrev() {
 
 // # IsPermutation returns if slice can represent a valid permutation.
 func IsPermutation(slice []int) bool {
+
+	if len(slice) == 0 {
+		return false
+	}
+
 	type void = utils.Void
 	elems := make(map[int]void, len(slice))
 	for i := range slice {
@@ -118,13 +126,8 @@ func IsPermutation(slice []int) bool {
 	return len(elems) == len(slice)
 }
 
-// # GetCopy returns a copy of permutation.
-func GetCopy(p Permutation) Permutation {
-	return Permutation{algo.GetCopy(p.elems)}
-}
-
 // # GetPermutatedSlice returns copy of 'slice' permutated by 'perm' and error.
-func GetPermutatedSlice[T any](slice []T, perm Permutation) ([]T, error) {
+func GetPermutatedSlice[T any](slice []T, perm *Permutation) ([]T, error) {
 	if len(slice) < perm.Len() {
 		return nil, errors.New("incorrect slice and permutation sizes in 'GetPermutatedSlice()'")
 	}
