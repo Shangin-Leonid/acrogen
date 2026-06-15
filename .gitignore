@@ -21,3 +21,5 @@ _debug_*
 !data/eng_words.txt
 !data/rus_words.txt
 !data/rus_surnames.txt
+
+!coverage.out

@@ -46,7 +46,7 @@ endif
 # Golang flags
 #--------------------------------------------------------------------------------------------------
 
-BASIC_TEST_COMMAND = go test -count=1
+BASIC_TEST_COMMAND = go test -race -cover -count=1
 
 #--------------------------------------------------------------------------------------------------
 # Rules / goals / targets
@@ -65,6 +65,10 @@ test:
 
 testv:
 	$(BASIC_TEST_COMMAND) -v $(addprefix github.com/Shangin-Leonid/acrogen/, $(PACKAGES))
+
+test_coverage_in_details:
+	go test -coverprofile=coverage.out $(addprefix github.com/Shangin-Leonid/acrogen/, $(PACKAGES))
+	go tool cover -html=coverage.out
 
 debug: build
 	dlv debug -- $(INPUT_PARAMS)
