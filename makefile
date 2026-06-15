@@ -16,6 +16,8 @@ endif
 
 EXE_FILENAME = ./acrogen.$(EXE_EXT)
 
+ALL_GO_PACKAGES = main ag algo cont fio ui utils
+
 # SRC_FILENAME ?= data/src.txt
 # DICT_FILENAME ?= data/russian_words.txt
 # DUMP_FILENAME ?= acrs_dump.txt
@@ -24,6 +26,8 @@ EXE_FILENAME = ./acrogen.$(EXE_EXT)
 #--------------------------------------------------------------------------------------------------
 # Input command line params
 #--------------------------------------------------------------------------------------------------
+
+PACKAGES ?= $(ALL_GO_PACKAGES)
 
 # INPUT_PARAMS = $(SRC_FILENAME) $(DICT_FILENAME) $(DUMP_FILENAME) $(OUTP_FILENAME)
 
@@ -39,10 +43,16 @@ else
 endif
 
 #--------------------------------------------------------------------------------------------------
+# Golang flags
+#--------------------------------------------------------------------------------------------------
+
+BASIC_TEST_COMMAND = go test -count=1
+
+#--------------------------------------------------------------------------------------------------
 # Rules / goals / targets
 #--------------------------------------------------------------------------------------------------
 
-all: build run
+all: run
 
 build:
 	go build -trimpath -o $(EXE_FILENAME) *.go
@@ -50,7 +60,13 @@ build:
 run:
 	$(EXE_FILENAME) $(LOG_REDIRECT_COMMAND)
 
-debug:
+test:
+	$(BASIC_TEST_COMMAND) $(addprefix github.com/Shangin-Leonid/acrogen/, $(PACKAGES))
+
+testv:
+	$(BASIC_TEST_COMMAND) -v $(addprefix github.com/Shangin-Leonid/acrogen/, $(PACKAGES))
+
+debug: build
 	dlv debug -- $(INPUT_PARAMS)
 
 clean:
