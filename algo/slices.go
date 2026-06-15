@@ -29,7 +29,7 @@ type IndRange struct {
 //   - docs
 func SplitSlice[T any](slice []T, nParts int) []IndRange {
 
-	if nParts <= 0 {
+	if nParts <= 0 || len(slice) == 0 {
 		return []IndRange{}
 	}
 
