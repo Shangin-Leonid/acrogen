@@ -182,6 +182,41 @@ func runLoadingAcronymsFromFileMode() (ag.Acronyms, error) {
 	return acrs, nil
 }
 
+// # giveUserChoiceOfDictFile give user a choice of dictionary file (including rus and eng default options).
+//
+// # Params: -
+//
+// # Returns:
+//
+//   - dictionary file name (empty "" if error)
+//   - error
+func giveUserChoiceOfDictFile() (dictFilename string, err error) {
+
+	yesOrNo, err := giveUserYesOrNoChoice(UseEngDictFileChoiceMes, UserChoiceInputFormatErrMes)
+	if err != nil {
+		return "", err
+	}
+	if yesOrNo == Yes {
+		return EngDictFilename, nil
+	}
+
+	yesOrNo, err = giveUserYesOrNoChoice(UseRusDictFileChoiceMes, UserChoiceInputFormatErrMes)
+	if err != nil {
+		return "", err
+	}
+	if yesOrNo == Yes {
+		return RusDictFilename, nil
+	}
+
+	dictFilename, err = giveUserChoiceOfFilename("Enter a name of dictionary file:")
+	if err != nil {
+		return "", err
+	}
+
+	return dictFilename, nil
+
+}
+
 // # runGeneratingAcronymsFromSourceMode tries to generate acronyms from source and dictionary files (default or user's)
 //
 // # Params: -
@@ -215,18 +250,9 @@ func runGeneratingAcronymsFromSourceMode() (ag.Acronyms, error) {
 	}
 
 	// Give a choice of dictionary file
-	yesOrNo, err = giveUserYesOrNoChoice(UseDefaultDictFileChoiceMes, UserChoiceInputFormatErrMes)
+	dictFilename, err := giveUserChoiceOfDictFile()
 	if err != nil {
 		return nil, err
-	}
-	var dictFilename string
-	if yesOrNo == Yes {
-		dictFilename = DictDefaultFilename
-	} else if yesOrNo == No {
-		dictFilename, err = giveUserChoiceOfFilename("Enter a name of dictionary file:")
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	// Load dictionary from file.

@@ -10,7 +10,8 @@ import (
 const (
 	DumpDefaultFilename   = "acrs_dump.txt"
 	SrcDefaultFilename    = "data/src.txt"
-	DictDefaultFilename   = "data/rus_words.txt"
+	RusDictFilename       = "data/rus_words.txt"
+	EngDictFilename       = "data/eng_words.txt"
 	OutputDefaultFilename = "acrs.txt"
 )
 
@@ -68,7 +69,8 @@ const (
 
 	UseDefaultDumpFileChoiceMes   = "Use default file name ('" + DumpDefaultFilename + "')?"
 	UseDefaultSrcFileChoiceMes    = "Use default file name ('" + SrcDefaultFilename + "')?"
-	UseDefaultDictFileChoiceMes   = "Use default file name ('" + DictDefaultFilename + "')?"
+	UseRusDictFileChoiceMes       = "Use russian default dictionary ('" + RusDictFilename + "')?"
+	UseEngDictFileChoiceMes       = "Use english default dictionary ('" + EngDictFilename + "')?"
 	UseDefaultOutputFileChoiceMes = "Use default file name ('" + OutputDefaultFilename + "')?"
 
 	AcrGenerationModeChoiceMes = "Must items in acronym be ordered?"
