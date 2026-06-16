@@ -71,7 +71,7 @@ test_coverage_in_details:
 	go tool cover -html=coverage.out
 
 debug: build
-	dlv debug -- $(INPUT_PARAMS)
+	dlv debug --
 
 clean:
 	rm -f $(EXE_FILENAME)
