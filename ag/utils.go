@@ -1,9 +1,20 @@
 package ag /* Acronyms Generation */
 
-// # convertToAcronym
+// # convertToAcronym converts letter options to acronym.
 //
-// # TODO:
-//   - docs
+// # Params:
+//
+//   - a collection of letter options
+//
+// # Returns:
+//
+//   - acronym based on the input
+//
+// # Description:
+//
+// Example:
+// {{'D', 1, "Don't"}, {'R', 2, "Repeat"}, {'Y', 3, "Yourself"}} ->
+// -> {"DRY", 6, {"Don't", "Repeat", "Yourself"}}
 func convertToAcronym(los LetterOpts) Acronym {
 	sumEstimation := 0
 	letterDecodings := []string{}
@@ -16,10 +27,20 @@ func convertToAcronym(los LetterOpts) Acronym {
 	return Acronym{asWord(los), sumEstimation, letterDecodings}
 }
 
-// # asWord
+// # asWord builds a word from letter options.
 //
-// # TODO:
-//   - docs
+// # Params:
+//
+//   - letter options
+//
+// # Returns:
+//
+//   - word build from input
+//
+// # Description:
+//
+// Example:
+// {{'D', 1, "Don't"}, {'R', 2, "Repeat"}, {'Y', 3, "Yourself"}} -> "DRY"
 func asWord(los LetterOpts) string {
 	word := make([]rune, 0, len(los))
 	for i := range los {

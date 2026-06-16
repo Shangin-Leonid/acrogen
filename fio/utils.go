@@ -8,7 +8,7 @@ import (
 	"github.com/Shangin-Leonid/acrogen/utils"
 )
 
-type StringParserFunc = func(string) error // TODO without '='
+type StringParserFunc func(string) error
 
 // # parseTextFileLineByLine opens file, goes through it and parses each line by 'parserFunc'.
 //

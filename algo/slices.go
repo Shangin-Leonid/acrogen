@@ -14,19 +14,33 @@ func ReverseSlice[T any](slice []T) {
 	}
 }
 
-// # IndRange
-//
-// # TODO:
-//   - docs
+// # IndRange storages a range of indices.
 type IndRange struct {
 	Beg int
 	End int
 }
 
-// # SplitSlice
+// # SplitSlice splits (decomposes) a slice into as equal as possible chunks.
 //
-// # TODO:
-//   - docs
+// # Params:
+//
+//   - slice
+//   - expected amount of chunks
+//
+// # Returns:
+//
+//   - slice of IndRange representing the chunks
+//
+// # Description:
+//
+// It is guaranteed that len of every chunk is no less than 1.
+// It is also guaranteed that diff between max and min chunk is no more than 1 (maybe 0).
+// If 'len(slice)' == 0 or 'nParts' <= 0 then empty slice is returned.
+// If 'nParts' > 'len(slice)' then 'len(slice)' is used instead of 'nParts'.
+// If there is no opportunity to get equal chunks, then max len chunks are stored before min.
+//
+// Example:
+// slice of len 5 + 'nParts' == 3 -> []IndRange{{0, 2} {2, 4} {4, 5}}
 func SplitSlice[T any](slice []T, nParts int) []IndRange {
 
 	if nParts <= 0 || len(slice) == 0 {

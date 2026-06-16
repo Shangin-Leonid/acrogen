@@ -26,7 +26,6 @@ func ExampleReverseSlice() {
 	// [Z Y X C B A]
 }
 
-// TODO
 func ExampleSplitSlice() {
 
 	res := algo.SplitSlice(make([]int, 5), -8)
