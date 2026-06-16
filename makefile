@@ -1,5 +1,3 @@
-# TODO improve goals, improve build instructions
-
 #--------------------------------------------------------------------------------------------------
 # Extensions
 #--------------------------------------------------------------------------------------------------
@@ -18,18 +16,11 @@ EXE_FILENAME = ./acrogen.$(EXE_EXT)
 
 ALL_GO_PACKAGES = ag algo cont fio ui utils
 
-# SRC_FILENAME ?= data/src.txt
-# DICT_FILENAME ?= data/russian_words.txt
-# DUMP_FILENAME ?= acrs_dump.txt
-# OUTP_FILENAME ?= acrs.txt
-
 #--------------------------------------------------------------------------------------------------
 # Input command line params
 #--------------------------------------------------------------------------------------------------
 
 PACKAGES ?= $(ALL_GO_PACKAGES)
-
-# INPUT_PARAMS = $(SRC_FILENAME) $(DICT_FILENAME) $(DUMP_FILENAME) $(OUTP_FILENAME)
 
 #--------------------------------------------------------------------------------------------------
 # Run params
