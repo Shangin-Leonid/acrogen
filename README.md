@@ -46,16 +46,28 @@ make build
 
 ## :keyboard: Usage
 
-Run the compiled binary by passing a string or a text source to process:
+Run the `acrogen`:
 
 ```bash
-./acrogen "As Far As I Know"
-# Output: AFAIK
+make run
 ```
 
-*(Optional: If your tool supports CLI flags, you can document them below)*
+You can run tests with code coverage (*PACKAGES* variable is optional):
+
 ```bash
-./acrogen --help
+make test PACKAGES=<list of package names>
+```
+
+To see tests info in details enter the following command:
+
+```bash
+make testv PACKAGES=<list of package names>
+```
+
+To see tests coverage in details enter the following command:
+
+```bash
+make test_coverage_in_details PACKAGES=<list of package names>
 ```
 
 ---
