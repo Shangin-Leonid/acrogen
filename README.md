@@ -64,10 +64,10 @@ To see tests info in details enter the following command:
 make testv PACKAGES=<list of package names>
 ```
 
-To see tests coverage in details enter the following command:
+After runnung tests you can see coverage report in details. Enter the following command:
 
 ```bash
-make test_coverage_in_details PACKAGES=<list of package names>
+make open_coverage_report
 ```
 
 ---

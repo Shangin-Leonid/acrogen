@@ -14,6 +14,8 @@ endif
 
 EXE_FILENAME = ./acrogen.$(EXE_EXT)
 
+TEST_COVERAGE_FILENAME = coverage.out
+
 ALL_GO_PACKAGES = ag algo cont fio ui utils
 
 #--------------------------------------------------------------------------------------------------
@@ -37,7 +39,7 @@ endif
 # Golang flags
 #--------------------------------------------------------------------------------------------------
 
-BASIC_TEST_COMMAND = go test -race -cover -count=1
+BASIC_TEST_COMMAND = go test -race -cover -count=1 -coverprofile=$(TEST_COVERAGE_FILENAME)
 
 #--------------------------------------------------------------------------------------------------
 # Rules / goals / targets
@@ -57,9 +59,8 @@ test:
 testv:
 	$(BASIC_TEST_COMMAND) -v $(addprefix github.com/Shangin-Leonid/acrogen/, $(PACKAGES))
 
-test_coverage_in_details:
-	go test -coverprofile=coverage.out $(addprefix github.com/Shangin-Leonid/acrogen/, $(PACKAGES))
-	go tool cover -html=coverage.out
+open_coverage_report:
+	go tool cover -html=$(TEST_COVERAGE_FILENAME)
 
 debug: build
 	dlv debug --
