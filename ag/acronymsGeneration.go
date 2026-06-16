@@ -34,7 +34,7 @@ const (
 //
 // Uses source and dictionary for checking all possible (non-)ordered (depends on 'agm' param) letter combinations and take all that are in the dictionary.
 func GenerateAcronyms(src Src, dict Dict, agm AcrGeneratorMode) Acronyms {
-	if len(src) == 0 || len(src) == 1 {
+	if len(src) == 0 {
 		return Acronyms{}
 	}
 
